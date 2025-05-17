@@ -1,0 +1,23 @@
+## 작업물 상세 조회
+
+GET http://localhost:8080/challenges/:challengeId/works/:workId
+
+## 작업물 제출
+
+POST http://localhost:8080/challenges/:challengeId/works
+
+## 작업물 수정
+
+PATCH http://localhost:8080/works/:workId
+
+## 작업물 삭제
+
+DELETE http://localhost:8080/works/:workId
+
+## 작업물 좋아요
+
+POST http://localhost:8080/works/:workId/like
+
+## 작업물 좋아요 취소
+
+DELETE http://localhost:8080/works/:workId/like

@@ -1,78 +1,11 @@
-# Express + Prisma (sqlite) 스타터 템플릿.
+# 3팀 팀프로젝트 독스루 백엔드 레포지토리
 
-- 반복적으로 사용하기에 만든 기본 틀.
-- `2025-03-18` 기준 잘 작동함.
+- API 명세서 노션 : https://www.notion.so/API-1ec2facab63c81cd932ae4d734463ab5
 
----
+- npm install dotenv
 
-## 순서대로 실행하여 초기화하세요.
+- 포트 8080 이유: WAS의 경우 개발 및 테스트 환경의 표준, 충돌 가능성 감소, 많은 프레임워크의 기본 설정, 명시적인 포트 등의 이유로 사용했습니다.
 
-- `git clone https://github.com/rakaso598/prisma-express-starter.git`
+- user.http | work.http | challenge.http : API 명세에 따라 메서드와 PATH 간략히 정리해두었습니다.
 
-- `cd prisma-express-starter/`
-
-- `npm install`
-
-- `echo 'DATABASE_URL="file:./dev.db"' > .env`
-
-- `npm run dev`
-
-- `curl http://localhost:5090/health-check`
-
-![image](https://github.com/user-attachments/assets/73d75c11-4cd3-45e6-b625-78306e9f4d5e)
-
-## 헬스체크 성공이 뜨면 초기화 완료.
-
----
-
-### .env (git ignored 이므로 추가해줍니다.)
-
-- `DATABASE_URL="file:./dev.db"`
-
----
-
-### CLI : 명령어 설명입니다.
-
-- `npm init` : node 프로젝트 초기화.
-- `npm i express cors` : 웹 프레임워크, CORS 처리 미들웨어 설치.
-- `npm i -D @types/express nodemon` : TypeScript 타입 정의 파일, 서버 자동 재시작 도구 설치.
-
----
-
-### package.json : 필요 시 추가 및 교체하세요.
-
-- `npm run dev로 nodemon 실행하도록 만듦` :
-
-"scripts": {
-"dev": "nodemon ./src/app.js"
-}
-
-- `프리즈마 경로를 바꿨을 시 추가` :
-
-"prisma": {
-"schema": "./src/db/prisma/schema.prisma"
-}
-
----
-
-### schema.prisma 자주쓰는 명령어
-
-- `npm install typescript tsx @types/node --save-dev`
-
-- `npm install prisma --save-dev`
-
-- `npx prisma migrate dev`
-
-- `npx prisma studio`
-
-- `npx prisma migrate reset` : 데이터베이스 리셋 명령어.
-
-- 다음은 스키마 테스트를 위한 예시 모델입니다.
-
-model User {
-id Int @id @default(autoincrement())
-email String @unique
-name String?
-}
-
----
+- RENDER 데이터베이스 프리즈마 연결해두었습니다. (.env)

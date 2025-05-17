@@ -1,0 +1,11 @@
+## 유저 정보 조회
+
+GET http://localhost:8080/users/me
+
+## 나의 챌린지 목록 조회 (1)
+
+GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed&keyword=keyword
+
+## 나의 챌린지 목록 조회 (2)
+
+GET http://localhost:8080/users/me/challenges?status=applied&keyword=keyword
