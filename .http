@@ -1,0 +1,5 @@
+### Health-Check
+
+GET http://localhost:5090/health-check
+
+###
