@@ -13,15 +13,15 @@ const workRouter = express.Router();
 workRouter.get("/", getAllWorks);
 
 // 특정 작업물 조회
-workRouter.get("/:id", getWorkById);
+workRouter.get("/:workId", getWorkById);
 
 // 작업물 생성
 workRouter.post("/", createWork);
 
 // 작업물 정보 수정
-workRouter.put("/:id", updateWork);
+workRouter.put("/:workId", updateWork);
 
 // 작업물 삭제
-workRouter.delete("/:id", deleteWork);
+workRouter.delete("/:workId", deleteWork);
 
 export default workRouter;

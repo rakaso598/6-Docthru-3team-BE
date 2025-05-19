@@ -11,8 +11,8 @@ const PORT = process.env.PORT;
 app.use(express.json());
 
 app.use("/users", userRouter);
-app.use("/challenge", challengeRouter);
-app.use("/work", workRouter);
+app.use("/challenges", challengeRouter);
+app.use("/works", workRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {

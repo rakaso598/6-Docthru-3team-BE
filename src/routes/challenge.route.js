@@ -13,15 +13,15 @@ const challengeRouter = express.Router();
 challengeRouter.get("/", getAllChallenges);
 
 // 특정 챌린지 조회
-challengeRouter.get("/:id", getChallengeById);
+challengeRouter.get("/:challengeId", getChallengeById);
 
 // 챌린지 생성
 challengeRouter.post("/", createChallenge);
 
 // 챌린지 정보 수정
-challengeRouter.put("/:id", updateChallenge);
+challengeRouter.put("/:challengeId", updateChallenge);
 
 // 챌린지 삭제
-challengeRouter.delete("/:id", deleteChallenge);
+challengeRouter.delete("/:challengeId", deleteChallenge);
 
 export default challengeRouter;
