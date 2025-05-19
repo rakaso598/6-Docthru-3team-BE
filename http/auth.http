@@ -1,10 +1,19 @@
 ### 회원가입
-POST http://localhost:8080/auth
+POST http://localhost:8080/auth/sign-up
+Content-Type: application/json
+
+{
+    "email" : "user4@test.com",
+    "nickname" : "user4",
+    "password" : "4444",
+    "passwordConfirmation" : "4444"
+}
+
+### 로그인
+POST http://localhost:8080/auth/sign-in
 Content-Type: application/json
 
 {
     "email" : "user3@test.com",
-    "nickname" : "user3",
-    "password" : "3333",
-    "passwordConfirmation" : "3333"
+    "password" : "3333"
 }
