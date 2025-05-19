@@ -3,10 +3,10 @@ POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user4@test.com",
-    "nickname" : "user4",
-    "password" : "4444",
-    "passwordConfirmation" : "4444"
+    "email" : "user5@test.com",
+    "nickname" : "user5",
+    "password" : "5555",
+    "passwordConfirmation" : "5555"
 }
 
 ### 로그인
@@ -17,3 +17,7 @@ Content-Type: application/json
     "email" : "user3@test.com",
     "password" : "3333"
 }
+
+### 토큰 갱신
+POST http://localhost:8080/auth/refresh-token
+Cookie: refreshToken={{$processEnv REQUEST_REFRESHTOKEN}}
