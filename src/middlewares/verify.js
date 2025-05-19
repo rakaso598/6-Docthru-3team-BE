@@ -16,6 +16,18 @@ async function signUpReqVerify(req, res, next) {
   next();
 }
 
+//로그인 request 유효성 확인
+async function signInReqVerify(req, res, next) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throwBadRequestError();
+  }
+
+  next();
+}
+
 export default {
   signUpReqVerify,
+  signInReqVerify,
 };
