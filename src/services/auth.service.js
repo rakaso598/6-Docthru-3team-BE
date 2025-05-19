@@ -31,6 +31,37 @@ async function create(user) {
   };
 }
 
+async function getByEmail(user) {
+  //비밀번호는 문자열만 가능(bcrypt 문법)
+  if (typeof user.password !== "string") {
+    throw new Error(`password must be a string.`);
+  }
+
+  const existedUser = await authRepository.getByEmail(user.email);
+
+  if (!existedUser) throw new Error("Please sign-up first");
+
+  //사용자가 입력한 PW와 데이터상의 PW가 일치하는지 확인
+  const isMatched = await bcrypt.compare(
+    user.password,
+    existedUser.hashedPassword
+  );
+
+  if (!isMatched) throw new Error("Wrong password");
+
+  const accessToken = generateAccessToken(existedUser);
+
+  return {
+    accessToken,
+    user: {
+      id: existedUser.id,
+      email: existedUser.email,
+      nickname: existedUser.nickname,
+    },
+  };
+}
+
 export default {
   create,
+  getByEmail,
 };

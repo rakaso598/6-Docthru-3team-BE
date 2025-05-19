@@ -11,6 +11,19 @@ async function save(user, hashedPassword) {
   });
 }
 
+async function getByEmail(email) {
+  const getUser = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (!getUser) throw new Error(`Cannot found user`);
+
+  return getUser;
+}
+
 export default {
   save,
+  getByEmail,
 };
