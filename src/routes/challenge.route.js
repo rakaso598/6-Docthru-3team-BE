@@ -6,6 +6,7 @@ import {
   updateChallenge,
   deleteChallenge,
 } from "../controllers/challenge.controller.js";
+import workRouter from "./work.route.js";
 
 const challengeRouter = express.Router();
 
@@ -23,5 +24,8 @@ challengeRouter.put("/:challengeId", updateChallenge);
 
 // 챌린지 삭제
 challengeRouter.delete("/:challengeId", deleteChallenge);
+
+// 챌린지 작업물 관련 라우터
+challengeRouter.use("/:challengeId/works", workRouter);
 
 export default challengeRouter;
