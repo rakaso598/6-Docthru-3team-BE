@@ -30,7 +30,7 @@ model Challenge {
   title         String
   description   String
   category      String
-  type          String
+  docType       String
   originalUrl   String
   adminStatus   AdminStatus @default(PENDING)
   adminMessage  String?
@@ -59,7 +59,6 @@ model Work {
 
   user     User?   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String?
-  workId   Int?
 }
 
 model Feedback {
@@ -77,7 +76,7 @@ model Feedback {
 
 model Notification {
   id        Int      @id @default(autoincrement())
-  type      String
+  isRead    Boolean  @default(false)
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

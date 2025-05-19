@@ -6,7 +6,6 @@ export const workMocks = [
     updatedAt: new Date(),
     challengeId: 1,
     authorId: "user1",
-    workId: null,
   },
   {
     id: 2,
@@ -15,7 +14,6 @@ export const workMocks = [
     updatedAt: new Date(),
     challengeId: 1,
     authorId: "user2",
-    workId: null,
   },
   {
     id: 3,
@@ -24,7 +22,6 @@ export const workMocks = [
     updatedAt: new Date(),
     challengeId: 2,
     authorId: "admin1",
-    workId: null,
   },
   {
     id: 4,
@@ -33,6 +30,5 @@ export const workMocks = [
     updatedAt: new Date(),
     challengeId: 1,
     authorId: "user1",
-    workId: null,
   },
 ];

@@ -4,12 +4,14 @@ import "dotenv/config";
 import userRouter from "./routes/user.route.js";
 import challengeRouter from "./routes/challenge.route.js";
 import workRouter from "./routes/work.route.js";
+import authRouter from "./routes/auth.route.js";
 
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(express.json());
 
+app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/challenges", challengeRouter);
 app.use("/works", workRouter);
