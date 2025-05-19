@@ -1,6 +1,7 @@
 export const workMocks = [
   {
     id: 1,
+    title: "첫번째 작업물",
     content: "First work content.",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -9,6 +10,7 @@ export const workMocks = [
   },
   {
     id: 2,
+    title: "두번째 작업물",
     content: "A submission for the first challenge.",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -17,6 +19,7 @@ export const workMocks = [
   },
   {
     id: 3,
+    title: "세번째 작업물",
     content: "My poem for the writing challenge.",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -25,6 +28,7 @@ export const workMocks = [
   },
   {
     id: 4,
+    title: "네번째 작업물",
     content: "Another work for the first challenge.",
     createdAt: new Date(),
     updatedAt: new Date(),
