@@ -21,5 +21,3 @@ Content-Type: application/json
 ### 토큰 갱신
 POST http://localhost:8080/auth/refresh-token
 Cookie: refreshToken={{$processEnv REQUEST_REFRESHTOKEN}}
-
-{}
