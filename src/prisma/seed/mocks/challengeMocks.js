@@ -1,0 +1,47 @@
+export const challengeMocks = [
+  {
+    id: 1,
+    title: "First Challenge",
+    description: "This is the first challenge.",
+    category: "Art",
+    type: "Drawing",
+    originalUrl: "http://example.com/challenge1",
+    adminStatus: "ACCEPTED",
+    adminMessage: null,
+    deadline: new Date(2025, 5, 30), // June 30, 2025
+    maxWorksCount: 10,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    authorId: "user1",
+  },
+  {
+    id: 2,
+    title: "Another Challenge",
+    description: "A different kind of challenge.",
+    category: "Writing",
+    type: "Poetry",
+    originalUrl: "http://example.com/challenge2",
+    adminStatus: "PENDING",
+    adminMessage: null,
+    deadline: new Date(2025, 6, 15), // July 15, 2025
+    maxWorksCount: 5,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    authorId: "admin1",
+  },
+  {
+    id: 3,
+    title: "Third Time's the Charm",
+    description: "Let's try something new.",
+    category: "Music",
+    type: "Cover",
+    originalUrl: "http://example.com/challenge3",
+    adminStatus: "REJECTED",
+    adminMessage: "Did not meet the criteria.",
+    deadline: new Date(2025, 5, 25), // May 25, 2025
+    maxWorksCount: 20,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    authorId: "user2",
+  },
+];
