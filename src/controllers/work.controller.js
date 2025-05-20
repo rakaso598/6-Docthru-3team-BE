@@ -32,10 +32,10 @@ export const getWorkById = async (req, res) => {
 export const createWork = async (req, res) => {
   try {
     // TODO : authorId는 추후 토큰으로 변경
-    const { title, content, authorId } = req.body;
+    const { content, authorId } = req.body;
     const { challengeId } = req.params;
 
-    if (!title || !content || !challengeId || !authorId) {
+    if (!content || !challengeId || !authorId) {
       return res.status(400).json({ message: "필수 항목이 누락되었습니다." });
     }
 
@@ -48,7 +48,6 @@ export const createWork = async (req, res) => {
       return res.status(400).json({ message: "이미 작업물이 존재합니다." });
     }
     const newWork = await workService.createWork({
-      title,
       content,
       challengeId: Number(challengeId),
       authorId,

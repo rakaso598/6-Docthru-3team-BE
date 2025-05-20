@@ -21,9 +21,8 @@ const isWorkDuplicate = async (challengeId, authorId) => {
   return work;
 };
 
-const createWork = async ({ title, content, challengeId, authorId }) => {
+const createWork = async ({ content, challengeId, authorId }) => {
   const work = await workRepository.createWork({
-    title,
     content,
     challengeId,
     authorId,
