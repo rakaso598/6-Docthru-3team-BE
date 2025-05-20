@@ -44,6 +44,26 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
+const findAllChallenges = async () => {
+  return await challengeRepository.findAllChallenges();
+}
+
+const findChallengeById = async (challengeId) => {
+  return await challengeRepository.findChallengeById(challengeId);
+}
+
+const updateChallenge = async (challengeId, data) => {
+  return await challengeRepository.updateChallenge(challengeId, data);
+}
+
+const deleteChallenge = async (challengeId) => {
+  return await challengeRepository.deleteChallenge(challengeId);
+};
+
 export default {
   create,
+  findChallengeById,
+  findAllChallenges,
+  updateChallenge,
+  deleteChallenge
 };

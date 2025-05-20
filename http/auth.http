@@ -14,8 +14,8 @@ POST http://localhost:8080/auth/sign-in
 Content-Type: application/json
 
 {
-    "email" : "user3@test.com",
-    "password" : "3333"
+    "email" : "user4@test.com",
+    "password" : "4444"
 }
 
 ### 토큰 갱신
