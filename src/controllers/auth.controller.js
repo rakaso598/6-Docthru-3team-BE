@@ -1,7 +1,4 @@
-import { generateAccessToken } from "../middlewares/accessToken.utils.js";
-import authRepository from "../repositories/auth.repository.js";
 import authService from "../services/auth.service.js";
-import jwt from "jsonwebtoken";
 
 export const createUser = async (req, res, next) => {
   try {
