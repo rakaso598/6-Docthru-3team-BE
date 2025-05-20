@@ -1,11 +1,22 @@
-## 유저 정보 조회
+@access_token = accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3OTNiZnIwMDAwYWhmd3dzYmJsMDB0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc3Mjk2MzksImV4cCI6MTc0NzczMzIzOX0.kD-1ZD59OXX3b_9DEp_7qqfiYvKaBNWVEjTK12l-wlw
+
+### 유저 정보 조회
 
 GET http://localhost:8080/users/me
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3OTNiZnIwMDAwYWhmd3dzYmJsMDB0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc3Mjk2MzksImV4cCI6MTc0NzczMzIzOX0.kD-1ZD59OXX3b_9DEp_7qqfiYvKaBNWVEjTK12l-wlw
 
-## 나의 챌린지 목록 조회 (1)
 
-GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed&keyword=keyword
+### 나의 챌린지 목록 조회 (참여중)
 
-## 나의 챌린지 목록 조회 (2)
+GET http://localhost:8080/users/me/challenges?myChallengeStatus=participated&keyword=next
+Authorization: Bearer {{access_token}}
 
-GET http://localhost:8080/users/me/challenges?status=applied&keyword=keyword
+### 나의 챌린지 목록 조회 (완료한)
+
+GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed
+Authorization: Bearer {{access_token}}
+
+### 나의 챌린지 목록 조회 (신청한)
+
+GET http://localhost:8080/users/me/challenges?myChallengeStatus=applied
+Authorization: Bearer {{access_token}}
