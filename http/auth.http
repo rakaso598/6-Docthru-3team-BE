@@ -1,12 +1,14 @@
+### @env develop
+
 ### 회원가입
 POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user5@test.com",
-    "nickname" : "user5",
-    "password" : "5555",
-    "passwordConfirmation" : "5555"
+    "email" : "user3@test.com",
+    "nickname" : "user3",
+    "password" : "3333",
+    "passwordConfirmation" : "3333"
 }
 
 ### 로그인
@@ -20,4 +22,4 @@ Content-Type: application/json
 
 ### 토큰 갱신
 POST http://localhost:8080/auth/refresh-token
-Cookie: refreshToken={{$processEnv REQUEST_REFRESHTOKEN}}
+Cookie: refreshToken={{REFRESH_TOKEN}}
