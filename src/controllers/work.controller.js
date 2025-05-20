@@ -5,9 +5,17 @@ import workService from "../services/work.service.js";
 // 모든 work 조회
 export const getAllWorks = async (req, res) => {
   try {
-    const works = await workService.findAllWorks();
+    // TODO: 나중에 토큰에서 userId를 가져와야 함
+    const { userId } = req.body; // 임시로 body에서 받아옴
+
+    if (!userId) {
+      return res.status(400).json({ message: "사용자 아이디가 필요합니다." });
+    }
+
+    const works = await workService.findAllWorks(userId);
     res.status(200).json({ data: works });
   } catch (error) {
+    console.error("Work 목록 조회 에러:", error);
     res.status(500).json({ message: "작업 목록을 불러오는데 실패했습니다." });
   }
 };
@@ -35,9 +43,10 @@ export const createWork = async (req, res) => {
     const { content, authorId } = req.body;
     const { challengeId } = req.params;
 
-    if (!content || !challengeId || !authorId) {
-      return res.status(400).json({ message: "필수 항목이 누락되었습니다." });
-    }
+    // TODO : 나중에 토큰적용시 주석 해제
+    // if (!content || !challengeId || !authorId) {
+    //   return res.status(400).json({ message: "필수 항목이 누락되었습니다." });
+    // }
 
     const isWorkDuplicate = await workService.isWorkDuplicate(
       Number(challengeId),
@@ -47,11 +56,12 @@ export const createWork = async (req, res) => {
     if (isWorkDuplicate) {
       return res.status(400).json({ message: "이미 작업물이 존재합니다." });
     }
-    const newWork = await workService.createWork({
+
+    const newWork = await workService.createWork(
       content,
-      challengeId: Number(challengeId),
-      authorId,
-    });
+      Number(challengeId),
+      authorId
+    );
 
     res.status(201).json({ data: newWork });
   } catch (error) {
@@ -115,6 +125,7 @@ export const likeWork = async (req, res) => {
 
     res.status(201).json({ message: "작업 좋아요 완료" });
   } catch (error) {
+    console.error("Work 좋아요 에러:", error);
     res.status(500).json({ message: "작업 좋아요에 실패했습니다." });
   }
 };

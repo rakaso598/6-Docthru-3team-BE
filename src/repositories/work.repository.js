@@ -2,16 +2,45 @@ import prisma from "../prisma/client.prisma.js";
 
 // 전체 work 조회
 const findAllWorks = async () => {
-  const works = await prisma.work.findMany();
-  return works;
+  const works = await prisma.work.findMany({
+    include: {
+      _count: {
+        select: {
+          likes: true,
+        },
+      },
+    },
+  });
+
+  // _count를 likeCount로 변환
+  return works.map((work) => ({
+    ...work,
+    likeCount: work._count.likes,
+    _count: undefined,
+  }));
 };
 
 // 특정 work 조회
 const findWorkById = async (workId) => {
   const work = await prisma.work.findUnique({
     where: { id: workId },
+    include: {
+      _count: {
+        select: {
+          likes: true,
+        },
+      },
+    },
   });
-  return work;
+
+  if (!work) return null;
+
+  // _count를 likeCount로 변환
+  return {
+    ...work,
+    likeCount: work._count.likes,
+    _count: undefined,
+  };
 };
 
 // 특정 챌린지에서 특정 작업물 조회
@@ -23,7 +52,7 @@ const findWorkByChallengeIdAndAuthorId = async (challengeId, authorId) => {
 };
 
 // work 생성
-const createWork = async ({ content, challengeId, authorId }) => {
+const createWork = async (content, challengeId, authorId) => {
   const work = await prisma.work.create({
     data: {
       content,
