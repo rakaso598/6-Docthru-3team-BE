@@ -1,4 +1,3 @@
-import { nextTick } from "process";
 import prisma from "../prisma/client.prisma.js";
 
 async function save(user, hashedPassword) {
@@ -44,3 +43,4 @@ export default {
   getByEmail,
   findUserById,
 };
+
