@@ -4,6 +4,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../middlewares/accessToken.utils.js";
+import jwt from "jsonwebtoken";
 
 async function create(user) {
   //비밀번호는 문자열만 가능(bcrypt 문법)
@@ -68,7 +69,47 @@ async function getByEmail(user) {
   };
 }
 
+async function refreshedToken(refreshToken) {
+  try {
+    //디버깅
+    console.log("refreshToken", refreshToken);
+
+    const payload = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET_KEY
+    );
+
+    //디버깅
+    console.log("payload", payload);
+
+    const userId = payload.userId;
+
+    const user = await authRepository.findUserById(userId);
+
+    //디버깅
+    console.log("유저 유무 확인");
+
+    const newAccessToken = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    if (!newAccessToken) {
+      throw new Error("Failed to generate access token");
+    }
+
+    //디버깅
+    console.log("액세스토큰 리프레쉬 완료");
+
+    return newAccessToken;
+  } catch (error) {
+    throw new Error("Faild to refresh access-token");
+  }
+}
+
 export default {
   create,
   getByEmail,
+  refreshedToken,
 };
