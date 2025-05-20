@@ -1,14 +1,12 @@
-### @env develop
-
 ### 회원가입
 POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user3@test.com",
-    "nickname" : "user3",
-    "password" : "3333",
-    "passwordConfirmation" : "3333"
+    "email" : "user5@test.com",
+    "nickname" : "user5",
+    "password" : "5555",
+    "passwordConfirmation" : "5555"
 }
 
 ### 로그인
