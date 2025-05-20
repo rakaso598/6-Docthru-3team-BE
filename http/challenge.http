@@ -1,23 +1,29 @@
-## 챌린지 목록 조회
-
+### 챌린지 목록 조회
 GET http://localhost:8080/challenges?page=1&pageSize=5&category=nextjs&type=docs&status&keyword
 
-## 챌린지 등록
-
+### 챌린지 등록
 POST http://localhost:8080/challenges
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3YThzM3UwMDAxY2NyYzZqNjZubWo1IiwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjQiLCJpYXQiOjE3NDc3MzE1NTcsImV4cCI6MTc0NzczNTE1N30.vZNxmGicKcu3dJCVNaZYm0H4NVpONBIeY4hpor9Nc1o
 
-## 챌린지 수정
+{
+  "title": "챌린지1 등록",
+  "description": "테스트 챌린지, test challenge 등록",
+  "category": "Next.js",
+  "docType": "공식문서",
+  "originalUrl": "https://test1-url.com",
+  "deadline": "2024-11-28T00:30:21.142Z",
+  "maxParticipant": 5
+}
 
+### 챌린지 수정
 PATCH http://localhost:8080/challenges/:challengeId
 
-## 챌린지 상세 조회
-
+### 챌린지 상세 조회
 GET http://localhost:8080/challenges/:challengeId
 
-## 챌린지 신청
-
+### 챌린지 신청
 POST http://localhost:8080/challenges/:challengeId
 
-## 챌린지 신청 취소
-
+### 챌린지 신청 취소
 DELETE http://localhost:8080/challenges/:challengeId
