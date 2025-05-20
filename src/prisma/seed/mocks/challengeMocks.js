@@ -8,7 +8,7 @@ export const challengeMocks = [
     originalUrl: "http://example.com/challenge1",
     adminStatus: "ACCEPTED",
     adminMessage: null,
-    deadline: new Date(2025, 5, 30), // June 30, 2025
+    deadline: new Date(2025, 5, 30),
     maxWorksCount: 10,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -23,7 +23,7 @@ export const challengeMocks = [
     originalUrl: "http://example.com/challenge2",
     adminStatus: "PENDING",
     adminMessage: null,
-    deadline: new Date(2025, 6, 15), // July 15, 2025
+    deadline: new Date(2025, 6, 15),
     maxWorksCount: 5,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -38,7 +38,7 @@ export const challengeMocks = [
     originalUrl: "http://example.com/challenge3",
     adminStatus: "REJECTED",
     adminMessage: "Did not meet the criteria.",
-    deadline: new Date(2025, 5, 25), // May 25, 2025
+    deadline: new Date(2025, 5, 25),
     maxWorksCount: 20,
     createdAt: new Date(),
     updatedAt: new Date(),
