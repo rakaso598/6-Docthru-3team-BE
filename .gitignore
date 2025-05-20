@@ -1,3 +1,5 @@
 node_modules
 .env*
 .rest-client.env.json
+.DS_Store
+
