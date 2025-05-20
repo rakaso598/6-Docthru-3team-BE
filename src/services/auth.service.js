@@ -1,6 +1,9 @@
 import authRepository from "../repositories/auth.repository.js";
 import bcrypt from "bcrypt";
-import { generateAccessToken } from "../middlewares/accessToken.utils.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../middlewares/accessToken.utils.js";
 
 async function create(user) {
   //비밀번호는 문자열만 가능(bcrypt 문법)
@@ -20,9 +23,11 @@ async function create(user) {
   const createdUser = await authRepository.save(user, hashedPassword);
 
   const accessToken = generateAccessToken(createdUser);
+  const refreshToken = generateRefreshToken(createdUser);
 
   return {
     accessToken,
+    refreshToken,
     user: {
       id: createdUser.id,
       email: createdUser.email,
@@ -50,9 +55,11 @@ async function getByEmail(user) {
   if (!isMatched) throw new Error("Wrong password");
 
   const accessToken = generateAccessToken(existedUser);
+  const refreshToken = generateRefreshToken(existedUser);
 
   return {
     accessToken,
+    refreshToken,
     user: {
       id: existedUser.id,
       email: existedUser.email,

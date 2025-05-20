@@ -1,5 +1,9 @@
 import express from "express";
-import { createUser, getUser } from "../controllers/auth.controller.js";
+import {
+  createUser,
+  getUser,
+  refreshToken,
+} from "../controllers/auth.controller.js";
 import verify from "../middlewares/verify.js";
 
 const authRouter = express.Router();
@@ -14,6 +18,6 @@ authRouter.post("/sign-in", verify.signInReqVerify, getUser);
 // authRouter.get("/:userId", getUserById);
 
 // 토큰 갱신
-// authRouter.delete("/:userId", deleteUser);
+authRouter.post("/refresh-token", refreshToken);
 
 export default authRouter;
