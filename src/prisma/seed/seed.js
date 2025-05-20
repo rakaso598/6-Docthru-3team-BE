@@ -4,12 +4,12 @@ import { challengeMocks } from "./mocks/challengeMocks.js";
 import { workMocks } from "./mocks/workMocks.js";
 
 async function main() {
-  // 기존 데이터 삭제
+  // 기존 데이터 삭제 (여기에 한줄씩 추가하세요)
   await prisma.user.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.challenge.deleteMany();
+  await prisma.work.deleteMany();
 
-  // 목 데이터 삽입
+  // 목 데이터 삽입 (여기에 한블럭씩 추가하세요)
   await prisma.user.createMany({
     data: userMocks,
     skipDuplicates: true,
