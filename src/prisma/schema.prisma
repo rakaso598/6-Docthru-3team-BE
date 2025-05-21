@@ -62,17 +62,21 @@ model Challenge {
 }
 
 model Work {
-  id          Int        @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   authorId    String
   challengeId Int
-  content     String     @default("")
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  feedbacks   Feedback[]
-  likes       Like[]
+  content     String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
-  user      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  isDeleted      Boolean   @default(false)
+  deletedAt      DateTime?
+  deletionReason String?
+
+  feedbacks Feedback[]
+  likes     Like[]
+  challenge Challenge  @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Feedback {
