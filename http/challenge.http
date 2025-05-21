@@ -1,4 +1,7 @@
-@ACCESS_TOKEN =
+
+@env local
+@token = {{API_BEARER_TOKEN}}
+
 
 ### 챌린지 쿼리 조회
 GET http://localhost:8080/challenges?page=1&pageSize=5&category=Modern JS&docType=블로그&keyword=함께
@@ -17,3 +20,29 @@ Authorization: Bearer {{ACCESS_TOKEN}}
   "deadline": "2024-11-28T00:30:21.142Z",
   "maxParticipant": 5
 }
+
+### 챌린지 수정
+PUT http://localhost:8080/challenges/30
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "챌린지2 등록",
+    "description": "테스트 챌린지, test challenge 등록",
+    "category": "Next.js",
+    "docType": "공식문서",
+    "originalUrl": "https://test1-url.com",
+    "deadline": "2025-11-28T00:30:21.142Z",
+    "maxParticipant": 5
+}
+
+### 챌린지 상세 조회
+GET http://localhost:8080/challenges/31
+
+### 챌린지 신청
+POST http://localhost:8080/challenges/:challengeId
+
+### 챌린지 신청 취소
+DELETE http://localhost:8080/challenges/30
+Content-Type: application/json
+Authorization: Bearer {{token}}

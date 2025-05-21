@@ -1,4 +1,8 @@
 import authService from "../services/auth.service.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/accessToken.utils.js";
 
 export const createUser = async (req, res, next) => {
   try {
@@ -85,3 +89,29 @@ export const refreshToken = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * 소셜 로그인
+ */
+export function socialLogin(req, res, next) {
+  try {
+    const accessToken = generateAccessToken(req.user);
+    const refreshToken = generateRefreshToken(req.user, "refresh");
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/",
+    });
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+      path: "/auth/refresh-token",
+    });
+    const redirectUrl = process.env.FRONTEND_URL;
+    res.redirect(`${redirectUrl}/oauth-success`);
+  } catch (error) {
+    next(error);
+  }
+}
