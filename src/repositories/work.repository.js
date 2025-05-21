@@ -79,10 +79,17 @@ const hardDeleteWork = async (workId) => {
   });
 };
 
-// 작성자 id 조회
-const findById = async (workId) => {
+// 작성자 id & title 조회회
+const findIdAndTitle = async (workId) => {
   return prisma.work.findUnique({
     where: { id: Number(workId) },
+    include: {
+      challenge: {
+        select: {
+          title: true,
+        },
+      },
+    },
   });
 };
 
