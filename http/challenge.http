@@ -1,13 +1,7 @@
-@ACCESS_TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF4N2xobDAwMDAyY2M2Y245N3VrMDR0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc3ODc1ODksImV4cCI6MTc0Nzc5MTE4OX0.ytpJDApJs-rU1PA6zD3yxGfiAjZ422Mmx__ELe9xHKU
-
-### 챌린지 전체 조회
-GET http://localhost:8080/challenges
-
-### 챌린지 상세 조회
-GET http://localhost:8080/challenges/1
+@ACCESS_TOKEN =
 
 ### 챌린지 쿼리 조회
-GET http://localhost:8080/challenges?page=1&pageSize=5&category=nextjs&docYype=docs&status&keyword
+GET http://localhost:8080/challenges?page=1&pageSize=5&category=Modern JS&docType=블로그&keyword=함께
 
 ### 챌린지 등록
 POST http://localhost:8080/challenges
@@ -15,7 +9,7 @@ Content-Type: application/json
 Authorization: Bearer {{ACCESS_TOKEN}}
 
 {
-  "title": "챌린지1 등록",
+  "title": "챌린지6 등록",
   "description": "테스트 챌린지, test challenge 등록",
   "category": "Next.js",
   "docType": "공식문서",
@@ -23,14 +17,3 @@ Authorization: Bearer {{ACCESS_TOKEN}}
   "deadline": "2024-11-28T00:30:21.142Z",
   "maxParticipant": 5
 }
-
-### 챌린지 수정
-PATCH http://localhost:8080/challenges/:challengeId
-
-
-
-### 챌린지 신청
-POST http://localhost:8080/challenges/:challengeId
-
-### 챌린지 신청 취소
-DELETE http://localhost:8080/challenges/:challengeId

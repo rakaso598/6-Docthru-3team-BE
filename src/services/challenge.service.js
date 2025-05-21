@@ -22,11 +22,11 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
-async function getAll() {
-  return challengeRepository.getAll();
+async function getChallenges(options) {
+  return challengeRepository.getChallenges(options);
 }
 
 export default {
   create,
-  getAll,
+  getChallenges,
 };
