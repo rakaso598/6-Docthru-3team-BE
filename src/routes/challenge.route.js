@@ -1,14 +1,9 @@
 import express from "express";
-import auth from "../middlewares/auth.js";
 import {
-  createChallenge,
   getChallenges,
-  getAllChallenges,
-  getChallengeById,
   createChallenge,
-  // updateChallenge,
-  // deleteChallenge,
 } from "../controllers/challenge.controller.js";
+import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import workRouter from "./work.route.js";
 import auth from "../middlewares/auth.js";
 
@@ -20,8 +15,10 @@ challengeRouter.get("/", getAllChallenges);
 // 특정 챌린지 조회
 challengeRouter.get("/:challengeId", getChallengeById);
 
+const challengeRouter = express.Router();
+
 // 챌린지 생성
-challengeRouter.post("/", createChallenge);
+challengeRouter.post("/", verifyAccessToken, createChallenge);
 
 // 챌린지 정보 수정
 challengeRouter.put("/:challengeId", auth.verifyAccessToken, updateChallenge);
