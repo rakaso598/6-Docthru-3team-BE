@@ -28,11 +28,6 @@ async function getFeedbacks(workId) {
   return feedbackRepository.findByWorkId(workId);
 }
 
-// 등록
-async function addFeedback(workId, authorId, content) {
-  return feedbackRepository.create(workId, authorId, content);
-}
-
 // 수정
 async function editFeedback(feedbackId, content, userId) {
   // 피드백 조회해서 작성자 확인

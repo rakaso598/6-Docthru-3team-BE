@@ -16,7 +16,7 @@ export const getAllChallenges = async (req, res) => {
 
 export const createChallenge = async (req, res, next) => {
   try {
-    const { userId } = req.auth;
+    const { userId } = req.user;
 
     const newChallenge = await challengeService.create(req.body, userId);
 
