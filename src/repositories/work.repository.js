@@ -72,8 +72,8 @@ const updateWork = async (workId, { content }) => {
   return updatedWork;
 };
 
-// work 삭제
-const deleteWork = async (workId) => {
+// work 하드삭제
+const hardDeleteWork = async (workId) => {
   await prisma.work.delete({
     where: { id: workId },
   });
@@ -92,6 +92,6 @@ export default {
   findWorkByChallengeIdAndAuthorId,
   createWork,
   updateWork,
-  deleteWork,
+  hardDeleteWork,
   findById,
 };
