@@ -4,7 +4,7 @@ import {
   getWorkById,
   createWork,
   updateWork,
-  deleteWork,
+  // deleteWork,
   likeWork,
   unlikeWork,
 } from "../controllers/work.controller.js";
@@ -12,36 +12,33 @@ import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import {
   getFeedbacks,
   addFeedback,
+  editFeedback,
+  deleteFeedback,
 } from "../controllers/feedback.controller.js";
 
-// 중첩 라우팅에서 상위 라우터의 파라미터를 이용하기 위해 mergeParams 옵션 사용
 const workRouter = express.Router({ mergeParams: true });
 
-// 모든 작업물 조회
+// --- Work 관련 라우트 ---
 workRouter.get("/", getAllWorks);
-
-// 특정 작업물 조회
 workRouter.get("/:workId", getWorkById);
+workRouter.post("/", verifyAccessToken, createWork);
+workRouter.patch("/:workId", verifyAccessToken, updateWork);
+// workRouter.patch("/:workId", verifyAccessToken, deleteWork); // adminRouter 완성 시 삭제하세요.
+workRouter.post("/:workId/like", verifyAccessToken, likeWork);
+workRouter.delete("/:workId/like", verifyAccessToken, unlikeWork);
 
-// 작업물 생성
-workRouter.post("/", createWork);
-
-// 작업물 수정
-workRouter.patch("/:workId", updateWork);
-
-// 작업물 삭제
-workRouter.delete("/:workId", deleteWork);
-
-// 작업물 좋아요
-workRouter.post("/:workId/like", likeWork);
-
-// 작업물 좋아요 취소
-workRouter.delete("/:workId/like", unlikeWork);
-
-// 피드백 목록 조회
+// --- Work에 종속된 Feedback 관련 라우트 ---
 workRouter.get("/:workId/feedbacks", getFeedbacks);
-
-// 피드백 등록
 workRouter.post("/:workId/feedbacks", verifyAccessToken, addFeedback);
+workRouter.patch(
+  "/:workId/feedbacks/:feedbackId",
+  verifyAccessToken,
+  editFeedback
+);
+workRouter.delete(
+  "/:workId/feedbacks/:feedbackId",
+  verifyAccessToken,
+  deleteFeedback
+);
 
 export default workRouter;

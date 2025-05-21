@@ -45,12 +45,12 @@ export async function editFeedback(req, res, next) {
 
 // 삭제
 export async function deleteFeedback(req, res, next) {
+  const { feedbackId } = req.params;
+  const userId = req.user.userId;
   try {
-    const feedbackId = req.params.feedbackId;
-    const userId = req.user.userId;
     await feedbackService.deleteFeedback(feedbackId, userId);
-    res.json({ success: true });
-  } catch (err) {
-    next(err);
+    res.status(200).json({ message: "피드백이 성공적으로 삭제되었습니다." });
+  } catch (error) {
+    next(error);
   }
 }

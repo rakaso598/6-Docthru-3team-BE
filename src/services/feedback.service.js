@@ -1,6 +1,6 @@
 import feedbackRepository from "../repositories/feedback.repository.js";
 import workRepository from "../repositories/work.repository.js";
-import notificationService from "./notification.service.js";
+import notificationRepository from "../repositories/notification.repository.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
