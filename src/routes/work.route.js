@@ -24,19 +24,19 @@ workRouter.get("/", getAllWorks);
 workRouter.get("/:workId", getWorkById);
 
 // 작업물 생성
-workRouter.post("/", createWork);
+workRouter.post("/", verifyAccessToken, createWork);
 
 // 작업물 수정
-workRouter.patch("/:workId", updateWork);
+workRouter.patch("/:workId", verifyAccessToken, updateWork);
 
 // 작업물 삭제
-workRouter.delete("/:workId", deleteWork);
+workRouter.delete("/:workId", verifyAccessToken, deleteWork);
 
 // 작업물 좋아요
-workRouter.post("/:workId/like", likeWork);
+workRouter.post("/:workId/like", verifyAccessToken, likeWork);
 
 // 작업물 좋아요 취소
-workRouter.delete("/:workId/like", unlikeWork);
+workRouter.delete("/:workId/like", verifyAccessToken, unlikeWork);
 
 // 피드백 목록 조회
 workRouter.get("/:workId/feedbacks", getFeedbacks);
