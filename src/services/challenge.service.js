@@ -2,37 +2,15 @@ import challengeRepository from "../repositories/challenge.repository.js";
 import verify from "../middlewares/verify.js";
 
 async function create(challenge, userId) {
-  const {
-    title,
-    description,
-    category,
-    docType,
-    originalUrl,
-    deadline,
-    maxParticipant,
-  } = challenge;
-
-  //디버깅
-  console.log(
-    userId,
-    title,
-    description,
-    category,
-    docType,
-    originalUrl,
-    deadline,
-    maxParticipant
-  );
-
   if (
     !userId ||
-    !title ||
-    !description ||
-    !category ||
-    !docType ||
-    !originalUrl ||
-    !deadline ||
-    !maxParticipant
+    !challenge.title ||
+    !challenge.description ||
+    !challenge.category ||
+    !challenge.docType ||
+    !challenge.originalUrl ||
+    !challenge.deadline ||
+    !challenge.maxParticipant
   ) {
     verify.throwBadRequestError();
   }
@@ -44,6 +22,11 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
+async function getChallenges(options) {
+  return challengeRepository.getChallenges(options);
+}
+
 export default {
   create,
+  getChallenges,
 };
