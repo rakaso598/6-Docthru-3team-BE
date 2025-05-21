@@ -1,12 +1,14 @@
+@REFRESH_TOKEN =
+
 ### 회원가입
 POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user4@test.com",
-    "nickname" : "user4",
-    "password" : "4444",
-    "passwordConfirmation" : "4444"
+    "email" : "user3@test.com",
+    "nickname" : "user3",
+    "password" : "3333",
+    "passwordConfirmation" : "3333"
 }
 
 ### 로그인
@@ -14,11 +16,11 @@ POST http://localhost:8080/auth/sign-in
 Content-Type: application/json
 
 {
-    "email" : "user3@test.com",
-    "password" : "3333"
+    "email" : "user4@test.com",
+    "password" : "4444"
 }
 
 ### 토큰 갱신
-# POST http://localhost:8080/auth/refresh-token
-# Cookie: refreshToken={{REFRESH_TOKEN}}
+POST http://localhost:8080/auth/refresh-token
+Cookie: refreshToken={{REFRESH_TOKEN}}
 

@@ -1,0 +1,28 @@
+@baseUrl = http://localhost:8080
+@accessToken = <여기에_실제_유효한_accessToken_값_입력>
+
+### 1. 읽지 않은 알림 목록 조회 (인증 필요)
+GET {{baseUrl}}/notifications
+Cookie: accessToken={{accessToken}}
+
+### 2. 특정 알림 읽음 처리 (isRead를 true로 변경, 인증 필요)
+PATCH {{baseUrl}}/notifications/1
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
+
+{
+  "isRead": true
+}
+
+### 3. 잘못된 토큰으로 요청 시도
+GET {{baseUrl}}/notifications
+Cookie: accessToken=invalidtoken
+
+### 4. 알림 읽음 처리 시 잘못된 ID
+PATCH {{baseUrl}}/notifications/99999
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
+
+{
+  "isRead": true
+}
