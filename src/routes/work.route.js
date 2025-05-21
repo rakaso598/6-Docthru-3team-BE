@@ -38,10 +38,10 @@ workRouter.post("/:workId/like", likeWork);
 // 작업물 좋아요 취소
 workRouter.delete("/:workId/like", unlikeWork);
 
-// 목록 조회
+// 피드백 목록 조회
 workRouter.get("/:workId/feedbacks", getFeedbacks);
 
-// 등록
+// 피드백 등록
 workRouter.post("/:workId/feedbacks", verifyAccessToken, addFeedback);
 
 export default workRouter;
