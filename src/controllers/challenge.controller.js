@@ -1,8 +1,13 @@
-// export const getAllChallenges = (req, res) => {
-//   res.status(200).json(challenges);
-// };
-
 import challengeService from "../services/challenge.service.js";
+
+export const getAllChallenges = async (req, res, next) => {
+  try {
+    const challenges = await challengeService.getAll();
+    res.status(200).json(challenges);
+  } catch (error) {
+    next(error);
+  }
+};
 
 // export const getChallengeById = (req, res) => {
 //   const id = parseInt(req.params.id);
@@ -16,14 +21,15 @@ import challengeService from "../services/challenge.service.js";
 // };
 
 export const createChallenge = async (req, res, next) => {
-  const { userId } = req.auth;
+  try {
+    const { userId } = req.auth;
 
-  //디버깅
-  console.log("userId", userId);
+    const newChallenge = await challengeService.create(req.body, userId);
 
-  const newChallenge = await challengeService.create(req.body, userId);
-
-  return res.status(201).json(newChallenge);
+    return res.status(201).json(newChallenge);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // export const updateChallenge = (req, res) => {

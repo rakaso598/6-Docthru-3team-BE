@@ -1,9 +1,6 @@
 import prisma from "../prisma/client.prisma.js";
 
 async function save(challenge, userId) {
-  // 디버깅
-  console.log("challenge", challenge);
-
   return await prisma.challenge.create({
     data: {
       authorId: userId,
@@ -18,6 +15,12 @@ async function save(challenge, userId) {
   });
 }
 
+async function getAll() {
+  const challenges = await prisma.challenge.findMany();
+  return challenges;
+}
+
 export default {
   save,
+  getAll,
 };

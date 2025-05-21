@@ -1,14 +1,14 @@
-### @env develop
+@REFRESH_TOKEN =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF4N2xobDAwMDAyY2M2Y245N3VrMDR0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc3OTAxMzEsImV4cCI6MTc0ODk5OTczMX0.KqSistT63NFfaExntu6GhnPYMbCG3Kv3C1q6dWlIMVg
 
 ### 회원가입
 POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user4@test.com",
-    "nickname" : "user4",
-    "password" : "4444",
-    "passwordConfirmation" : "4444"
+    "email" : "user3@test.com",
+    "nickname" : "user3",
+    "password" : "3333",
+    "passwordConfirmation" : "3333"
 }
 
 ### 로그인
@@ -21,5 +21,5 @@ Content-Type: application/json
 }
 
 ### 토큰 갱신
-# POST http://localhost:8080/auth/refresh-token
-# Cookie: refreshToken={{REFRESH_TOKEN}}
+POST http://localhost:8080/auth/refresh-token
+Cookie: refreshToken={{REFRESH_TOKEN}}
