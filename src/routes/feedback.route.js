@@ -4,16 +4,6 @@ import { verifyAccessToken } from "../middlewares/verifyToken.js";
 
 const feedbackRouter = express.Router();
 
-// 목록 조회
-feedbackRouter.get("/works/:workId/feedbacks", feedbackController.getFeedbacks);
-
-// 등록
-feedbackRouter.post(
-  "/works/:workId/feedbacks",
-  verifyAccessToken,
-  feedbackController.addFeedback
-);
-
 // 수정
 feedbackRouter.patch(
   "/:feedbackId",
