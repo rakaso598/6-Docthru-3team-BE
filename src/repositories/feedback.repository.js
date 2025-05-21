@@ -8,6 +8,13 @@ async function findByWorkId(workId) {
   });
 }
 
+// 단일 피드백 조회 (작성자 확인용)
+async function findById(feedbackId) {
+  return prisma.feedback.findUnique({
+    where: { id: Number(feedbackId) },
+  });
+}
+
 // 등록
 async function create(workId, authorId, content) {
   return prisma.feedback.create({
@@ -30,4 +37,4 @@ async function remove(feedbackId) {
   });
 }
 
-export default { findByWorkId, create, update, remove };
+export default { findByWorkId, findById, create, update, remove };

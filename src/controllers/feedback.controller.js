@@ -13,7 +13,8 @@ export async function getFeedbacks(req, res, next) {
 // 등록
 export async function addFeedback(req, res, next) {
   try {
-    const { authorId, content } = req.body;
+    const authorId = req.user.userId;
+    const { content } = req.body;
     const feedback = await feedbackService.addFeedback(
       req.params.workId,
       authorId,
@@ -29,9 +30,12 @@ export async function addFeedback(req, res, next) {
 export async function editFeedback(req, res, next) {
   try {
     const { content } = req.body;
+    const feedbackId = req.params.feedbackId;
+    const userId = req.user.userId;
     const feedback = await feedbackService.editFeedback(
-      req.params.feedbackId,
-      content
+      feedbackId,
+      content,
+      userId
     );
     res.json(feedback);
   } catch (err) {
@@ -42,7 +46,9 @@ export async function editFeedback(req, res, next) {
 // 삭제
 export async function deleteFeedback(req, res, next) {
   try {
-    await feedbackService.deleteFeedback(req.params.feedbackId);
+    const feedbackId = req.params.feedbackId;
+    const userId = req.user.userId;
+    await feedbackService.deleteFeedback(feedbackId, userId);
     res.json({ success: true });
   } catch (err) {
     next(err);

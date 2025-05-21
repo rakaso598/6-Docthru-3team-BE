@@ -20,7 +20,7 @@ app.use("/users", userRouter);
 app.use("/challenges", challengeRouter);
 app.use("/works", workRouter);
 app.use("/notifications", notificationRouter);
-app.use("/feedback", feedbackRouter);
+app.use("/feedbacks", feedbackRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
