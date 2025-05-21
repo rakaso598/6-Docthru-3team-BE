@@ -1,6 +1,4 @@
-import { generateAccessToken } from "../middlewares/accessToken.utils.js";
 import authService from "../services/auth.service.js";
-import jwt from "jsonwebtoken";
 
 export const createUser = async (req, res, next) => {
   try {
@@ -62,30 +60,24 @@ export const refreshToken = async (req, res, next) => {
   try {
     const refreshToken = req.cookies.refreshToken;
 
-    if (!refreshToken)
-      return res.status(401).json({ message: "There's no refreshToken" });
+    //디버깅
+    console.log("리프레쉬 토큰 유무 확인");
 
-    jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET_KEY,
-      (err, decodedPayload) => {
-        if (err)
-          return res
-            .status(403)
-            .json({ message: "Invalid or Expired refresh token" });
+    const newAccessToken = await authService.refreshedToken(refreshToken);
 
-        const accessToken = generateAccessToken(decodedPayload);
+    res.set("etag", false);
+    res.setHeader("Cache-Control", "no-store");
 
-        res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          secure: false, //http 사용중
-          sameSite: "None",
-          maxAge: 1 * 60 * 60 * 1000, //1시간
-          path: "/",
-        });
-      }
-    );
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      secure: false, //http 사용중
+      sameSite: "None",
+      maxAge: 1 * 60 * 60 * 1000, //1시간
+      path: "/",
+    });
 
+    //디버깅
+    console.log("응답에 쿠키 포함");
     return res.status(200).json({
       message: "Access token refreshed",
     });

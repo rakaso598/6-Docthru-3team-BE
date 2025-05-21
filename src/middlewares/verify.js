@@ -28,6 +28,7 @@ async function signInReqVerify(req, res, next) {
 }
 
 export default {
+  throwBadRequestError,
   signUpReqVerify,
   signInReqVerify,
 };
