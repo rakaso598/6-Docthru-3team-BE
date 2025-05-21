@@ -2,7 +2,7 @@ import challengeService from "../services/challenge.service.js";
 
 export const createChallenge = async (req, res, next) => {
   try {
-    const { userId } = req.auth;
+    const { userId } = req.user;
 
     const newChallenge = await challengeService.create(req.body, userId);
 
