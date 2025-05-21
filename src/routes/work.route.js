@@ -5,9 +5,12 @@ import {
   createWork,
   updateWork,
   deleteWork,
+  likeWork,
+  unlikeWork,
 } from "../controllers/work.controller.js";
 
-const workRouter = express.Router();
+// 중첩 라우팅에서 상위 라우터의 파라미터를 이용하기 위해 mergeParams 옵션 사용
+const workRouter = express.Router({ mergeParams: true });
 
 // 모든 작업물 조회
 workRouter.get("/", getAllWorks);
@@ -18,10 +21,16 @@ workRouter.get("/:workId", getWorkById);
 // 작업물 생성
 workRouter.post("/", createWork);
 
-// 작업물 정보 수정
-workRouter.put("/:workId", updateWork);
+// 작업물 수정
+workRouter.patch("/:workId", updateWork);
 
 // 작업물 삭제
 workRouter.delete("/:workId", deleteWork);
+
+// 작업물 좋아요
+workRouter.post("/:workId/like", likeWork);
+
+// 작업물 좋아요 취소
+workRouter.delete("/:workId/like", unlikeWork);
 
 export default workRouter;
