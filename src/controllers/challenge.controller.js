@@ -13,15 +13,17 @@ export const getAllChallenges = async (req, res) => {
 };
 
 
+
 export const createChallenge = async (req, res, next) => {
-  const { userId } = req.auth;
+  try {
+    const { userId } = req.auth;
 
-  //디버깅
-  console.log("userId", userId);
+    const newChallenge = await challengeService.create(req.body, userId);
 
-  const newChallenge = await challengeService.create(req.body, userId);
-
-  return res.status(201).json(newChallenge);
+    return res.status(201).json(newChallenge);
+  } catch (error) {
+    next(error);
+  }
 };
 
 // 챌린지 상세 조회
@@ -119,5 +121,14 @@ export const deleteChallenge = async (req, res) => {
     }
     return res.status(500).json({ error, message: "챌린지 삭제에 실패했습니다." });
   }
-  
+
+export const getChallenges = async (req, res, next) => {
+  try {
+    const challenges = await challengeService.getChallenges(req.query);
+
+    return res.status(200).json(challenges);
+  } catch (error) {
+    next(error);
+  }
+
 };

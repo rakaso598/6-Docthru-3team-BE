@@ -79,6 +79,13 @@ const deleteWork = async (workId) => {
   });
 };
 
+// 작성자 id 조회
+const findById = async (workId) => {
+  return prisma.work.findUnique({
+    where: { id: Number(workId) },
+  });
+};
+
 export default {
   findAllWorks,
   findWorkById,
@@ -86,4 +93,5 @@ export default {
   createWork,
   updateWork,
   deleteWork,
+  findById,
 };
