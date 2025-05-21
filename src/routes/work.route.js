@@ -8,6 +8,11 @@ import {
   likeWork,
   unlikeWork,
 } from "../controllers/work.controller.js";
+import { verifyAccessToken } from "../middlewares/verifyToken.js";
+import {
+  getFeedbacks,
+  addFeedback,
+} from "../controllers/feedback.controller.js";
 
 // 중첩 라우팅에서 상위 라우터의 파라미터를 이용하기 위해 mergeParams 옵션 사용
 const workRouter = express.Router({ mergeParams: true });
@@ -32,5 +37,11 @@ workRouter.post("/:workId/like", likeWork);
 
 // 작업물 좋아요 취소
 workRouter.delete("/:workId/like", unlikeWork);
+
+// 피드백 목록 조회
+workRouter.get("/:workId/feedbacks", getFeedbacks);
+
+// 피드백 등록
+workRouter.post("/:workId/feedbacks", verifyAccessToken, addFeedback);
 
 export default workRouter;
