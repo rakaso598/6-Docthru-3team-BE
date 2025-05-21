@@ -1,0 +1,13 @@
+### 작업물 수정 PATCH /works/:workId
+
+PATCH http://localhost:8080/works/2
+Content-Type: application/json
+
+{
+  "content":"작업물 수정 PATCH가 잘 작동해요!"
+}
+
+### 작업물 삭제 PATCH /admin/works/:workId
+### 삭제사유가 전송되도록 PATCH, BODY 추가해야함
+
+DELETE http://localhost:8080/admin/works/2

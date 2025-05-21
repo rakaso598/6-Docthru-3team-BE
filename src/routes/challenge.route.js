@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  getAllChallenges,
-  getChallengeById,
+  // getAllChallenges,
+  // getChallengeById,
   createChallenge,
-  updateChallenge,
-  deleteChallenge,
+  // updateChallenge,
+  // deleteChallenge,
 } from "../controllers/challenge.controller.js";
 import workRouter from "./work.route.js";
 
@@ -17,7 +17,7 @@ const challengeRouter = express.Router();
 // challengeRouter.get("/:challengeId", getChallengeById);
 
 // 챌린지 생성
-challengeRouter.post("/", auth.verifyAccessToken, createChallenge);
+challengeRouter.post("/", createChallenge);
 
 // // 챌린지 정보 수정
 // challengeRouter.put("/:challengeId", updateChallenge);

@@ -6,6 +6,7 @@ import challengeRouter from "./routes/challenge.route.js";
 import workRouter from "./routes/work.route.js";
 import authRouter from "./routes/auth.route.js";
 import cookieParser from "cookie-parser";
+import feedbackRouter from "./routes/feedback.route.js";
 
 const app = express();
 const PORT = process.env.PORT;
