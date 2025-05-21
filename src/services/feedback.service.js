@@ -1,5 +1,6 @@
 import feedbackRepository from "../repositories/feedback.repository.js";
 import workRepository from "../repositories/work.repository.js";
+import notificationService from "./notification.service.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
@@ -7,9 +8,9 @@ async function addFeedback(workId, authorId, content) {
   const feedback = await feedbackRepository.create(workId, authorId, content);
 
   // work 작성자에게 알림 전송 (본인이 아니면)
-  const work = await workRepository.findById(workId);
+  const work = await workRepository.findIdAndTitle(workId);
   if (work.authorId !== authorId) {
-    const message = notificationService.notificationMessages.newWork(
+    const message = notificationService.notificationMessages.newFeedback(
       work.challenge.title
     );
     await notificationService.createNotification(work.authorId, message);
