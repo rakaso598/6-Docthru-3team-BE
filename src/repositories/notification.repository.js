@@ -39,7 +39,7 @@ async function findByUserId(userId) {
 async function updateIsRead(notificationId, isRead) {
   return prisma.notification.update({
     where: { id: Number(notificationId) },
-    data: { isRead },
+    data: { isRead: true, updatedAt: new Date() },
   });
 }
 
