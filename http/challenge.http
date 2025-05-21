@@ -1,15 +1,15 @@
 
 @env local
-@token = {{API_BEARER_TOKEN}}
+@token = {{token}}
 
 
 ### 챌린지 쿼리 조회
 GET http://localhost:8080/challenges?page=1&pageSize=5&category=Modern JS&docType=블로그&keyword=함께
 
-### 챌린지 등록
+### 챌린지 등록(신청)
 POST http://localhost:8080/challenges
 Content-Type: application/json 
-Authorization: Bearer {{ACCESS_TOKEN}}
+Authorization: Bearer {{token}}
 
 {
   "title": "챌린지6 등록",
@@ -39,8 +39,6 @@ Authorization: Bearer {{token}}
 ### 챌린지 상세 조회
 GET http://localhost:8080/challenges/31
 
-### 챌린지 신청
-POST http://localhost:8080/challenges/:challengeId
 
 ### 챌린지 신청 취소
 DELETE http://localhost:8080/challenges/30
