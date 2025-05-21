@@ -29,7 +29,7 @@ export const getChallengeById = async (req, res) => {
 
   try {
     const { challengeId } = req.params;
-    const challenge = await challengeService.findChallengeById(Number(challengeId));
+    const challenge = await challengeService.getChallengeDetailById(Number(challengeId));
 
     if (!challenge) {
       return res.status(404).json({ message: "챌린지를 찾을 수 없습니다." });
@@ -47,47 +47,77 @@ export const updateChallenge = async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { title, description, category, docType, originalUrl, deadline, maxParticipant  } = req.body;
+    const userId = req.auth?.userId;
 
-    if (!req.headers.authorization) {
-     return res.status(401).json({ message: "인증되지 않은 사용자입니다." });
+    if(!userId) {
+      return res.status(401).json({ message: "인증되지 않은 사용자입니다."})
     }
 
-    if(!title || !description || !category || !docType || !originalUrl || !deadline || !maxParticipant) {
-      return res.status(400).json({ message: "수정할 내용을 입력해주세요"});
+    const challenge = await challengeService.findChallengeById(Number(challengeId));
+    if(!challenge) {
+      return res.status(404).json({ message: "해당 챌린지를 찾을 수 없습니다." })
     }
 
-    const updateChallenge = await challengeService.updateChallenge(Number(challengeId), {
+    if (challenge.authorId !== userId) {
+      return res.status(403).json({ message: "작성자만 수정할 수 있습니다." });
+    }
+
+    const requiredFields = { title, description, category, docType, originalUrl, deadline, maxParticipant };
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        return res.status(400).json({ message: `${key} 값이 누락되었습니다.` });
+      }
+    }
+
+    const updateData = {
       title,
       description,
-      category, 
-      docType, 
-      originalUrl, 
-      deadline, 
-      maxParticipant 
-    })
+      category,
+      docType,
+      originalUrl,
+      deadline: new Date(deadline),
+      maxParticipant: Number(maxParticipant),
+    };
 
-    if(!updateChallenge) {
-      return res.status(404).json({ message: "해당 챌린지를 찾을 수 없습니다." });
-    }
+    const updateChallenge = await challengeService.updateChallenge(Number(challengeId), userId, updateData);
+   
 
     res.status(200).json({ data: updateChallenge });
   } catch (error) {
     console.error(error);  // 에러 상세 출력
-    res.status(500).json({ message: "챌린지 수정에 실패했습니다." });
+    if (error.statusCode === 403) {
+      return res.status(403).json({ message: "작성자만 수정할 수 있습니다." });
+    }
+    if (error.message === "NOT_FOUND") {
+      return res.status(404).json({ message: "해당 챌린지를 찾을 수 없습니다." });
+    }
+    res.status(500).json({ error, message: "챌린지 수정에 실패했습니다." });
   }
 };
 
 
 // 챌린지 삭제
 export const deleteChallenge = async (req, res) => {
-  if (!req.headers.authorization) {
-     return res.status(401).json({ message: "인증되지 않은 사용자입니다." });
-  }
   try {
+    const userId = req.auth?.userId;
+    if(!userId) {
+      return res.status(401).json({ message: "인증되지 않은 사용자입니다. "})
+    }
+
     const { challengeId } = req.params;
-    await challengeService.deleteChallenge(Number(challengeId));
-    res.status(204).send({challengeId});
+    await challengeService.deleteChallenge(Number(challengeId), userId);
+
+    return res.status(200).send({ id: challengeId })
+
   } catch (error) {
-    res.status(500).json({ error, message: "챌린지 삭제에 실패했습니다." });
+    console.error(error);
+    if (error.statusCode === 403) {
+      return res.status(403).json({ message: error.message });
+    }
+    if (error.message === "챌린지가 존재하지 않습니다.") {
+      return res.status(404).json({ message: error.message });
+    }
+    return res.status(500).json({ error, message: "챌린지 삭제에 실패했습니다." });
   }
+  
 };
