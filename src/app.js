@@ -15,6 +15,17 @@ import adminRouter from "./routes/admin.route.js";
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000/",
+      "https://6-docthru-3team-fe-dev.vercel.app/",
+      "https://6-docthru-3team-fe.vercel.app/",
+    ],
+    credentials: true,
+  })
+);
+
 app.set("trust proxy", 1);
 app.use(passport.initialize());
 
