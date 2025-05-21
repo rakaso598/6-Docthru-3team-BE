@@ -30,10 +30,10 @@ export const getNotifications = async (req, res, next) => {
 export const updateIsRead = async (req, res, next) => {
   try {
     const { notificationId } = req.params;
-    const { isRead } = req.body;
+    const userId = req.user.userId;
     const updated = await notificationService.updateIsRead(
       notificationId,
-      isRead
+      userId
     );
     res.json(updated);
   } catch (err) {
