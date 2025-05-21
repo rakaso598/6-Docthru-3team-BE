@@ -1,7 +1,7 @@
 import prisma from "../prisma/client.prisma.js";
 
 // work 삭제
-export const deleteWork = async (req, res) => {
+export const softDeleteWork = async (req, res) => {
   const { workId } = req.params;
   const { deletionReason } = req.body; // PATCH 요청의 BODY에서 삭제 사유를 받습니다.
 

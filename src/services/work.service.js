@@ -46,8 +46,8 @@ const updateWork = async (workId, { content }) => {
   return updatedWork;
 };
 
-const deleteWork = async (workId) => {
-  await workRepository.deleteWork(workId);
+const hardDeleteWork = async (workId) => {
+  await workRepository.hardDeleteWork(workId);
 };
 
 const likeWork = async (workId, userId) => {
@@ -68,7 +68,7 @@ export default {
   isWorkDuplicate,
   createWork,
   updateWork,
-  deleteWork,
+  hardDeleteWork,
   likeWork,
   unlikeWork,
 };

@@ -4,7 +4,7 @@ import {
   getWorkById,
   createWork,
   updateWork,
-  // deleteWork,
+  hardDeleteWork,
   likeWork,
   unlikeWork,
 } from "../controllers/work.controller.js";
@@ -23,7 +23,7 @@ workRouter.get("/", getAllWorks);
 workRouter.get("/:workId", getWorkById);
 workRouter.post("/", verifyAccessToken, createWork);
 workRouter.patch("/:workId", verifyAccessToken, updateWork);
-// workRouter.patch("/:workId", verifyAccessToken, deleteWork); // adminRouter 완성 시 삭제하세요.
+workRouter.delete("/:workId", verifyAccessToken, hardDeleteWork);
 workRouter.post("/:workId/like", verifyAccessToken, likeWork);
 workRouter.delete("/:workId/like", verifyAccessToken, unlikeWork);
 
