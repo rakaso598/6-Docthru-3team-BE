@@ -1,19 +1,6 @@
 import challengeService from "../services/challenge.service.js";
 
 
-export const getAllChallenges = async (req, res) => {
-  const { userId } = req.body;
-  try {
-    const works = await challengeService.findAllChallenges();
-    res.status(200).json({ data: works });
-  } catch (error) {
-    console.error("Work 목록 조회 에러:", error);
-    res.status(500).json({ message: "작업 목록을 불러오는데 실패했습니다." });
-  }
-};
-
-
-
 export const createChallenge = async (req, res, next) => {
   try {
     const { userId } = req.user;
@@ -121,6 +108,7 @@ export const deleteChallenge = async (req, res) => {
     }
     return res.status(500).json({ error, message: "챌린지 삭제에 실패했습니다." });
   }
+}
 
 export const getChallenges = async (req, res, next) => {
   try {
@@ -131,4 +119,4 @@ export const getChallenges = async (req, res, next) => {
     next(error);
   }
 
-};
+}
