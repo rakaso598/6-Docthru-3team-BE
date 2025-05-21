@@ -1,0 +1,10 @@
+### 작업물 상세 조회
+
+GET http://localhost:8080/challenges/:challengeId/works/:workId
+Content-Type: application/json
+
+
+### 작업물 제출
+
+POST http://localhost:8080/works/challenges/:challengeId/works
+Content-Type: application/json
