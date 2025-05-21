@@ -15,8 +15,6 @@ challengeRouter.get("/", getAllChallenges);
 // 특정 챌린지 조회
 challengeRouter.get("/:challengeId", getChallengeById);
 
-const challengeRouter = express.Router();
-
 // 챌린지 생성
 challengeRouter.post("/", verifyAccessToken, createChallenge);
 
