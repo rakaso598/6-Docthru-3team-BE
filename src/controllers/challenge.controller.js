@@ -1,5 +1,8 @@
 import challengeService from "../services/challenge.service.js";
 
+
+//챌린지 작업물 관련
+
 export const getAllChallenges = async (req, res) => {
   const { userId } = req.body;
   try {
@@ -10,6 +13,8 @@ export const getAllChallenges = async (req, res) => {
     res.status(500).json({ message: "작업 목록을 불러오는데 실패했습니다." });
   }
 };
+
+//챌린지 생성
 
 export const createChallenge = async (req, res, next) => {
   try {
@@ -144,6 +149,9 @@ export const deleteChallenge = async (req, res) => {
       .json({ error, message: "챌린지 삭제에 실패했습니다." });
   }
 };
+
+
+//챌린지 목록 조회
 
 export const getChallenges = async (req, res, next) => {
   try {
