@@ -145,7 +145,6 @@ export const deleteChallenge = async (req, res) => {
   }
 };
 
-
 export const getChallenges = async (req, res, next) => {
   try {
     const challenges = await challengeService.getChallenges(req.query);
@@ -155,3 +154,20 @@ export const getChallenges = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * 챌린지 신청 관리(승인/거절/삭제)
+ */
+export async function updateApplicationStatus(req, res, next) {
+  try {
+    const challengeId = Number(req.params.challengeId);
+    const data = req.body;
+    const result = await challengeService.updateApplicationById(
+      challengeId,
+      data
+    );
+    res.json({ result });
+  } catch (e) {
+    next(e);
+  }
+}

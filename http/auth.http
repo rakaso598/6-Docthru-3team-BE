@@ -20,6 +20,15 @@ Content-Type: application/json
     "password" : "4444"
 }
 
+### 관리자 로그인
+POST http://localhost:8080/auth/sign-in
+Content-Type: application/json
+
+{
+    "email" : "admin1@example.com",
+    "password" : "adminpassword1"
+}
+
 ### 토큰 갱신
 POST http://localhost:8080/auth/refresh-token
 Cookie: refreshToken={{REFRESH_TOKEN}}
