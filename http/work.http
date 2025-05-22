@@ -1,3 +1,5 @@
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3a2R4NDAwMDAwbzg5Nzh5bWJrOXUzIiwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjQiLCJpYXQiOjE3NDc4MjY1NTQsImV4cCI6MTc0NzgzMDE1NH0.2RgjFVTHY1H-VApvY7oJGXjhOzfv_kkNzPfUk35_MDI
+
 ### 작업물 전체 조회
 GET http://localhost:8080/works
 Content-Type: application/json
@@ -10,11 +12,12 @@ Content-Type: application/json
 ### 작업물 상세 조회
 GET http://localhost:8080/challenges/5/works/5
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 ### 작업물 제출
 POST http://localhost:8080/challenges/12/works
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3a2R4NDAwMDAwbzg5Nzh5bWJrOXUzIiwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjQiLCJpYXQiOjE3NDc4Nzk3ODUsImV4cCI6MTc0Nzg4MzM4NX0.7a0kB9A3GYPAcN9GhUSOJg9fpUCyl_06rh3M_z5kZuY
+Authorization: Bearer {{accessToken}}
 
 // TODO : authorId는 추후 토큰으로 변경
 
