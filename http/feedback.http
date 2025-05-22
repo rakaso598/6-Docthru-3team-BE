@@ -1,0 +1,30 @@
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3a2R4NDAwMDAwbzg5Nzh5bWJrOXUzIiwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjQiLCJpYXQiOjE3NDc4ODA2NjcsImV4cCI6MTc0Nzg4NDI2N30.x3kxrY8ak59JsNSqiZERDXdnBChxU6Z8MJsyAUANM9s
+
+### 피드백 목록 조회
+
+GET http://localhost:8080/works/5/feedbacks
+Accept: application/json
+
+### 피드백 등록
+
+POST http://localhost:8080/works/2/feedbacks
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+{
+    "content": "이 작업물에 대한 첫 번째 피드백입니다!"
+}
+
+### 피드백 수정
+
+PATCH http://localhost:8080/works/2/feedbacks/158
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "content": "수정된 피드백 내용입니다."
+}
+
+### 피드백 삭제
+
+DELETE http://localhost:8080/works/2/feedbacks/158
+Authorization: Bearer {{access_token}}

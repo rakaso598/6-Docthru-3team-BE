@@ -6,11 +6,11 @@ import {
   updateChallenge,
   deleteChallenge,
 } from "../controllers/challenge.controller.js";
+import { createWork, getWorkById } from "../controllers/work.controller.js";
 import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import workRouter from "./work.route.js";
 
 const challengeRouter = express.Router();
-
 
 // 챌린지 작업물 관련 라우터
 challengeRouter.use("/:challengeId/works", workRouter);
@@ -20,7 +20,6 @@ challengeRouter.get("/", getChallenges);
 
 // 챌린지 생성
 challengeRouter.post("/", verifyAccessToken, createChallenge);
-
 
 // 챌린지 상세 조회
 challengeRouter.get("/:challengeId", getChallengeById);
@@ -32,5 +31,15 @@ challengeRouter.put("/:challengeId", verifyAccessToken, updateChallenge);
 // 챌린지 삭제
 challengeRouter.delete("/:challengeId", verifyAccessToken, deleteChallenge);
 
+// --- Challenge에 종속된 Work 관련 라우트 ---
+
+// 작업물 상세조회
+challengeRouter.get(
+  "/:challengeId/works/:workId",
+  verifyAccessToken,
+  getWorkById
+);
+// 작업물 제출
+challengeRouter.post("/:challengeId/works", verifyAccessToken, createWork);
 
 export default challengeRouter;

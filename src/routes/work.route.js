@@ -8,13 +8,13 @@ import {
   likeWork,
   unlikeWork,
 } from "../controllers/work.controller.js";
-import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import {
   getFeedbacks,
   addFeedback,
   editFeedback,
   deleteFeedback,
 } from "../controllers/feedback.controller.js";
+import { verifyAccessToken } from "../middlewares/verifyToken.js";
 
 const workRouter = express.Router({ mergeParams: true });
 
