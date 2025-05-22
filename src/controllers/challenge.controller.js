@@ -1,6 +1,5 @@
 import challengeService from "../services/challenge.service.js";
 
-
 //챌린지 작업물 관련
 
 export const getAllChallenges = async (req, res) => {
@@ -149,7 +148,6 @@ export const deleteChallenge = async (req, res) => {
       .json({ error, message: "챌린지 삭제에 실패했습니다." });
   }
 };
-
 
 //챌린지 목록 조회
 
