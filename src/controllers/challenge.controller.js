@@ -145,7 +145,6 @@ export const deleteChallenge = async (req, res) => {
   }
 };
 
-
 export const getChallenges = async (req, res, next) => {
   try {
     const challenges = await challengeService.getChallenges(req.query);
