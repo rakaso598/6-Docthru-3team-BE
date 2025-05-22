@@ -1,8 +1,8 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF3a2R4NDAwMDAwbzg5Nzh5bWJrOXUzIiwiZW1haWwiOiJ1c2VyNEB0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjQiLCJpYXQiOjE3NDc4MjY1NTQsImV4cCI6MTc0NzgzMDE1NH0.2RgjFVTHY1H-VApvY7oJGXjhOzfv_kkNzPfUk35_MDI
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbjEiLCJlbWFpbCI6ImFkbWluMUBleGFtcGxlLmNvbSIsIm5pY2tuYW1lIjoi6rSA66as7J6QMSIsImlhdCI6MTc0Nzg5MDY1NiwiZXhwIjoxNzQ3ODk0MjU2fQ.nWGkpRg7vHcZbnSUAN7K7q8V_HfjSDtbGXr1SKPZFro
 
 ################ 챌린지 ################
 ### 챌린지 승인
-PATCH http://localhost:8080/admin/challenges/1
+PATCH http://localhost:8080/admin/challenges/34
 Content-Type: application/json 
 Cookie: accessToken={{accessToken}}
 
@@ -11,7 +11,7 @@ Cookie: accessToken={{accessToken}}
 }
 
 ### 챌린지 거절
-PATCH http://localhost:8080/admin/challenges/19
+PATCH http://localhost:8080/admin/challenges/34
 Content-Type: application/json 
 Cookie: accessToken={{accessToken}}
 
