@@ -1,8 +1,9 @@
 import prisma from "../prisma/client.prisma.js";
 
-// 전체 work 조회
-const findAllWorks = async () => {
+// 현재 챌린지의 모든 work 조회
+const findAllWorks = async (challengeId, page, pageSize) => {
   const works = await prisma.work.findMany({
+    where: { challengeId },
     include: {
       _count: {
         select: {
@@ -10,6 +11,13 @@ const findAllWorks = async () => {
         },
       },
     },
+    orderBy: {
+      likes: {
+        _count: "desc", // 좋아요 수를 기준으로 내림차순 정렬
+      },
+    },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
 
   // _count를 likeCount로 변환

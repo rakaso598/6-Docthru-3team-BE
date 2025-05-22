@@ -1,19 +1,26 @@
 import workService from "../services/work.service.js";
 
-// TODO : 아직 토큰로직은 안넣음
-
-// 모든 work 조회
+// 현재 챌린지의 모든 work 조회
+// page, pageSize 쿼리 파라미터로 페이지네이션 구현
+// page는 1부터 시작 pageSize는 5개씩 조회
+// 정렬은 좋아요순
 export const getAllWorks = async (req, res) => {
   try {
-    // TODO: 나중에 토큰에서 userId를 가져와야 함
-    const { userId } = req.body; // 임시로 body에서 받아옴
+    const userId = req.user?.userId;
+    const { challengeId } = req.params;
+    const { page = 1, pageSize = 5 } = req.query;
 
     if (!userId) {
       return res.status(400).json({ message: "사용자 아이디가 필요합니다." });
     }
 
-    const works = await workService.findAllWorks(userId);
-    res.status(200).json({ data: works });
+    const works = await workService.findAllWorks(
+      userId,
+      Number(challengeId),
+      Number(page),
+      Number(pageSize)
+    );
+    res.status(200).json({ data: works, pagination: { page, pageSize } });
   } catch (error) {
     console.error("Work 목록 조회 에러:", error);
     res.status(500).json({ message: "작업 목록을 불러오는데 실패했습니다." });
@@ -24,7 +31,9 @@ export const getAllWorks = async (req, res) => {
 export const getWorkById = async (req, res) => {
   try {
     const { workId } = req.params;
-    const work = await workService.findWorkById(Number(workId));
+    const userId = req.user?.userId;
+
+    const work = await workService.findWorkById(Number(workId), userId);
 
     if (!work) {
       return res.status(404).json({ message: "해당 작업을 찾을 수 없습니다." });
@@ -39,18 +48,18 @@ export const getWorkById = async (req, res) => {
 // work 생성
 export const createWork = async (req, res) => {
   try {
-    // TODO : authorId는 추후 토큰으로 변경
-    const { content, authorId } = req.body;
+    const { content } = req.body;
     const { challengeId } = req.params;
 
-    // TODO : 나중에 토큰적용시 주석 해제
-    // if (!content || !challengeId || !authorId) {
-    //   return res.status(400).json({ message: "필수 항목이 누락되었습니다." });
-    // }
+    const userId = req.user?.userId;
+
+    if (!content || !challengeId || !userId) {
+      return res.status(400).json({ message: "필수 항목이 누락되었습니다." });
+    }
 
     const isWorkDuplicate = await workService.isWorkDuplicate(
       Number(challengeId),
-      authorId
+      userId
     );
 
     if (isWorkDuplicate) {
@@ -60,7 +69,7 @@ export const createWork = async (req, res) => {
     const newWork = await workService.createWork(
       content,
       Number(challengeId),
-      authorId
+      userId
     );
 
     res.status(201).json({ data: newWork });
@@ -116,7 +125,7 @@ export const hardDeleteWork = async (req, res) => {
 export const likeWork = async (req, res) => {
   try {
     const { workId } = req.params;
-    const { userId } = req.body;
+    const userId = req.user?.userId;
 
     if (!userId) {
       return res.status(400).json({ message: "사용자 아이디가 필요합니다." });
@@ -141,7 +150,7 @@ export const likeWork = async (req, res) => {
 export const unlikeWork = async (req, res) => {
   try {
     const { workId } = req.params;
-    const { userId } = req.body;
+    const userId = req.user?.userId;
 
     if (!userId) {
       return res.status(400).json({ message: "사용자 아이디가 필요합니다." });
