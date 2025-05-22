@@ -27,6 +27,13 @@ async function findUserByEmail(email) {
   });
 }
 
+async function findUserByNickname(nickname) {
+  return await prisma.user.findFirst({
+    where: {
+      nickname,
+    },
+  });
+}
 async function findUserById(userId) {
   return await prisma.user.findUnique({
     where: {
@@ -39,5 +46,6 @@ export default {
   saveUser,
   updateUser,
   findUserByEmail,
+  findUserByNickname,
   findUserById,
 };

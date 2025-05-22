@@ -4,9 +4,9 @@ import {
   generateRefreshToken,
 } from "../utils/accessToken.utils.js";
 
-export const createUser = async (req, res, next) => {
+export const signUp = async (req, res, next) => {
   try {
-    const { accessToken, refreshToken, user } = await authService.create(
+    const { accessToken, refreshToken, user } = await authService.createUser(
       req.body
     );
 
@@ -32,7 +32,7 @@ export const createUser = async (req, res, next) => {
   }
 };
 
-export const getUser = async (req, res, next) => {
+export const signIn = async (req, res, next) => {
   try {
     const { accessToken, refreshToken, user } = await authService.getByEmail(
       req.body
