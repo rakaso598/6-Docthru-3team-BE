@@ -52,10 +52,16 @@ async function getByEmail(user) {
   if (!existedUser) throw new Error("Please sign-up first");
 
   //사용자가 입력한 PW와 데이터상의 PW가 일치하는지 확인
-  const isMatched = await verifyPassword(
+  let isMatched = await verifyPassword(
     user.password,
     existedUser.hashedPassword
   );
+
+  // 관리자인 경우 plain text로 비밀번호 비교
+  if (!isMatched && existedUser.role === "ADMIN") {
+    isMatched = user.password === existedUser.hashedPassword;
+  }
+
   if (!isMatched) throw new Error("Wrong password");
 
   const accessToken = generateAccessToken(existedUser);

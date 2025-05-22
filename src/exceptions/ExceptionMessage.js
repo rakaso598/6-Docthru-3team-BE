@@ -1,4 +1,4 @@
-const ExceptionMessage = {
+export const ExceptionMessage = {
   CHALLNEGE_NOT_FOUND: "챌린지를 찾을 수 없습니다.",
   WORK_NOT_FOUND: "작업물을 찾을 수 없습니다.",
   FEEDBACK_NOT_FOUND: "피드백을 찾을 수 없습니다.",
@@ -10,8 +10,4 @@ const ExceptionMessage = {
   FORBIDDEN: "요청한 작업을 수행하기 위한 권한이 없습니다.",
   INVALID_REFRESH_TOKEN: "유효하지 않은 리프레시 토큰입니다.",
   GOOGLE_LOGIN_FAILED: "구글 로그인에 실패하였습니다.",
-};
-
-export default {
-  ExceptionMessage,
 };

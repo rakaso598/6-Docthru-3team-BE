@@ -100,4 +100,5 @@ export default {
   createWork,
   updateWork,
   hardDeleteWork,
+  findIdAndTitle,
 };
