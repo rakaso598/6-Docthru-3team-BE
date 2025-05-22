@@ -17,7 +17,7 @@ Authorization: Bearer {{token}}
 {
   "title": "챌린지 등록",
   "description": "모두 함께 도전해봅시다",
-  "category": "Moder JS",
+  "category": "Modern JS",
   "docType": "블로그",
   "originalUrl": "https://test1-url.com",
   "deadline": "2024-11-28T00:30:21.142Z",

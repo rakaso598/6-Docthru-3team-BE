@@ -77,12 +77,15 @@ const updateChallenge = async (challengeId, updateData) => {
 
 // 관리자 - 신청 상태 업데이트
 const updateApplication = async (challengeId, updateData) => {
+  const data = { ...updateData };
+
+  if (["REJECTED", "DELETED"].includes(updateData.adminStatus)) {
+    data.invalidatedAt = new Date();
+  }
+
   return await prisma.application.update({
     where: { challengeId },
-    data: {
-      ...updateData,
-      invalidatedAt: new Date(),
-    },
+    data,
   });
 };
 
