@@ -1,6 +1,8 @@
 import challengeService from "../services/challenge.service.js";
 
+
 //챌린지 작업물 관련
+
 export const getAllChallenges = async (req, res) => {
   const { userId } = req.body;
   try {
@@ -13,9 +15,10 @@ export const getAllChallenges = async (req, res) => {
 };
 
 //챌린지 생성
+
 export const createChallenge = async (req, res, next) => {
   try {
-    const { userId } = req.auth;
+    const { userId } = req.user;
 
     const newChallenge = await challengeService.create(req.body, userId);
 
@@ -147,7 +150,9 @@ export const deleteChallenge = async (req, res) => {
   }
 };
 
+
 //챌린지 목록 조회
+
 export const getChallenges = async (req, res, next) => {
   try {
     const challenges = await challengeService.getChallenges(req.query);
@@ -157,3 +162,20 @@ export const getChallenges = async (req, res, next) => {
     next(error);
   }
 };
+
+/**
+ * 챌린지 신청 관리(승인/거절/삭제)
+ */
+export async function updateApplicationStatus(req, res, next) {
+  try {
+    const challengeId = Number(req.params.challengeId);
+    const data = req.body;
+    const result = await challengeService.updateApplicationById(
+      challengeId,
+      data
+    );
+    res.json({ result });
+  } catch (e) {
+    next(e);
+  }
+}

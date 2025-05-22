@@ -1,10 +1,14 @@
 import authRepository from "../repositories/auth.repository.js";
-import bcrypt from "bcrypt";
 import {
   generateAccessToken,
   generateRefreshToken,
-} from "../middlewares/accessToken.utils.js";
+} from "../utils/accessToken.utils.js";
 import jwt from "jsonwebtoken";
+import {
+  filterSensitiveUserData,
+  hashPassword,
+  verifyPassword,
+} from "../utils/auth.utils.js";
 
 async function create(user) {
   //비밀번호는 문자열만 가능(bcrypt 문법)
@@ -19,9 +23,9 @@ async function create(user) {
     throw new Error("Password and password confirmation do not match.");
   }
 
-  const hashedPassword = await bcrypt.hash(user.password, 10);
+  const hashedPassword = await hashPassword(user.password);
 
-  const createdUser = await authRepository.save(user, hashedPassword);
+  const createdUser = await authRepository.saveUser(user, hashedPassword);
 
   const accessToken = generateAccessToken(createdUser);
   const refreshToken = generateRefreshToken(createdUser);
@@ -43,15 +47,20 @@ async function getByEmail(user) {
     throw new Error(`password must be a string.`);
   }
 
-  const existedUser = await authRepository.getByEmail(user.email);
+  const existedUser = await authRepository.findUserByEmail(user.email);
 
   if (!existedUser) throw new Error("Please sign-up first");
 
   //사용자가 입력한 PW와 데이터상의 PW가 일치하는지 확인
-  const isMatched = await bcrypt.compare(
+  let isMatched = await verifyPassword(
     user.password,
     existedUser.hashedPassword
   );
+
+  // 관리자인 경우 plain text로 비밀번호 비교
+  if (!isMatched && existedUser.role === "ADMIN") {
+    isMatched = user.password === existedUser.hashedPassword;
+  }
 
   if (!isMatched) throw new Error("Wrong password");
 
@@ -108,8 +117,32 @@ async function refreshedToken(refreshToken) {
   }
 }
 
+/**
+ * 구글 로그인
+ */
+async function oauthUser(provider, providerId, email, name) {
+  const existingUser = await authRepository.findUserByEmail(email);
+  if (existingUser) {
+    const updatedUser = await authRepository.updateUser(existingUser.id, {
+      nickname: name,
+      provider,
+      providerId,
+    });
+    return filterSensitiveUserData(updatedUser);
+  } else {
+    const createdUser = await authRepository.saveUser({
+      email,
+      nickname: name,
+      provider,
+      providerId,
+    });
+    return filterSensitiveUserData(createdUser);
+  }
+}
+
 export default {
   create,
   getByEmail,
   refreshedToken,
+  oauthUser,
 };
