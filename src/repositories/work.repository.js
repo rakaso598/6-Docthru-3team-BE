@@ -38,6 +38,7 @@ const findWorkById = async (workId) => {
           likes: true,
         },
       },
+      user: true,
     },
   });
 
