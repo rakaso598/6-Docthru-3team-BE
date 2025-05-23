@@ -4,6 +4,13 @@ import prisma from "../prisma/client.prisma.js";
 async function findByWorkId(workId) {
   return prisma.feedback.findMany({
     where: { workId: Number(workId) },
+    select: {
+      id: true,
+      content: true,
+      createdAt: true,
+      authorId: true,
+      user: { select: { nickname: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 }

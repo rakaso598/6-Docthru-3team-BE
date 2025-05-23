@@ -28,7 +28,7 @@ workRouter.post("/:workId/like", verifyAccessToken, likeWork);
 workRouter.delete("/:workId/like", verifyAccessToken, unlikeWork);
 
 // --- Work에 종속된 Feedback 관련 라우트 ---
-workRouter.get("/:workId/feedbacks", getFeedbacks);
+workRouter.get("/:workId/feedbacks", verifyAccessToken, getFeedbacks);
 workRouter.post("/:workId/feedbacks", verifyAccessToken, addFeedback);
 workRouter.patch(
   "/:workId/feedbacks/:feedbackId",
