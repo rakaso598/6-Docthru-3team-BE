@@ -4,20 +4,20 @@
 
 
 ### 챌린지 쿼리 조회
-GET http://localhost:8080/challenges?page=1&pageSize=5&category=Modern JS&docType=블로그&keyword=함께
+GET http://localhost:8080/challenges?page=1&pageSize=4&category=&docType=공식문서&keyword=상태
 
 ### 챌린지 등록(신청)
 POST http://localhost:8080/challenges
 Content-Type: application/json 
-Authorization: Bearer {{token}}
+Authorization: Bearer 
 
 {
-  "title": "챌린지6 등록",
+  "title": "챌린지 상태 테스트",
   "description": "테스트 챌린지, test challenge 등록",
-  "category": "Next.js",
+  "category": "Next.JS",
   "docType": "공식문서",
   "originalUrl": "https://test1-url.com",
-  "deadline": "2024-11-28T00:30:21.142Z",
+  "deadline": "2026-11-28T00:30:21.142Z",
   "maxParticipant": 5
 }
 
@@ -37,7 +37,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 챌린지 상세 조회
-GET http://localhost:8080/challenges/31
+GET http://localhost:8080/challenges/37
 
 
 ### 챌린지 신청 취소
