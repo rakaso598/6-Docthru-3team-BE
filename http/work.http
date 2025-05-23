@@ -1,20 +1,19 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4ODc5NzksImV4cCI6MTc0Nzg5MTU3OX0.AF17hFYzRCIsqBIrYT5FkVMX1GT-Lmd02AvDBLZwcFk;
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc5ODE3MzMsImV4cCI6MTc0Nzk4NTMzM30.A7tel6Xiju19IAb9GeHViUjit7RutkQRU9GiJ0B46-E
+
 ### 현재 챌린지의 작업물 전체 조회
 GET http://localhost:8080/challenges/3/works
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
+Cookie: accessToken={{accessToken}}
 
 ### 작업물 상세 조회
-GET http://localhost:8080/challenges/5/works/58
+GET http://localhost:8080/challenges/5/works/53
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
-
+Cookie: accessToken={{accessToken}}
 
 ### 작업물 제출
-POST http://localhost:8080/challenges/12/works
+POST http://localhost:8080/challenges/11/works
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
-
+Cookie: accessToken={{accessToken}}
 
 {
     "content": "이것은 챌린지 2의 새로운 작업물입니다.",
@@ -22,27 +21,24 @@ Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmR
 }
 
 ### 작업물 수정
-PATCH http://localhost:8080/works/58
+PATCH http://localhost:8080/works/53
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
+Cookie: accessToken={{accessToken}}
 
 {
-    "content": "수정된 작업물 내용입니다."
+    "content": "수정된 작업물 내용입니다. 111"
 }
 
 ### 작업물 삭제 .
-DELETE http://localhost:8080/works/58
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
-
+DELETE http://localhost:8080/works/53
+Cookie: accessToken={{accessToken}}
 
 ### 작업물 좋아요
-POST http://localhost:8080/works/48/like
+POST http://localhost:8080/works/52/like
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
-
+Cookie: accessToken={{accessToken}}
 
 ### 작업물 좋아요 취소
-DELETE http://localhost:8080/works/58/like
+DELETE http://localhost:8080/works/42/like
 Content-Type: application/json
-Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
-
+Cookie: accessToken={{accessToken}}

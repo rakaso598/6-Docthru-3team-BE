@@ -72,7 +72,7 @@ const createWork = async (content, challengeId, authorId) => {
 };
 
 // work 수정
-const updateWork = async (workId, { content }) => {
+const updateWork = async (workId, content) => {
   const updatedWork = await prisma.work.update({
     where: { id: workId },
     data: { content },
@@ -101,6 +101,14 @@ const findIdAndTitle = async (workId) => {
   });
 };
 
+// 작성자 확인
+const isAuthor = async (workId, userId) => {
+  const work = await prisma.work.findUnique({
+    where: { id: workId },
+  });
+  return work.authorId === userId;
+};
+
 export default {
   findAllWorks,
   findWorkById,
@@ -109,4 +117,5 @@ export default {
   updateWork,
   hardDeleteWork,
   findIdAndTitle,
+  isAuthor,
 };

@@ -16,8 +16,8 @@ POST http://localhost:8080/auth/sign-in
 Content-Type: application/json
 
 {
-    "email" : "user6@test.com",
-    "password" : "6666"
+    "email" : "gksktl123@naver.com",
+    "password" : "1234",
 }
 
 ### 관리자 로그인
