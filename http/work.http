@@ -1,17 +1,16 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc5NzkxNzMsImV4cCI6MTc0Nzk4Mjc3M30.2RuYZXgPuVvXIw08rl457IPJ2oFMwvd3ZIvYezD-4pw
-
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4ODc5NzksImV4cCI6MTc0Nzg5MTU3OX0.AF17hFYzRCIsqBIrYT5FkVMX1GT-Lmd02AvDBLZwcFk;
 ### 현재 챌린지의 작업물 전체 조회
 GET http://localhost:8080/challenges/3/works
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 상세 조회
-GET http://localhost:8080/challenges/5/works/48
+GET http://localhost:8080/challenges/5/works/58
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 제출
-POST http://localhost:8080/challenges/12/works
+POST http://localhost:8080/challenges/11/works
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
@@ -22,25 +21,26 @@ Cookie: accessToken={{accessToken}}
 
 ### (수정 필요) 작업자만 수정이 가능하도록
 ### 작업물 수정
-PATCH http://localhost:8080/works/5
+PATCH http://localhost:8080/works/58
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 {
-    "content": "수정된 작업물 내용입니다."
+    "content": "수정된 작업물 내용입니다. 111"
 }
 
 ### (수정 필요) 작업자만 삭제가 가능하도록
 ### 작업물 삭제 .
-DELETE http://localhost:8080/works/48
-Cookie: accessToken={{accessToken}}
+DELETE http://localhost:8080/works/58
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
+
 
 ### 작업물 좋아요
-POST http://localhost:8080/works/47/like
+POST http://localhost:8080/works/48/like
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 좋아요 취소
-DELETE http://localhost:8080/works/47/like
+DELETE http://localhost:8080/works/58/like
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
