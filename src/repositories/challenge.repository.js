@@ -102,9 +102,6 @@ const deleteChallengeById = async (challengeId) => {
 };
 
 async function getChallenges(options) {
-  //디버깅 쿼리 객체
-  console.log("options", options);
-
   const { page = 1, pageSize = 10, category, docType, keyword } = options;
 
   const skip = (Number(page) - 1) * Number(pageSize);
@@ -127,16 +124,25 @@ async function getChallenges(options) {
     ];
   }
 
-  const challenges = await prisma.challenge.findMany({
-    where,
-    skip,
-    take,
-    include: {
-      participants: true, // 관계 포함
-    },
-  });
+  //데이터의 총 갯수 (프론트의 페이지네이션 위해)
+  const [totalCount, challenges] = await Promise.all([
+    prisma.challenge.count({ where }),
+    prisma.challenge.findMany({
+      where,
+      skip,
+      take,
+      include: {
+        participants: true, // 관계 포함
+      },
+    }),
+  ]);
 
-  return challenges;
+  return {
+    totalCount,
+    currentPage: Number(page),
+    pageSize: Number(pageSize),
+    data: challenges,
+  };
 }
 
 export default {
