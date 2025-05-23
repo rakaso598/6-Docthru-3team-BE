@@ -20,8 +20,12 @@ async function addFeedback(workId, authorId, content) {
 }
 
 // 목록 조회
-async function getFeedbacks(workId) {
-  return feedbackRepository.findByWorkId(workId);
+async function getFeedbacks(workId, userId) {
+  const feedbacks = await feedbackRepository.findByWorkId(workId);
+  return feedbacks.map((feedback) => ({
+    ...feedback,
+    isAuthor: feedback.authorId === userId, // 본인 글 여부
+  }));
 }
 
 // 수정
