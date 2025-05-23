@@ -30,16 +30,16 @@ async function save(challenge, userId) {
   });
 }
 
-// 승인된 챌린지 전체 조회
-const findAllChallenges = async () => {
-  return await prisma.challenge.findMany({
-    where: {
-      application: {
-        adminStatus: "ACCEPTED",
-      },
-    },
-  });
-};
+// // 승인된 챌린지 전체 조회 (추후 사용 예정)
+// const findAllChallenges = async () => {
+//   return await prisma.challenge.findMany({
+//     where: {
+//       application: {
+//         adminStatus: "ACCEPTED",
+//       },
+//     },
+//   });
+// };
 
 // 특정 challenge 조회 (상세 조회에 활용)
 const findChallengeDetailById = async (challengeId) => {
@@ -148,7 +148,7 @@ async function getChallenges(options) {
 export default {
   save,
   getChallenges,
-  findAllChallenges,
+  // findAllChallenges, 추후 사용 예정
   findChallengeById,
   updateChallenge,
   updateApplication,
