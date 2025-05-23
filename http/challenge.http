@@ -1,4 +1,7 @@
 
+@ACCESS_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF4N2xobDAwMDAyY2M2Y245N3VrMDR0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc4MDUzOTUsImV4cCI6MTc0NzgwODk5NX0.h6pIQAsSACs9F20uk_GgS16EU0taJ8RPFxXkdY1ETlQ
+
+
 @env local
 @token = {{token}}
 
@@ -12,10 +15,10 @@ Content-Type: application/json
 Authorization: Bearer 
 
 {
-  "title": "챌린지 상태 테스트",
-  "description": "테스트 챌린지, test challenge 등록",
-  "category": "Next.JS",
-  "docType": "공식문서",
+  "title": "챌린지 등록",
+  "description": "모두 함께 도전해봅시다",
+  "category": "Modern JS",
+  "docType": "블로그",
   "originalUrl": "https://test1-url.com",
   "deadline": "2026-11-28T00:30:21.142Z",
   "maxParticipant": 5

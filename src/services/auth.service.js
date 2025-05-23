@@ -9,22 +9,22 @@ import {
   hashPassword,
   verifyPassword,
 } from "../utils/auth.utils.js";
+import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
+import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 
-async function create(user) {
-  //비밀번호는 문자열만 가능(bcrypt 문법)
-  ["password", "passwordConfirmation"].forEach((field) => {
-    if (typeof user[field] !== "string") {
-      throw new Error(`${field} must be a string.`);
-    }
-  });
-
-  //password와 passwordConfirmation의 일치 여부 확인
-  if (user.password !== user.passwordConfirmation) {
-    throw new Error("Password and password confirmation do not match.");
+async function createUser(user) {
+  const existingEmail = await authRepository.findUserByEmail(user.email);
+  if (existingEmail) {
+    throw new BadRequestError(ExceptionMessage.ALREADY_EXISTED_EMAIL);
+  }
+  const existingNickname = await authRepository.findUserByNickname(
+    user.nickname
+  );
+  if (existingNickname) {
+    throw new BadRequestError(ExceptionMessage.ALREADY_EXISTED_NICKNAME);
   }
 
   const hashedPassword = await hashPassword(user.password);
-
   const createdUser = await authRepository.saveUser(user, hashedPassword);
 
   const accessToken = generateAccessToken(createdUser);
@@ -49,7 +49,7 @@ async function getByEmail(user) {
 
   const existedUser = await authRepository.findUserByEmail(user.email);
 
-  if (!existedUser) throw new Error("Please sign-up first");
+  if (!existedUser) throw new NotFoundError(ExceptionMessage.USER_NOT_FOUND);
 
   //사용자가 입력한 PW와 데이터상의 PW가 일치하는지 확인
   let isMatched = await verifyPassword(
@@ -62,7 +62,8 @@ async function getByEmail(user) {
     isMatched = user.password === existedUser.hashedPassword;
   }
 
-  if (!isMatched) throw new Error("Wrong password");
+  if (!isMatched)
+    throw new BadRequestError(ExceptionMessage.PASSWORD_NOT_MATCH);
 
   const accessToken = generateAccessToken(existedUser);
   const refreshToken = generateRefreshToken(existedUser);
@@ -141,7 +142,7 @@ async function oauthUser(provider, providerId, email, name) {
 }
 
 export default {
-  create,
+  createUser,
   getByEmail,
   refreshedToken,
   oauthUser,

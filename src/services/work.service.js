@@ -1,8 +1,8 @@
 import likeRepository from "../repositories/like.repository.js";
 import workRepository from "../repositories/work.repository.js";
 
-const findAllWorks = async (userId) => {
-  const works = await workRepository.findAllWorks();
+const findAllWorks = async (userId, challengeId, page, pageSize) => {
+  const works = await workRepository.findAllWorks(challengeId, page, pageSize);
 
   // 각 work에 대해 좋아요 여부를 확인하고 새로운 배열 생성
   const worksWithLikeStatus = await Promise.all(

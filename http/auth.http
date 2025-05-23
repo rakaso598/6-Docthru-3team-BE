@@ -5,10 +5,10 @@ POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user3@test.com",
-    "nickname" : "user3",
-    "password" : "3333",
-    "passwordConfirmation" : "3333"
+    "email" : "gksktl123@naver.com",
+    "nickname" : "나는야멋진금붕어",
+    "password" : "1234",
+    "passwordConfirmation" : "1234"
 }
 
 ### 로그인

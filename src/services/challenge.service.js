@@ -1,6 +1,5 @@
 import challengeRepository from "../repositories/challenge.repository.js";
-import verify from "../middlewares/verify.js";
-import { NotFoundError } from "../exceptions/exceptions.js";
+import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 
 async function create(challenge, userId) {
@@ -14,7 +13,7 @@ async function create(challenge, userId) {
     !challenge.deadline ||
     !challenge.maxParticipant
   ) {
-    verify.throwBadRequestError();
+    throw new BadRequestError(ExceptionMessage.INVALID_INPUT);
   }
 
   const newChallenge = await challengeRepository.save(challenge, userId);

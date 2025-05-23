@@ -1,20 +1,20 @@
 import express from "express";
 import {
-  createUser,
-  getUser,
+  signUp,
+  signIn,
   refreshToken,
   socialLogin,
 } from "../controllers/auth.controller.js";
-import verify from "../middlewares/verify.js";
+import { signInValidator, signUpValidator } from "../middlewares/validator.js";
 import passport from "passport";
 
 const authRouter = express.Router();
 
 // 회원가입
-authRouter.post("/sign-up", verify.signUpReqVerify, createUser);
+authRouter.post("/sign-up", signUpValidator, signUp);
 
 // 로그인
-authRouter.post("/sign-in", verify.signInReqVerify, getUser);
+authRouter.post("/sign-in", signInValidator, signIn);
 
 // 토큰 갱신
 authRouter.post("/refresh-token", refreshToken);
