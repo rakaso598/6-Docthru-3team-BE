@@ -14,53 +14,41 @@ export const findUserById = async (id) => {
   });
 };
 
-export const findPendingApplications = async (userId, keywordFilter) => {
-  return await prisma.application.findMany({
-    where: {
-      authorId: userId,
-      status: "PENDING",
-      challenge: keywordFilter,
-    },
-    include: {
-      challenge: true,
-    },
-  });
-};
-
 export const findParticipatedChallenges = async (
   userId,
-  afterDate,
+  now,
   keywordFilter
 ) => {
   return await prisma.participant.findMany({
     where: {
       userId,
       challenge: {
-        deadline: { gt: afterDate },
+        deadline: { gt: now },
         ...keywordFilter,
       },
     },
-    include: {
-      challenge: true,
-    },
+    include: { challenge: true },
   });
 };
 
-export const findCompletedChallenges = async (
-  userId,
-  beforeDate,
-  keywordFilter
-) => {
+export const findCompletedChallenges = async (userId, now, keywordFilter) => {
   return await prisma.participant.findMany({
     where: {
       userId,
       challenge: {
-        deadline: { lte: beforeDate },
+        deadline: { lte: now },
         ...keywordFilter,
       },
     },
-    include: {
-      challenge: true,
+    include: { challenge: true },
+  });
+};
+
+export const findMyCreatedChallenges = async (userId, keywordFilter) => {
+  return await prisma.challenge.findMany({
+    where: {
+      authorId: userId,
+      ...keywordFilter,
     },
   });
 };
