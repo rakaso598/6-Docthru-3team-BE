@@ -18,9 +18,9 @@ const PORT = process.env.PORT;
 app.use(
   cors({
     origin: [
-      "http://localhost:3000/",
-      "https://6-docthru-3team-fe-dev.vercel.app/",
-      "https://6-docthru-3team-fe.vercel.app/",
+      "http://localhost:3000",
+      "https://6-docthru-3team-fe-dev.vercel.app",
+      "https://6-docthru-3team-fe.vercel.app",
     ],
     credentials: true,
   })
