@@ -131,6 +131,9 @@ async function getChallenges(options) {
     where,
     skip,
     take,
+    include: {
+      participants: true, // 관계 포함
+    },
   });
 
   return challenges;
