@@ -12,7 +12,6 @@ export const getMyInfo = async (userId) => {
 
 export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
   const now = new Date();
-
   const keywordFilter = keyword
     ? {
         OR: [
@@ -21,14 +20,6 @@ export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
         ],
       }
     : {};
-
-  if (myChallengeStatus === "applied") {
-    const applications = await userRepository.findPendingApplications(
-      userId,
-      keywordFilter
-    );
-    return applications.map((a) => a.challenge);
-  }
 
   if (myChallengeStatus === "participated") {
     const participants = await userRepository.findParticipatedChallenges(
@@ -48,7 +39,14 @@ export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
     return participants.map((p) => p.challenge);
   }
 
-  // 잘못된 status
+  if (myChallengeStatus === "applied") {
+    const createdChallenges = await userRepository.findMyCreatedChallenges(
+      userId,
+      keywordFilter
+    );
+    return createdChallenges;
+  }
+
   const error = new Error("잘못된 챌린지 상태입니다.");
   error.status = 400;
   throw error;
