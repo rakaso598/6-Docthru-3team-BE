@@ -1,4 +1,4 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4ODc5NzksImV4cCI6MTc0Nzg5MTU3OX0.AF17hFYzRCIsqBIrYT5FkVMX1GT-Lmd02AvDBLZwcFk;
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc5NzkyMzcsImV4cCI6MTc0Nzk4MjgzN30.9i39cfCkFhvZwsAsLMgTKaUQYetaY5gdIwieTt5Rm34
 ### 현재 챌린지의 작업물 전체 조회
 GET http://localhost:8080/challenges/3/works
 Content-Type: application/json
@@ -34,6 +34,14 @@ Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmR
 DELETE http://localhost:8080/works/58
 Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF5dmRnOHowMDAwdXBlb3ZqM21obnh3IiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc4OTE4MDAsImV4cCI6MTc0Nzg5NTQwMH0.wM1UOltV3EPWzeGxJkOlBX8_64N854gUn-X3QmWgLwc;
 
+### 작업물 소프트삭제 (작업물 비활성화 필드 true)
+PATCH http://localhost:8080/admin/works/4
+Cookie: accessToken={{accessToken}}
+Content-Type: application/json
+
+{
+  "deletionReason": "사용자 요청에 의한 삭제 사유456"
+}
 
 ### 작업물 좋아요
 POST http://localhost:8080/works/48/like
