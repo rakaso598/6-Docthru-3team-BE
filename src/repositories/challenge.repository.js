@@ -134,7 +134,6 @@ async function getChallenges(options) {
       take,
       include: {
         participants: true, // 관계 포함
-        application: true,
       },
     }),
   ]);
