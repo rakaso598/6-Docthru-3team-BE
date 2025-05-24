@@ -1,6 +1,6 @@
 import feedbackRepository from "../repositories/feedback.repository.js";
 import workRepository from "../repositories/work.repository.js";
-import notificationRepository from "../repositories/notification.repository.js";
+import notificationService from "./notification.service.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
@@ -20,8 +20,12 @@ async function addFeedback(workId, authorId, content) {
 }
 
 // 목록 조회
-async function getFeedbacks(workId) {
-  return feedbackRepository.findByWorkId(workId);
+async function getFeedbacks(workId, userId) {
+  const feedbacks = await feedbackRepository.findByWorkId(workId);
+  return feedbacks.map((feedback) => ({
+    ...feedback,
+    isAuthor: feedback.authorId === userId, // 본인 글 여부
+  }));
 }
 
 // 수정

@@ -2,6 +2,7 @@ import challengeRepository from "../repositories/challenge.repository.js";
 import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 
+//챌린지 생성
 async function create(challenge, userId) {
   if (
     !userId ||
@@ -23,20 +24,20 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
-const findAllChallenges = async () => {
-  return await challengeRepository.findAllChallenges();
-};
+//추후 사용 예정
+// const findAllChallenges = async () => {
+//   return await challengeRepository.findAllChallenges();
+// };
 
-// 게시글 상세 조회
+// 챌린지 상세 조회
 const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
 };
 
-// 게시글 수정 삭제
+// 챌린지 수정
 const findChallengeById = async (challengeId) => {
   return await challengeRepository.findChallengeById(challengeId);
 };
-
 const updateChallenge = async (challengeId, userId, data) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) throw new Error("챌린지가 존재하지 않습니다.");
@@ -50,6 +51,7 @@ const updateChallenge = async (challengeId, userId, data) => {
   return await challengeRepository.updateChallenge(challengeId, data);
 };
 
+// 챌린지 삭제
 const deleteChallenge = async (challengeId, userId) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) {
@@ -64,6 +66,7 @@ const deleteChallenge = async (challengeId, userId) => {
   await challengeRepository.deleteChallengeById(challengeId);
 };
 
+//챌린지 목록 조회(쿼리)
 async function getChallenges(options) {
   return challengeRepository.getChallenges(options);
 }
@@ -85,7 +88,7 @@ export default {
   create,
   getChallenges,
   findChallengeById,
-  findAllChallenges,
+  // findAllChallenges, 추후 사용 예정
   updateChallenge,
   deleteChallenge,
   getChallengeDetailById,
