@@ -50,5 +50,6 @@ export const findMyCreatedChallenges = async (userId, keywordFilter) => {
       authorId: userId,
       ...keywordFilter,
     },
+    include: { application: true } // adminStatus 활용으로 인한 include
   });
 };

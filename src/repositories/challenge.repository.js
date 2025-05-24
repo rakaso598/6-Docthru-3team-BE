@@ -1,3 +1,4 @@
+import { adminStatus } from "@prisma/client";
 import prisma from "../prisma/client.prisma.js";
 
 /**
