@@ -1,3 +1,4 @@
+import { adminStatus } from "@prisma/client";
 import prisma from "../prisma/client.prisma.js";
 
 /**
@@ -133,6 +134,7 @@ async function getChallenges(options) {
       take,
       include: {
         participants: true, // 관계 포함
+        application: true,
       },
     }),
   ]);
