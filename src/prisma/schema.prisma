@@ -10,7 +10,7 @@ datasource db {
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
-  nickname       String
+  nickname       String   @unique
   hashedPassword String?
   refreshToken   String?
   providerId     String?  @unique

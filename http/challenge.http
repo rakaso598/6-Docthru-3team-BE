@@ -1,18 +1,12 @@
-
-@ACCESS_TOKEN = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWF4N2xobDAwMDAyY2M2Y245N3VrMDR0IiwiZW1haWwiOiJ1c2VyM0B0ZXN0LmNvbSIsIm5pY2tuYW1lIjoidXNlcjMiLCJpYXQiOjE3NDc4MDUzOTUsImV4cCI6MTc0NzgwODk5NX0.h6pIQAsSACs9F20uk_GgS16EU0taJ8RPFxXkdY1ETlQ
-
-
-@env local
-@token = {{token}}
-
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc5NzYzMjEsImV4cCI6MTc0Nzk3OTkyMX0.Ohs4OY8plzuUQdtdig4Hqcip8szpJ8216FkGl5bmOIY
 
 ### 챌린지 쿼리 조회
-GET http://localhost:8080/challenges?page=1&pageSize=5&category=Modern JS&docType=블로그&keyword=함께
+GET http://localhost:8080/challenges?page=1&pageSize=4&category=&docType=&keyword=Next
 
 ### 챌린지 등록(신청)
 POST http://localhost:8080/challenges
-Content-Type: application/json 
-Authorization: Bearer {{token}}
+Content-Type: application/json
+Cookie:  accessToken={{accessToken}}
 
 {
   "title": "챌린지 등록",
@@ -20,17 +14,18 @@ Authorization: Bearer {{token}}
   "category": "Modern JS",
   "docType": "블로그",
   "originalUrl": "https://test1-url.com",
-  "deadline": "2024-11-28T00:30:21.142Z",
+  "deadline": "2026-11-28T00:30:21.142Z",
   "maxParticipant": 5
 }
 
+### (수정 필요) > 인증되지 않은 사용자입니다 에러, 쿠키로 되는지 확인
 ### 챌린지 수정
-PUT http://localhost:8080/challenges/30
+PUT http://localhost:8080/challenges/25
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Cookie:  accessToken={{accessToken}}
 
 {
-    "title": "챌린지2 등록",
+    "title": "챌린지 수정",
     "description": "테스트 챌린지, test challenge 등록",
     "category": "Next.js",
     "docType": "공식문서",
@@ -40,10 +35,11 @@ Authorization: Bearer {{token}}
 }
 
 ### 챌린지 상세 조회
-GET http://localhost:8080/challenges/31
+GET http://localhost:8080/challenges/20
 
 
+### (수정 필요) 인증되지 않은 사용자입니다 오류, 쿠키로 되는지 확인
 ### 챌린지 신청 취소
-DELETE http://localhost:8080/challenges/30
+DELETE http://localhost:8080/challenges/24
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Cookie:  accessToken={{accessToken}}

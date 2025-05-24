@@ -1,14 +1,21 @@
 import feedbackService from "../services/feedback.service.js";
 
 // 목록 조회
-export async function getFeedbacks(req, res, next) {
+export const getFeedbacks = async (req, res) => {
   try {
-    const feedbacks = await feedbackService.getFeedbacks(req.params.workId);
-    res.json(feedbacks);
-  } catch (err) {
-    next(err);
+    const { workId } = req.params;
+    const userId = req.user?.userId;
+
+    const feedbacks = await feedbackService.getFeedbacks(
+      Number(workId),
+      userId
+    );
+
+    res.status(200).json(feedbacks);
+  } catch (error) {
+    res.status(500).json({ message: "피드백 목록 조회 실패" });
   }
-}
+};
 
 // 등록
 export async function addFeedback(req, res, next) {
