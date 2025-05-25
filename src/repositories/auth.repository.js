@@ -28,7 +28,7 @@ async function findUserByEmail(email) {
 }
 
 async function findUserByNickname(nickname) {
-  return await prisma.user.findFirst({
+  return await prisma.user.findUnique({
     where: {
       nickname,
     },
