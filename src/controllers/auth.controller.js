@@ -22,7 +22,7 @@ export const signUp = async (req, res, next) => {
     console.log("[signUp] Attempting to set accessToken cookie.");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
       maxAge: 1 * 60 * 60 * 1000,
@@ -31,7 +31,7 @@ export const signUp = async (req, res, next) => {
     console.log("[signUp] Attempting to set refreshToken cookie.");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
       maxAge: 14 * 24 * 60 * 60 * 1000,
@@ -60,7 +60,7 @@ export const signIn = async (req, res, next) => {
     console.log("[signIn] Attempting to set accessToken cookie.");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
       maxAge: 1 * 60 * 60 * 1000,
@@ -69,7 +69,7 @@ export const signIn = async (req, res, next) => {
     console.log("[signIn] Attempting to set refreshToken cookie.");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
       maxAge: 14 * 24 * 60 * 60 * 1000,
@@ -103,7 +103,7 @@ export const refreshToken = async (req, res, next) => {
     console.log("[refreshToken] Attempting to set new accessToken cookie.");
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
       maxAge: 1 * 60 * 60 * 1000,
@@ -138,7 +138,7 @@ export function socialLogin(req, res, next) {
     console.log("[socialLogin] Attempting to set accessToken cookie.");
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
     });
@@ -146,7 +146,7 @@ export function socialLogin(req, res, next) {
     console.log("[socialLogin] Attempting to set refreshToken cookie.");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      sameSite: "Lax",
+      sameSite: "None",
       secure: false,
       path: "/",
     });
