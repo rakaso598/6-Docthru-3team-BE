@@ -152,8 +152,8 @@ export function socialLogin(req, res, next) {
     });
 
     const redirectUrl = process.env.FRONTEND_URL;
-    console.log(`[socialLogin] Redirecting to: ${redirectUrl}/oauth-success`);
-    res.redirect(`${redirectUrl}/oauth-success`);
+    console.log(`[socialLogin] Redirecting to: ${redirectUrl}/challenges`);
+    res.redirect(`${redirectUrl}/challenges`);
   } catch (error) {
     console.error("[socialLogin] Error caught:", error.message, error.stack);
     next(error);

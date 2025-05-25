@@ -79,7 +79,7 @@ async function updateApplicationById(challengeId, data) {
     return await challengeRepository.updateApplication(challengeId, data);
   } catch (e) {
     if (e.code === "P2025") {
-      throw new NotFoundError(ExceptionMessage.CHALLNEGE_NOT_FOUND);
+      throw new NotFoundError(ExceptionMessage.CHALLENGE_NOT_FOUND);
     }
   }
 }
