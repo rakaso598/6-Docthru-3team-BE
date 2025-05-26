@@ -52,6 +52,7 @@ const findChallengeDetailById = async (challengeId) => {
           nickname: true,
         },
       },
+      participants: true,
     },
   });
 };
