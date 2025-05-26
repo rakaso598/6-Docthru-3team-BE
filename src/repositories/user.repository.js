@@ -44,12 +44,58 @@ export const findCompletedChallenges = async (userId, now, keywordFilter) => {
   });
 };
 
-export const findMyCreatedChallenges = async (userId, keywordFilter) => {
-  return await prisma.challenge.findMany({
-    where: {
-      authorId: userId,
+export const findMyCreatedChallenges = async (userId, keywordFilter, options = {}) => {
+  const { page = 1, pageSize = 10, category, docType, keyword } = options;
+
+  const skip = (Number(page) - 1) * Number(pageSize);
+  const take = Number(pageSize);
+
+  const where = {
+    authorId: userId,
       ...keywordFilter,
-    },
-    include: { application: true } // adminStatus 활용으로 인한 include
-  });
+    };
+
+  if (category) {
+    where.category = category;
+  }
+
+  if (docType) {
+    where.docType = docType;
+  }
+
+  if (keyword) {
+    where.OR = [
+      { title: { contains: keyword, mode: "insensitive" } },
+      { description: { contains: keyword, mode: "insensitive" } },
+    ];
+  }
+
+  const [totalCount, challenges] = await Promise.all([
+    prisma.challenge.count({ where }),
+    prisma.challenge.findMany({
+      where,
+      skip,
+      take,
+      orderBy: {
+        createdAt: 'desc', // 최신순 정렬
+      },
+      include: {
+        participants: true, // 관계 포함
+        application: {
+          select: {
+            adminStatus: true,
+            appliedAt: true,
+          },
+        },
+      },
+    }),
+  ]);
+
+
+  return {
+    data: challenges,
+    totalCount,
+    currentPage: Number(page),
+    pageSize: Number(pageSize),
+  };
 };

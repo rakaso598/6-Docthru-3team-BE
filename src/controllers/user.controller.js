@@ -17,12 +17,25 @@ export const getMyChallenges = async (req, res) => {
     const userId = req.user.userId;
     const { myChallengeStatus, keyword } = req.query;
 
-    const challenges = await userService.getMyChallenges(
+    const pageInt = parseInt(req.query.page, 10);
+    const pageSizeInt = parseInt(req.query.pageSize, 10);
+
+    const currentPage = Number.isNaN(pageInt) ? 1 : pageInt;
+    const pageSize = Number.isNaN(pageSizeInt) ? 10 : pageSizeInt;
+
+    const { data, totalCount  } = await userService.getMyChallenges(
       userId,
       myChallengeStatus,
-      keyword
+      keyword,
+      { page: currentPage, pageSize }
     );
-    res.status(200).json(challenges);
+
+    res.status(200).json({
+      data,
+      totalCount,
+      currentPage,
+      pageSize,
+    });
   } catch (error) {
     const status = error.status || 500;
     console.error("나의 챌린지 조회 실패:", error);
