@@ -21,6 +21,7 @@ app.use(
       "http://localhost:3000",
       "https://6-docthru-3team-fe-dev.vercel.app",
       "https://6-docthru-3team-fe.vercel.app",
+      "https://six-docthru-3team-be-hdiq.onrender.com",
     ],
     credentials: true,
   })
