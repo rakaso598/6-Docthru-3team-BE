@@ -43,16 +43,11 @@ export const getWorkById = async (req, res) => {
 // work 생성
 export const createWork = async (req, res) => {
   try {
-    const { content } = req.body;
     const { challengeId } = req.params;
     const userId = req.user?.userId;
 
     await workService.isWorkDuplicate(Number(challengeId), userId);
-    const newWork = await workService.createWork(
-      content,
-      Number(challengeId),
-      userId
-    );
+    const newWork = await workService.createWork(Number(challengeId), userId);
     res.status(201).json({ data: newWork });
   } catch (error) {
     console.error("Work 생성 에러:", error);
@@ -62,7 +57,7 @@ export const createWork = async (req, res) => {
   }
 };
 
-// work 수정
+// work 제출 및 수정
 export const updateWork = async (req, res) => {
   try {
     const { workId } = req.params;
