@@ -50,7 +50,6 @@ const findChallengeDetailById = async (challengeId) => {
       user: {
         select: {
           nickname: true,
-          profileImage: true,
         },
       },
     },
