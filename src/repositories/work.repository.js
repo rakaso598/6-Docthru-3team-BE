@@ -10,6 +10,17 @@ const findAllWorks = async (challengeId, page, pageSize) => {
           likes: true,
         },
       },
+      user: {
+        select: {
+          id: true,
+          nickname: true,
+        },
+      },
+      challenge: {
+        select: {
+          title: true,
+        },
+      },
     },
     orderBy: {
       likes: {
@@ -20,11 +31,19 @@ const findAllWorks = async (challengeId, page, pageSize) => {
     take: pageSize,
   });
 
-  // _count를 likeCount로 변환
   return works.map((work) => ({
-    ...work,
+    workId: work.id,
+    author: {
+      authorId: work.user.id,
+      authorNickname: work.user.nickname,
+    },
+    challengeId: work.challengeId,
+    challengeTitle: work.challenge.title,
+    content: work.content,
+    createdAt: work.createdAt,
+    updatedAt: work.updatedAt,
     likeCount: work._count.likes,
-    _count: undefined,
+    isLiked: false, // 로그인 유저 정보 기반으로 나중에 처리
   }));
 };
 
@@ -33,12 +52,22 @@ const findWorkById = async (workId) => {
   const work = await prisma.work.findUnique({
     where: { id: workId },
     include: {
+      challenge: {
+        select: {
+          title: true,
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          nickname: true,
+        },
+      },
       _count: {
         select: {
           likes: true,
         },
       },
-      user: true,
     },
   });
 
@@ -46,9 +75,16 @@ const findWorkById = async (workId) => {
 
   // _count를 likeCount로 변환
   return {
-    ...work,
+    workId: work.id,
+    challengeTitle: work.challenge.title,
+    content: work.content,
+    author: {
+      authorId: work.user.id,
+      authorNickname: work.user.nickname,
+    },
+    createdAt: work.createdAt,
     likeCount: work._count.likes,
-    _count: undefined,
+    updatedAt: work.updatedAt,
   };
 };
 

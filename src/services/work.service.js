@@ -17,7 +17,12 @@ const findAllWorks = async (userId, challengeId, page, pageSize) => {
     throw error;
   }
 
-  const works = await workRepository.findAllWorks(challengeId, page, pageSize);
+  const works = await workRepository.findAllWorks(
+    challengeId,
+    page,
+    pageSize,
+    userId
+  );
 
   // 각 work에 대해 좋아요 여부를 확인하고 새로운 배열 생성
   const worksWithLikeStatus = await Promise.all(

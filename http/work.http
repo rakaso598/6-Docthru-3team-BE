@@ -1,11 +1,12 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgyMTk5NzQsImV4cCI6MTc0ODIyMzU3NH0._4ucfr8w_BsznRhfsXsu0v2TgHIFGF85jGh_h8y-9oU
-### 현재 챌린지의 작업물 전체 조회
-GET http://localhost:8080/challenges/3/works
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgyMzM1MjIsImV4cCI6MTc0ODIzNzEyMn0.jq3MOtvZeIwkf2Oiw_RQYJ53kKmnF-HDHxYiDmMc0NQ
+
+### 현재 챌린지의 작업물 조회
+GET http://localhost:8080/challenges/15/works?page=1&pageSize5
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 상세 조회
-GET http://localhost:8080/challenges/5/works/58
+GET http://localhost:8080/challenges/15/works/43
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
@@ -37,7 +38,7 @@ Content-Type: application/json
 }
 
 ### 작업물 좋아요
-POST http://localhost:8080/works/48/like
+POST http://localhost:8080/works/29/like
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
