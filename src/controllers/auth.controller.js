@@ -4,11 +4,25 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/accessToken.utils.js";
-import express from "express";
-import passport from "passport";
-import { signInValidator, signUpValidator } from "../middlewares/validator.js";
+// 이 파일은 컨트롤러이므로 아래 라우터 관련 import 및 정의는 제거합니다.
+// import express from "express";
+// import passport from "passport";
+// import { signInValidator, signUpValidator } from "../middlewares/validator.js";
 
-const authRouter = express.Router();
+// const authRouter = express.Router(); // 이 라인 제거
+
+// 쿠키 설정을 위한 공통 옵션 함수
+const getCookieOptions = (maxAgeSeconds) => ({
+  httpOnly: true,
+  sameSite: "Lax",
+  // NODE_ENV가 'production'일 때만 secure: true (HTTPS 필요)
+  secure: process.env.NODE_ENV === "production",
+  path: "/",
+  maxAge: maxAgeSeconds * 1000, // 밀리초 단위로 변환
+  // 개발 환경(localhost)에서는 'localhost' 도메인 명시
+  // 프로덕션 환경에서는 undefined로 설정하여 브라우저가 현재 도메인을 자동으로 사용하도록 함
+  domain: process.env.NODE_ENV === "development" ? "localhost" : undefined,
+});
 
 export const signUp = async (req, res, next) => {
   console.log("[signUp] Starting signUp process...");
@@ -20,22 +34,14 @@ export const signUp = async (req, res, next) => {
     console.log("[signUp] User created:", user.id, "Tokens generated.");
 
     console.log("[signUp] Attempting to set accessToken cookie.");
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-      maxAge: 1 * 60 * 60 * 1000,
-    });
+    res.cookie("accessToken", accessToken, getCookieOptions(1 * 60 * 60)); // 1시간
 
     console.log("[signUp] Attempting to set refreshToken cookie.");
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-      maxAge: 14 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(14 * 24 * 60 * 60)
+    ); // 14일
 
     console.log("[signUp] Sending JSON response with user data.");
     return res.json(user);
@@ -58,22 +64,14 @@ export const signIn = async (req, res, next) => {
     console.log("[signIn] User retrieved:", user.id, "Tokens generated.");
 
     console.log("[signIn] Attempting to set accessToken cookie.");
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-      maxAge: 1 * 60 * 60 * 1000,
-    });
+    res.cookie("accessToken", accessToken, getCookieOptions(1 * 60 * 60)); // 1시간
 
     console.log("[signIn] Attempting to set refreshToken cookie.");
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-      maxAge: 14 * 24 * 60 * 60 * 1000,
-    });
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(14 * 24 * 60 * 60)
+    ); // 14일
 
     console.log("[signIn] Sending JSON response with user data.");
     return res.json(user);
@@ -97,17 +95,11 @@ export const refreshToken = async (req, res, next) => {
     const newAccessToken = await authService.refreshedToken(refreshToken);
     console.log("[refreshToken] New accessToken generated.");
 
-    res.set("etag", false);
-    res.setHeader("Cache-Control", "no-store");
+    res.set("etag", false); // 캐싱 방지
+    res.setHeader("Cache-Control", "no-store"); // 캐싱 방지
 
     console.log("[refreshToken] Attempting to set new accessToken cookie.");
-    res.cookie("accessToken", newAccessToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-      maxAge: 1 * 60 * 60 * 1000,
-    });
+    res.cookie("accessToken", newAccessToken, getCookieOptions(1 * 60 * 60)); // 1시간
 
     console.log(
       "[refreshToken] Sending JSON response: Access token refreshed."
@@ -136,20 +128,14 @@ export function socialLogin(req, res, next) {
     const refreshToken = generateRefreshToken(req.user);
 
     console.log("[socialLogin] Attempting to set accessToken cookie.");
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-    });
+    res.cookie("accessToken", accessToken, getCookieOptions(1 * 60 * 60)); // 1시간
 
     console.log("[socialLogin] Attempting to set refreshToken cookie.");
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      sameSite: "Lax",
-      secure: false,
-      path: "/",
-    });
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(14 * 24 * 60 * 60)
+    ); // 14일
 
     const redirectUrl = process.env.FRONTEND_URL;
     console.log(`[socialLogin] Redirecting to: ${redirectUrl}/oauth-success`);
@@ -160,30 +146,10 @@ export function socialLogin(req, res, next) {
   }
 }
 
-// 회원가입
-authRouter.post("/sign-up", signUpValidator, signUp);
-
-// 로그인
-authRouter.post("/sign-in", signInValidator, signIn);
-
-// 토큰 갱신
-authRouter.post("/refresh-token", refreshToken);
-
-authRouter.get(
-  "/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    prompt: "consent select_account",
-  })
-);
-
-authRouter.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/sign-in",
-    session: false,
-  }),
-  socialLogin
-);
-
-export default authRouter;
+// 이 파일은 컨트롤러이므로 아래 라우터 정의는 제거합니다.
+// authRouter.post("/sign-up", signUpValidator, signUp);
+// authRouter.post("/sign-in", signInValidator, signIn);
+// authRouter.post("/refresh-token", refreshToken);
+// authRouter.get("/google", ...);
+// authRouter.get("/google/callback", ...);
+// export default authRouter; // 이 라인도 제거합니다.
