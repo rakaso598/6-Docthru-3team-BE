@@ -1,4 +1,4 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgyMzM1MjIsImV4cCI6MTc0ODIzNzEyMn0.jq3MOtvZeIwkf2Oiw_RQYJ53kKmnF-HDHxYiDmMc0NQ
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgyNTA4NjAsImV4cCI6MTc0ODI1NDQ2MH0.j6DDBGc059hFkYrE0KfAegNPpY8cdosVmY6IV-Vhs3U
 
 ### 현재 챌린지의 작업물 조회
 GET http://localhost:8080/challenges/15/works?page=1&pageSize5
@@ -6,17 +6,17 @@ Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 상세 조회
-GET http://localhost:8080/challenges/15/works/43
+GET http://localhost:8080/challenges/15/works/60
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 생성
-POST http://localhost:8080/challenges/11/works
+POST http://localhost:8080/challenges/15/works
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 제출 및 수정
-PATCH http://localhost:8080/works/54
+PATCH http://localhost:8080/works/43
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 

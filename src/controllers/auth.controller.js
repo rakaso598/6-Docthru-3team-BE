@@ -13,8 +13,8 @@ import {
 
 // 쿠키 설정을 위한 공통 옵션 함수
 const getCookieOptions = (maxAgeSeconds) => ({
-  httpOnly: true,
-  sameSite: "Lax",
+  httpOnly: process.env.NODE_ENV === "production" ? true : false, // 프로덕션 환경에서만 true
+  sameSite: process.env.NODE_ENV === "production" ? "lax" : "none", // 프로덕션 환경에서만 lax, 개발 환경에서는 none
   // NODE_ENV가 'production'일 때만 secure: true (HTTPS 필요)
   secure: process.env.NODE_ENV === "production",
   path: "/",
