@@ -46,16 +46,13 @@ async function save(challenge, userId) {
 const findChallengeDetailById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      category: true,
-      docType: true,
-      originalUrl: true,
-      deadline: true,
-      maxParticipant: true,
-      authorId: true, // 필요 시
+    include: {
+      user: {
+        select: {
+          nickname: true,
+          profileImage: true,
+        },
+      },
     },
   });
 };
