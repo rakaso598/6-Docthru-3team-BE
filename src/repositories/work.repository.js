@@ -61,10 +61,9 @@ const findWorkByChallengeIdAndAuthorId = async (challengeId, authorId) => {
 };
 
 // work 생성
-const createWork = async (content, challengeId, authorId) => {
+const createWork = async (challengeId, authorId) => {
   const work = await prisma.work.create({
     data: {
-      content,
       challengeId,
       authorId,
     },
