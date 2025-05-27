@@ -25,8 +25,8 @@ POST http://localhost:8080/auth/sign-in
 Content-Type: application/json
 
 {
-    "email" : "admin1@example.com",
-    "password" : "adminpassword1"
+    "email" : "admin@email.com",
+    "password" : "admin1234"
 }
 
 ### (수정 필요)
