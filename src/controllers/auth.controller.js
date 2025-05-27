@@ -5,14 +5,11 @@ import {
 } from "../utils/accessToken.utils.js";
 
 const getCookieOptions = (maxAgeSeconds) => ({
-  httpOnly: process.env.NODE_ENV === "production" ? true : false, // 프로덕션 환경에서만 true
-  sameSite: process.env.NODE_ENV === "production" ? "lax" : "none", // 프로덕션 환경에서만 lax, 개발 환경에서는 none
-  // NODE_ENV가 'production'일 때만 secure: true (HTTPS 필요)
+  httpOnly: true,
+  sameSite: "none",
   secure: process.env.NODE_ENV === "production",
   path: "/",
-  maxAge: maxAgeSeconds * 1000, // 밀리초 단위로 변환
-  // 'domain' 옵션을 명시적으로 undefined로 설정하여 브라우저가 현재 도메인에 맞추도록 합니다.
-  // 이 방식이 'localhost' 환경에서 크로스-포트 문제를 피하고 프로덕션에서도 가장 유연합니다.
+  maxAge: maxAgeSeconds * 1000,
   domain: undefined,
 });
 
@@ -26,7 +23,7 @@ export const signUp = async (req, res, next) => {
     console.log("[signUp] User created:", user.id, "Tokens generated.");
 
     console.log("[signUp] Attempting to set accessToken cookie.");
-    res.cookie("accessToken", accessToken, getCookieOptions(1 * 60 * 60)); // 1시간 (3600초)
+    res.cookie("accessToken", accessToken, getCookieOptions(1 * 60 * 60));
 
     console.log("[signUp] Attempting to set refreshToken cookie.");
     res.cookie(
