@@ -1,6 +1,7 @@
 import challengeRepository from "../repositories/challenge.repository.js";
 import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
+import notificationService from "./notification.service.js";
 
 //챌린지 생성
 async function create(challenge, userId) {
@@ -52,6 +53,14 @@ const updateChallenge = async (challengeId, userId, data) => {
     throw err;
   }
 
+  // 어드민이 수정했을 경우 작성자에게 알림
+  if (challenge.authorId !== userId) {
+    const message = notificationService.notificationMessages.challengeUpdate(
+      challenge.title
+    );
+    await notificationService.createNotification(challenge.authorId, message);
+  }
+
   return await challengeRepository.updateChallenge(challengeId, data);
 };
 
@@ -70,6 +79,14 @@ const deleteChallenge = async (challengeId, userId) => {
     throw err;
   }
   await challengeRepository.deleteChallengeById(challengeId);
+
+  if (challenge.authorId !== userId) {
+    const message = notificationService.notificationMessages.challengeDelete(
+      challenge.title
+    );
+
+    await notificationService.createNotification(challenge.authorId, message);
+  }
 };
 
 //챌린지 목록 조회(쿼리)
@@ -82,7 +99,38 @@ async function getChallenges(options) {
  */
 async function updateApplicationById(challengeId, data) {
   try {
-    return await challengeRepository.updateApplication(challengeId, data);
+    const updatedApplication = await challengeRepository.updateApplication(
+      challengeId,
+      data
+    );
+    // 챌린지 정보 조회
+    const challenge = await challengeRepository.findChallengeById(challengeId);
+    // 챌린지가 존재하고, 작성자와 현재 사용자가 다를 경우 알림 전송
+    if (challenge && challenge.authorId !== userId) {
+      if (["REJECTED", "DELETED"].includes(updatedApplication.adminStatus)) {
+        const message = notificationService.notificationMessages.adminAction(
+          challenge.title,
+          updatedApplication.adminStatus,
+          updatedApplication.adminMessage
+        );
+        await notificationService.createNotification(
+          challenge.authorId,
+          message
+        );
+      } else {
+        const message =
+          notificationService.notificationMessages.challengeStatusChange(
+            challenge.title,
+            updatedApplication.adminStatus
+          );
+        await notificationService.createNotification(
+          challenge.authorId,
+          message
+        );
+      }
+    }
+
+    return updatedApplication;
   } catch (e) {
     if (e.code === "P2025") {
       throw new NotFoundError(ExceptionMessage.CHALLENGE_NOT_FOUND);
