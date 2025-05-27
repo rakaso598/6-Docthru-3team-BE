@@ -46,8 +46,9 @@ export const getMyChallenges = async (req, res) => {
 export const getMyApplication = async (req, res) => {
   const applicationId = Number(req.params.applicationId);
   try {
-    const application = await userService.getApplication(applicationId);
-    res.json(application);
+    const data = await userService.getApplication(applicationId);
+    const { challenge, ...rest } = data;
+    res.json({ application: rest, challenge });
   } catch (error) {
     console.error("신청한 챌린지 조회 실패:", error);
   }

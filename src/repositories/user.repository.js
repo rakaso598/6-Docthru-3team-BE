@@ -108,5 +108,8 @@ export const findMyApplication = async (applicationId) => {
     where: {
       id: applicationId,
     },
+    include: {
+      challenge: true,
+    },
   });
 };
