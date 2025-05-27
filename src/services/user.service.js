@@ -10,7 +10,7 @@ export const getMyInfo = async (userId) => {
   return user;
 };
 
-export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
+export const getMyChallenges = async (userId, myChallengeStatus, keyword, options = {}) => {
   const now = new Date();
   const keywordFilter = keyword
     ? {
@@ -21,11 +21,15 @@ export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
       }
     : {};
 
+  const page = options.page || 1;
+  const pageSize = options.pageSize || 10;
+
   if (myChallengeStatus === "participated") {
     const participants = await userRepository.findParticipatedChallenges(
       userId,
       now,
-      keywordFilter
+      keywordFilter,
+      { page, pageSize }
     );
     return participants.map((p) => p.challenge);
   }
@@ -34,7 +38,8 @@ export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
     const participants = await userRepository.findCompletedChallenges(
       userId,
       now,
-      keywordFilter
+      keywordFilter,
+      { page, pageSize }
     );
     return participants.map((p) => p.challenge);
   }
@@ -42,7 +47,8 @@ export const getMyChallenges = async (userId, myChallengeStatus, keyword) => {
   if (myChallengeStatus === "applied") {
     const createdChallenges = await userRepository.findMyCreatedChallenges(
       userId,
-      keywordFilter
+      keywordFilter,
+      { page, pageSize }
     );
     return createdChallenges;
   }
