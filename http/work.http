@@ -1,4 +1,4 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgyNTA4NjAsImV4cCI6MTc0ODI1NDQ2MH0.j6DDBGc059hFkYrE0KfAegNPpY8cdosVmY6IV-Vhs3U
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgzMDk4MjUsImV4cCI6MTc0ODMxMzQyNX0.GzsZfN2OceNkyvkJJugd94MGi0WmvlVjmZ3W6tNSlGE
 
 ### 현재 챌린지의 작업물 조회
 GET http://localhost:8080/challenges/15/works?page=1&pageSize5
@@ -6,7 +6,7 @@ Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 상세 조회
-GET http://localhost:8080/challenges/15/works/60
+GET http://localhost:8080/challenges/15/works/66
 Content-Type: application/json
 Cookie: accessToken={{accessToken}}
 
@@ -25,7 +25,7 @@ Cookie: accessToken={{accessToken}}
 }
 
 ### 작업물 삭제 .
-DELETE http://localhost:8080/works/56
+DELETE http://localhost:8080/works/66
 Cookie: accessToken={{accessToken}}
 
 ### 작업물 소프트삭제 (작업물 비활성화 필드 true)

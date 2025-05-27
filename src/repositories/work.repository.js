@@ -98,15 +98,30 @@ const findWorkByChallengeIdAndAuthorId = async (challengeId, authorId) => {
   return work;
 };
 
-// work 생성
+// work 생성 및 참여자 추가
 const createWork = async (challengeId, authorId) => {
-  const work = await prisma.work.create({
-    data: {
-      challengeId,
-      authorId,
-    },
+  // 트랜잭션으로 작업물 생성과 참여자 추가를 동시에 처리
+  const result = await prisma.$transaction(async (tx) => {
+    // 작업물 생성
+    const work = await tx.work.create({
+      data: {
+        challengeId,
+        authorId,
+      },
+    });
+
+    // 참여자 추가
+    await tx.participant.create({
+      data: {
+        challengeId,
+        userId: authorId,
+      },
+    });
+
+    return work;
   });
-  return work;
+
+  return result;
 };
 
 // work 수정
@@ -118,11 +133,37 @@ const updateWork = async (workId, content) => {
   return updatedWork;
 };
 
-// work 하드삭제
+// work 하드삭제 및 참여자 삭제
 const hardDeleteWork = async (workId) => {
-  await prisma.work.delete({
-    where: { id: workId },
+  const result = await prisma.$transaction(async (tx) => {
+    const work = await tx.work.findUnique({
+      where: { id: workId },
+    });
+
+    if (!work) {
+      const error = new Error("해당 작업을 찾을 수 없습니다.");
+      error.statusCode = 404;
+      throw error;
+    }
+    // 참여자 삭제 (복합 유니크 키 사용)
+    await tx.participant.delete({
+      where: {
+        userId_challengeId: {
+          userId: work.authorId,
+          challengeId: work.challengeId,
+        },
+      },
+    });
+
+    // 작업물 삭제
+    await tx.work.delete({
+      where: { id: workId },
+    });
+
+    return work;
   });
+
+  return result;
 };
 
 // 작성자 id & title 조회회
