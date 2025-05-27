@@ -23,7 +23,7 @@ export const getMyChallenges = async (req, res) => {
     const currentPage = Number.isNaN(pageInt) ? 1 : pageInt;
     const pageSize = Number.isNaN(pageSizeInt) ? 10 : pageSizeInt;
 
-    const { data, totalCount  } = await userService.getMyChallenges(
+    const { data, totalCount } = await userService.getMyChallenges(
       userId,
       myChallengeStatus,
       keyword,
@@ -40,5 +40,15 @@ export const getMyChallenges = async (req, res) => {
     const status = error.status || 500;
     console.error("나의 챌린지 조회 실패:", error);
     res.status(status).json({ message: error.message || "서버 내부 오류" });
+  }
+};
+
+export const getMyApplication = async (req, res) => {
+  const applicationId = Number(req.params.applicationId);
+  try {
+    const application = await userService.getApplication(applicationId);
+    res.json(application);
+  } catch (error) {
+    console.error("신청한 챌린지 조회 실패:", error);
   }
 };
