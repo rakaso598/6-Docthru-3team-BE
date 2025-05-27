@@ -35,16 +35,20 @@ const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
 };
 
-// 챌린지 수정
+
 const findChallengeById = async (challengeId) => {
   return await challengeRepository.findChallengeById(challengeId);
 };
+
+// 챌린지 수정
 const updateChallenge = async (challengeId, userId, data) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) throw new Error("챌린지가 존재하지 않습니다.");
 
-  if (challenge.authorId !== userId) {
-    const err = new Error("작성자만 수정할 수 있습니다.");
+  const userRoleObj = await challengeRepository.findUserRoleById(userId);
+  const userRole = userRoleObj.role;
+  if (userRole !== 'ADMIN') {
+    const err = new Error("관리자만 수정할 수 있습니다.");
     err.statusCode = 403;
     throw err;
   }
@@ -67,8 +71,10 @@ const deleteChallenge = async (challengeId, userId) => {
     throw new Error("챌린지가 존재하지 않습니다.");
   }
 
-  if (challenge.authorId !== userId) {
-    const err = new Error("작성자만 삭제할 수 있습니다.");
+  const userRoleObj = await challengeRepository.findUserRoleById(userId);
+  const userRole = userRoleObj.role;
+  if (userRole !== 'ADMIN') {
+    const err = new Error("관리자만 삭제할 수 있습니다.");
     err.statusCode = 403;
     throw err;
   }

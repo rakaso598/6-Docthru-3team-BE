@@ -78,26 +78,7 @@ const createWork = async (challengeId, authorId) => {
     throw error;
   }
 
-  // 트랜잭션으로 작업물 생성과 참여자 추가를 동시에 처리
-  const result = await prisma.$transaction(async (tx) => {
-    // 작업물 생성
-    const work = await tx.work.create({
-      data: {
-        challengeId,
-        authorId,
-      },
-    });
-
-    // 참여자 추가
-    await tx.participant.create({
-      data: {
-        challengeId,
-        userId: authorId,
-      },
-    });
-
-    return work;
-  });
+  const result = await workRepository.createWork(challengeId, authorId);
 
   // 알림 생성
   const challenge = await prisma.challenge.findUnique({
@@ -144,34 +125,7 @@ const hardDeleteWork = async (workId, userId) => {
     throw error;
   }
 
-  const result = await prisma.$transaction(async (tx) => {
-    const work = await tx.work.findUnique({
-      where: { id: workId },
-    });
-
-    if (!work) {
-      const error = new Error("해당 작업을 찾을 수 없습니다.");
-      error.statusCode = 404;
-      throw error;
-    }
-
-    // 참여자 삭제 (복합 유니크 키 사용)
-    await tx.participant.delete({
-      where: {
-        userId_challengeId: {
-          userId: work.authorId,
-          challengeId: work.challengeId,
-        },
-      },
-    });
-
-    // 작업물 삭제
-    await tx.work.delete({
-      where: { id: workId },
-    });
-
-    return work;
-  });
+  const result = await workRepository.hardDeleteWork(workId);
 
   return result;
 };
