@@ -10,7 +10,8 @@ const getCookieOptions = (maxAgeSeconds) => ({
   secure: process.env.NODE_ENV === "production",
   path: "/",
   maxAge: maxAgeSeconds * 1000,
-  domain: undefined,
+  // 이건 기본값 쓰기
+  // domain: undefined,
 });
 
 export const signUp = async (req, res, next) => {
