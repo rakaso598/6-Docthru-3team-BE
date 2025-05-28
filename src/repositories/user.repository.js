@@ -32,13 +32,7 @@ export const findMyChallengesByStatus = async (
   const now = new Date();
 
   // 옵션 기본값 처리
-  const {
-    page = 1,
-    pageSize = 10,
-    category,
-    docType,
-    keyword,
-  } = options;
+  const { page = 1, pageSize = 10, category, docType, keyword } = options;
 
   const skip = (Number(page) - 1) * Number(pageSize); // 건너뛸 수
   const take = Number(pageSize); // 가져올 수
@@ -134,12 +128,7 @@ export const findMyChallengesByStatus = async (
         },
         include: {
           participants: true,
-          application: {
-            select: {
-              adminStatus: true,
-              appliedAt: true,
-            },
-          },
+          application: true,
         },
       }),
     ]);
@@ -164,7 +153,11 @@ export const findMyApplication = async (applicationId) => {
       id: applicationId,
     },
     include: {
-      challenge: true,
+      challenge: {
+        include: {
+          participants: true,
+        },
+      },
     },
   });
 };
