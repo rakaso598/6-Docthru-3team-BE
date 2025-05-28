@@ -3,6 +3,7 @@ export const ExceptionMessage = {
   CHALLNEGE_NOT_FOUND: "챌린지를 찾을 수 없습니다.",
   WORK_NOT_FOUND: "작업물을 찾을 수 없습니다.",
   FEEDBACK_NOT_FOUND: "피드백을 찾을 수 없습니다.",
+  APPLICATION_NOT_FOUND: "신청한 챌린지를 찾을 수 없습니다.",
   USER_NOT_FOUND: "사용자를 찾을 수 없습니다.",
 
   // 로그인, 회원가입 유효성 검사 에러

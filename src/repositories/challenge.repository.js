@@ -31,28 +31,34 @@ async function save(challenge, userId) {
   });
 }
 
-// // 승인된 챌린지 전체 조회 (추후 사용 예정)
-// const findAllChallenges = async () => {
-//   return await prisma.challenge.findMany({
-//     where: {
-//       application: {
-//         adminStatus: "ACCEPTED",
-//       },
-//     },
-//   });
-// };
+// 승인된 챌린지 전체 조회 (추후 사용 예정)
+const findAllChallenges = async () => {
+  return await prisma.challenge.findMany({
+    where: {
+      application: {
+        adminStatus: "ACCEPTED",
+      },
+    },
+    include: {
+      participants: true,
+    },
+  });
+};
 
 // 특정 challenge 조회 (상세 조회에 활용)
 const findChallengeDetailById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
-    include: {
-      user: {
-        select: {
-          nickname: true,
-        },
-      },
-      participants: true,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      category: true,
+      docType: true,
+      originalUrl: true,
+      deadline: true,
+      maxParticipant: true,
+      authorId: true, // 필요 시
     },
   });
 };
@@ -61,7 +67,15 @@ const findChallengeDetailById = async (challengeId) => {
 const findChallengeById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
-    select: { id: true, authorId: true },
+    select: { id: true, authorId: true, title: true },
+  });
+};
+
+// 사용자 역할 조회
+const findUserRoleById = async (userId) => {
+  return await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
   });
 };
 
@@ -156,7 +170,8 @@ async function getChallenges(options) {
 export default {
   save,
   getChallenges,
-  // findAllChallenges, 추후 사용 예정
+  findAllChallenges,
+  findUserRoleById,
   findChallengeById,
   updateChallenge,
   updateApplication,

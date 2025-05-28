@@ -11,6 +11,7 @@ import errorHandler from "./middlewares/errorHandler.js";
 import passport from "passport";
 import "./middlewares/passport/passport.js";
 import adminRouter from "./routes/admin.route.js";
+import { startDeadlineScheduler } from "./utils/scheduler.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -40,6 +41,8 @@ app.use("/works", workRouter);
 app.use("/notifications", notificationRouter);
 app.use("/admin", adminRouter);
 app.use(errorHandler);
+
+startDeadlineScheduler();
 
 app.listen(PORT, () => {
   console.log(`${PORT} Server Started!`);

@@ -4,15 +4,19 @@ import notificationRepository from "../repositories/notification.repository.js";
 const notificationMessages = {
   challengeUpdate: (challengeTitle) =>
     `'${challengeTitle}' 챌린지가 수정되었어요`,
+  challengeDelete: (challengeTitle) =>
+    `'${challengeTitle}' 챌린지가 삭제되었어요`,
   challengeStatusChange: (challengeTitle, status) =>
-    `'${challengeTitle}'(이)가 ${status}되었어요`,
+    `관리자에 의해 '${challengeTitle}'(이)가 ${status} 처리되었어요`,
   newWork: (challengeTitle) =>
     `'${challengeTitle}' 챌린지에 작업물이 추가되었어요`,
   newFeedback: (challengeTitle) =>
     `'${challengeTitle}'에 도전한 작업물에 피드백이 추가되었어요`,
   challengeEnd: (challengeTitle) => `'${challengeTitle}'(이)가 마감되었어요`,
-  adminAction: (actionType, reason) =>
-    `관리자에 의해 ${actionType} 처리되었습니다. 사유: ${reason || "없음"}`,
+  adminAction: (challengeTitle, status, reason) =>
+    `관리자에 의해 '${challengeTitle}'(이)가 ${status} 처리되었어요. 사유: ${
+      reason || "없음"
+    }`,
 };
 
 // 알림 생성
