@@ -62,6 +62,7 @@ const findWorkById = async (workId) => {
         select: {
           id: true,
           nickname: true,
+          role: true,
         },
       },
       _count: {
@@ -82,6 +83,7 @@ const findWorkById = async (workId) => {
     author: {
       authorId: work.user.id,
       authorNickname: work.user.nickname,
+      authorRole: work.user.role,
     },
     originalUrl: work.challenge.originalUrl,
     createdAt: work.createdAt,
@@ -166,7 +168,7 @@ const hardDeleteWork = async (workId) => {
   return result;
 };
 
-// 작성자 id & title 조회회
+// 작성자 id & title 조회
 const findIdAndTitle = async (workId) => {
   return prisma.work.findUnique({
     where: { id: Number(workId) },

@@ -146,12 +146,7 @@ async function getChallenges(options) {
       take,
       include: {
         participants: true, // 관계 포함
-        application: {
-          select: {
-            adminStatus: true,
-            appliedAt: true,
-          },
-        },
+        application: true,
       },
       orderBy: {
         createdAt: "desc",

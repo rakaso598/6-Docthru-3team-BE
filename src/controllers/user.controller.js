@@ -48,7 +48,10 @@ export const getMyApplication = async (req, res) => {
   try {
     const data = await userService.getApplication(applicationId);
     const { challenge, ...rest } = data;
-    res.json({ application: rest, challenge });
+    res.json({
+      application: rest,
+      challenge: { ...challenge, participants: challenge.participants.length },
+    });
   } catch (error) {
     console.error("신청한 챌린지 조회 실패:", error);
   }
