@@ -25,6 +25,8 @@ const allowedOrigins = [
   // "https://six-docthru-3team-be-hdiq.onrender.com",
 ];
 
+console.log(process.env.NODE_ENV);
+
 app.use(
   cors({
     origin: (origin, callback) => {
