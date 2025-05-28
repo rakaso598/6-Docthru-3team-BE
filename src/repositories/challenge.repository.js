@@ -99,6 +99,7 @@ const deleteChallengeById = async (challengeId) => {
   });
 };
 
+//챌린지 목록 가져오기
 async function getChallenges(options) {
   const { page = 1, pageSize = 10, category, docType, keyword } = options;
 
@@ -137,6 +138,9 @@ async function getChallenges(options) {
             appliedAt: true,
           },
         },
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     }),
   ]);
