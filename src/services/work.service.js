@@ -152,9 +152,9 @@ const likeWork = async (workId, userId) => {
 
 // 작업물의 좋아요를 취소하고 결과를 반환
 const unlikeWork = async (workId, userId) => {
-  const isAuthor = await workRepository.isAuthor(workId, userId);
-  if (!isAuthor) {
-    const error = new Error("작성자만 좋아요 취소할 수 있습니다.");
+  const hasLiked = await likeRepository.isWorkLikedByUser(workId, userId);
+  if (!hasLiked) {
+    const error = new Error("좋아요를 누른 사용자만 취소할 수 있습니다.");
     error.statusCode = 403;
     throw error;
   }
