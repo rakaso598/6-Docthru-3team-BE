@@ -27,42 +27,45 @@ export const getMyChallenges = async (
         ],
       }
     : {};
-
-  const page = options.page || 1;
-  const pageSize = options.pageSize || 10;
-
-  if (myChallengeStatus === "participated") {
-    const participants = await userRepository.findParticipatedChallenges(
-      userId,
-      now,
-      keywordFilter,
-      { page, pageSize }
-    );
-    return participants.map((p) => p.challenge);
-  }
-
-  if (myChallengeStatus === "completed") {
-    const participants = await userRepository.findCompletedChallenges(
-      userId,
-      now,
-      keywordFilter,
-      { page, pageSize }
-    );
-    return participants.map((p) => p.challenge);
+  
+  const validStatuses = ["applied", "participated", "completed"];
+  const { page = 1, pageSize = 10 } = options;
+    if (!validStatuses.includes(myChallengeStatus)) {
+    const error = new Error("잘못된 챌린지 상태입니다.");
+    error.status = 400;
+    throw error;
   }
 
   if (myChallengeStatus === "applied") {
-    const createdChallenges = await userRepository.findMyCreatedChallenges(
+    // applied는 findMyChallengesByStatus가 totalCount, data 포함 객체를 반환한다고 가정
+    const { data, totalCount } = await userRepository.findMyChallengesByStatus(
       userId,
+      myChallengeStatus,
       keywordFilter,
       { page, pageSize }
     );
-    return createdChallenges;
-  }
+    return {
+      data,
+      totalCount,
+      currentPage: page,
+      pageSize,
+    };
+  } else {
+    // participated, completed 등 상태
+    const { data, totalCount } = await userRepository.findMyChallengesByStatus(
+      userId,
+      myChallengeStatus,
+      keywordFilter,
+      { page, pageSize },
+    );
 
-  const error = new Error("잘못된 챌린지 상태입니다.");
-  error.status = 400;
-  throw error;
+    return {
+      data,
+      totalCount,
+      currentPage: page,
+      pageSize,
+    };
+  }
 };
 
 export const getApplication = async (applicationId) => {
