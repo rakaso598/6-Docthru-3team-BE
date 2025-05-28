@@ -100,7 +100,7 @@ export const likeWork = async (req, res) => {
     const { workId } = req.params;
     const userId = req.user?.userId;
 
-    const likedWork = await workService.likeWork(Number(workId), userId);
+    await workService.likeWork(Number(workId), userId);
     res.status(201).json({ message: "작업 좋아요 완료" });
   } catch (error) {
     console.error("Work 좋아요 에러:", error);

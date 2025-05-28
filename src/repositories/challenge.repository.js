@@ -171,6 +171,8 @@ async function getChallenges(options) {
   LIMIT ${take} OFFSET ${skip};
 `);
 
+
+
   return {
     totalCount,
     currentPage: Number(page),
