@@ -96,12 +96,6 @@ const createWork = async (challengeId, authorId) => {
 
 // 작업물 내용을 수정하고 수정된 작업물을 반환 (작성자 권한 확인 포함)
 const updateWork = async (workId, userId, content) => {
-  if (!content) {
-    const error = new Error("수정할 내용을 입력해주세요.");
-    error.statusCode = 400;
-    throw error;
-  }
-
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
   if (!isAuthor) {
