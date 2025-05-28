@@ -7,7 +7,7 @@ import {
 const getCookieOptions = (maxAgeSeconds) => ({
   httpOnly: true,
   sameSite: "none",
-  secure: process.env.NODE_ENV,
+  secure: false, // 테스트 하기 설정하면 http, https 상관없이 쿠키를 통과시킴
   path: "/",
   maxAge: maxAgeSeconds * 1000,
   // 이건 기본값 쓰기
