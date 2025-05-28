@@ -44,7 +44,11 @@ export const findCompletedChallenges = async (userId, now, keywordFilter) => {
   });
 };
 
-export const findMyCreatedChallenges = async (userId, keywordFilter, options = {}) => {
+export const findMyCreatedChallenges = async (
+  userId,
+  keywordFilter,
+  options = {}
+) => {
   const { page = 1, pageSize = 10, category, docType, keyword } = options;
 
   const skip = (Number(page) - 1) * Number(pageSize);
@@ -52,8 +56,8 @@ export const findMyCreatedChallenges = async (userId, keywordFilter, options = {
 
   const where = {
     authorId: userId,
-      ...keywordFilter,
-    };
+    ...keywordFilter,
+  };
 
   if (category) {
     where.category = category;
@@ -77,7 +81,7 @@ export const findMyCreatedChallenges = async (userId, keywordFilter, options = {
       skip,
       take,
       orderBy: {
-        createdAt: 'desc', // 최신순 정렬
+        createdAt: "desc", // 최신순 정렬
       },
       include: {
         participants: true, // 관계 포함
@@ -91,11 +95,21 @@ export const findMyCreatedChallenges = async (userId, keywordFilter, options = {
     }),
   ]);
 
-
   return {
     data: challenges,
     totalCount,
     currentPage: Number(page),
     pageSize: Number(pageSize),
   };
+};
+
+export const findMyApplication = async (applicationId) => {
+  return await prisma.application.findUnique({
+    where: {
+      id: applicationId,
+    },
+    include: {
+      challenge: true,
+    },
+  });
 };
