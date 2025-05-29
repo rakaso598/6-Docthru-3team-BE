@@ -84,8 +84,6 @@ async function getByEmail(user) {
 
 async function refreshedToken(refreshToken) {
   try {
-<<<<<<< Updated upstream
-=======
     // 데이터베이스에서 리프레시 토큰으로 사용자 찾기
     const userWithToken = await authRepository.findUserByRefreshToken(
       refreshToken
@@ -96,30 +94,11 @@ async function refreshedToken(refreshToken) {
     }
 
     // 토큰 검증
->>>>>>> Stashed changes
     const payload = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET_KEY
     );
 
-<<<<<<< Updated upstream
-
-    const userId = payload.userId;
-
-    const user = await authRepository.findUserById(userId);
-
-    const newAccessToken = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: "1h" }
-    );
-
-    if (!newAccessToken) {
-      throw new Error("Failed to generate access token");
-    }
-
-    return newAccessToken;
-=======
     if (payload.userId !== userWithToken.id) {
       throw new Error("Token mismatch");
     }
@@ -162,7 +141,6 @@ async function refreshedToken(refreshToken) {
     return {
       accessToken: newAccessToken,
     };
->>>>>>> Stashed changes
   } catch (error) {
     if (
       error.name === "JsonWebTokenError" ||

@@ -35,8 +35,6 @@ export const signUp = async (req, res, next) => {
       req.body
     );
 
-    console.log("씨 이발 토큰 받아오는거 맞아?", accessToken, refreshToken);
-
     // Access Token: 15분
     res.cookie(
       "accessToken",
