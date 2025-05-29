@@ -3,17 +3,17 @@ import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import { softDeleteWork } from "../controllers/admin.controller.js";
 import { adminValidator } from "../middlewares/validator.js";
 import {
-  getChallenges,
+  getApplications,
   updateApplicationStatus,
 } from "../controllers/challenge.controller.js";
 
 const adminRouter = express.Router({ mergeParams: true });
 
 adminRouter.get(
-  "/challenges/",
+  "/applications",
   verifyAccessToken,
   adminValidator,
-  getChallenges
+  getApplications
 );
 adminRouter.patch(
   "/challenges/:challengeId",

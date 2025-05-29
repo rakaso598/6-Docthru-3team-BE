@@ -27,8 +27,6 @@ challengeRouter.put("/:challengeId", verifyAccessToken, updateChallenge);
 // 챌린지 삭제
 challengeRouter.delete("/:challengeId", verifyAccessToken, deleteChallenge);
 
-// --- Challenge에 종속된 Work 관련 라우트 ---
-
 // 챌린지 작업물 관련 라우터
 challengeRouter.use("/:challengeId/works", workRouter);
 

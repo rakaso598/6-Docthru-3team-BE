@@ -1,6 +1,37 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbjEiLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsIm5pY2tuYW1lIjoi6rSA66as7J6QIiwiaWF0IjoxNzQ4MzM0MzYyLCJleHAiOjE3NDgzMzc5NjJ9.G6zzs-qeTZq6CXDAhgrzLOKCPHLyUNFnC_vYRDOtLWw
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbjEiLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsIm5pY2tuYW1lIjoi6rSA66as7J6QIiwiaWF0IjoxNzQ4NDg1MTcxLCJleHAiOjE3NDg0ODg3NzF9.d4W7wlpZj7g1uO_FGRgHYQX8rHWI0D_9LrKMrxRGwI8
 
-################ 챌린지 ################
+### 챌린지 신청 목록 조회 - 신청시간 빠른순(기본)
+GET http://localhost:8080/admin/applications?page=1&pageSize=10
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청시간 느린순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=appliedAt_asc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 마감기한 빠른순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=deadline_desc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 마감기한 느린순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=deadline_asc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 승인대기
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=pending
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청승인
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=accepted
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청거절
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=rejected
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 검색
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&keyword=next
+Cookie: accessToken={{accessToken}}
+
 ### 챌린지 승인
 PATCH http://localhost:8080/admin/challenges/20
 Content-Type: application/json 
