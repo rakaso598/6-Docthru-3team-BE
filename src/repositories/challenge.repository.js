@@ -48,20 +48,16 @@ const findAllChallenges = async () => {
 const findChallengeDetailById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      category: true,
-      docType: true,
-      originalUrl: true,
-      deadline: true,
-      maxParticipant: true,
-      authorId: true, // 필요 시
+    include: {
+      author: {
+        select: {
+          id: true,
+          nickname: true,
+        },
+      },
     },
   });
 };
-
 // 특정 challenge 조회  (수정, 삭제에 활용)
 const findChallengeById = async (challengeId) => {
   return await prisma.challenge.findUnique({
@@ -169,8 +165,6 @@ async function getChallenges(options) {
   ORDER BY c."createdAt" DESC
   LIMIT ${take} OFFSET ${skip};
 `);
-
-
 
   return {
     totalCount,
