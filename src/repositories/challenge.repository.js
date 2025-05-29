@@ -110,67 +110,84 @@ const deleteChallengeById = async (challengeId) => {
 
 //챌린지 목록 가져오기
 async function getChallenges(options) {
-  const { page = 1, pageSize = 10, category, docType, keyword } = options;
+  const {
+    page = 1,
+    pageSize = 10,
+    category,
+    docType,
+    keyword,
+    status,
+  } = options;
 
   const skip = (Number(page) - 1) * Number(pageSize);
   const take = Number(pageSize);
 
-  const keywordWithoutSpaces = keyword ? keyword.replace(/\s+/g, "") : ""; //띄어쓰기도 인식하도록
+  const where = {};
 
-  let categoryCondition = "";
-  if (category) categoryCondition = `AND category = '${category}'`;
-  let docTypeCondition = "";
-  if (docType) docTypeCondition = `AND docType = '${docType}'`;
 
-  //데이터 갯수 세는 쿼리
-  const countResult = await prisma.$queryRawUnsafe(`
-  SELECT COUNT(DISTINCT c.id) as count
-  FROM "Challenge" c
-  LEFT JOIN "Participant" p ON p."challengeId" = c.id
-  LEFT JOIN "Application" a ON a."challengeId" = c.id
-  WHERE 
-    (
-      REPLACE(c.title, ' ', '') ILIKE '%${keywordWithoutSpaces}%'
-      OR REPLACE(c.description, ' ', '') ILIKE '%${keywordWithoutSpaces}%'
-    )
-    ${categoryCondition}
-    ${docTypeCondition}
-`);
-  const totalCount = Number(countResult[0]?.count || 0);
+  if (category) {
+    where.category = category;
+  }
 
-  // 데이터 조회 쿼리
-  const challenges = await prisma.$queryRawUnsafe(`
-  SELECT 
-    c.*, 
-    json_agg(DISTINCT jsonb_build_object(
-      'id', p."id",
-      'userId', p."userId",
-      'challengeId', p."challengeId"
-    )) AS participants,
-    json_agg(DISTINCT jsonb_build_object(
-      'adminStatus', a."adminStatus",
-      'appliedAt', a."appliedAt"
-    )) FILTER (WHERE a."adminStatus" IS NOT NULL) AS application
-  FROM "Challenge" c
-  LEFT JOIN "Participant" p ON p."challengeId" = c."id"
-  LEFT JOIN "Application" a ON a."challengeId" = c."id"
-  WHERE 
-    (
-      REPLACE(c."title", ' ', '') ILIKE '%${keywordWithoutSpaces}%'
-      OR REPLACE(c."description", ' ', '') ILIKE '%${keywordWithoutSpaces}%'
-    )
-    ${categoryCondition}
-    ${docTypeCondition}
-  GROUP BY c."id"
-  ORDER BY c."createdAt" DESC
-  LIMIT ${take} OFFSET ${skip};
-`);
+  if (docType) {
+    where.docType = docType;
+  }
+
+  if (keyword) {
+    const keywordWithoutSpaces = keyword.replace(/\s/g, "");
+    where.OR = [
+      { title: { contains: keyword, mode: "insensitive" } },
+      { description: { contains: keyword, mode: "insensitive" } },
+      { title: { contains: keywordWithoutSpaces, mode: "insensitive" } },
+      { description: { contains: keywordWithoutSpaces, mode: "insensitive" } },
+    ];
+  }
+
+  //데이터의 총 갯수(챌린지 상태는 제외되어있음)
+  const allChallenges = await prisma.challenge.findMany({
+    where,
+    include: {
+      participants: true,
+      application: {
+        select: {
+          adminStatus: true,
+          appliedAt: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  // status(챌린지의 진행 중, 마감 상태)를 포함하여 필터링
+  const challengesWithStatus = allChallenges.map((challenge) => {
+    const status =
+      challenge.participants.length >= challenge.maxParticipant ||
+      new Date(challenge.deadline) <= new Date()
+        ? "closed"
+        : "open";
+
+    return {
+      ...challenge,
+      status,
+    };
+  });
+
+  //최종적인 챌린지 데이터
+  const statusFilterdChallenges = status
+    ? challengesWithStatus.filter((c) => c.status === status)
+    : challengesWithStatus;
+
+  //모든 챌린지 데이터에서 페이지네이션으로 자르기
+  const pagedChallenges = statusFilterdChallenges.slice(skip, skip + take);
+
 
   return {
-    totalCount,
+    totalCount: statusFilterdChallenges.length,
     currentPage: Number(page),
     pageSize: Number(pageSize),
-    data: challenges,
+    data: pagedChallenges,
   };
 }
 

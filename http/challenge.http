@@ -1,7 +1,7 @@
 @accessToken=
 
 ### 챌린지 쿼리 조회
-GET http://localhost:8080/challenges?page=1&pageSize=4&category=&docType=&keyword=
+GET http://localhost:8080/challenges?page=3&pageSize=4&category=&docType=&keyword=&status=open
 
 ### 챌린지 등록(신청)
 POST http://localhost:8080/challenges
