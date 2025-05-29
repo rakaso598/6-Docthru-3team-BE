@@ -124,9 +124,14 @@ async function getChallenges(options) {
 
   const where = {};
 
-
   if (category) {
-    where.category = category;
+    if (Array.isArray(category)) {
+      where.category = {
+        in: category,
+      };
+    } else {
+      where.category = category;
+    }
   }
 
   if (docType) {
@@ -181,7 +186,6 @@ async function getChallenges(options) {
 
   //모든 챌린지 데이터에서 페이지네이션으로 자르기
   const pagedChallenges = statusFilterdChallenges.slice(skip, skip + take);
-
 
   return {
     totalCount: statusFilterdChallenges.length,
