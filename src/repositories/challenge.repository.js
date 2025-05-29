@@ -1,4 +1,3 @@
-import { adminStatus } from "@prisma/client";
 import prisma from "../prisma/client.prisma.js";
 
 /**
@@ -49,20 +48,16 @@ const findAllChallenges = async () => {
 const findChallengeDetailById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      category: true,
-      docType: true,
-      originalUrl: true,
-      deadline: true,
-      maxParticipant: true,
-      authorId: true, // 필요 시
+    include: {
+      user: {
+        select: {
+          id: true,
+          nickname: true,
+        },
+      },
     },
   });
 };
-
 // 특정 challenge 조회  (수정, 삭제에 활용)
 const findChallengeById = async (challengeId) => {
   return await prisma.challenge.findUnique({
@@ -129,6 +124,7 @@ async function getChallenges(options) {
 
   const where = {};
 
+
   if (category) {
     where.category = category;
   }
@@ -186,6 +182,7 @@ async function getChallenges(options) {
   //모든 챌린지 데이터에서 페이지네이션으로 자르기
   const pagedChallenges = statusFilterdChallenges.slice(skip, skip + take);
 
+
   return {
     totalCount: statusFilterdChallenges.length,
     currentPage: Number(page),
@@ -194,10 +191,35 @@ async function getChallenges(options) {
   };
 }
 
+async function findAllApplications(options) {
+  const { skip, take, where, orderBy } = options;
+
+  const [totalCount, applications] = await Promise.all([
+    prisma.application.count({ where }),
+    prisma.application.findMany({
+      where,
+      orderBy,
+      skip,
+      take,
+      include: {
+        challenge: {
+          include: { participants: true },
+        },
+      },
+    }),
+  ]);
+
+  return {
+    totalCount,
+    data: applications,
+  };
+}
+
 export default {
   save,
   getChallenges,
   findAllChallenges,
+  findAllApplications,
   findUserRoleById,
   findChallengeById,
   updateChallenge,

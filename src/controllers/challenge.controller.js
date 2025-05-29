@@ -3,7 +3,6 @@ import challengeService from "../services/challenge.service.js";
 //챌린지 작업물 관련
 
 export const getAllChallenges = async (req, res) => {
-  const { userId } = req.body;
   try {
     const works = await challengeService.findAllChallenges();
     res.status(200).json({ data: works });
@@ -164,6 +163,20 @@ export async function updateApplicationStatus(req, res, next) {
       data
     );
     res.json({ result });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function getApplications(req, res, next) {
+  try {
+    const { totalCount, data } = await challengeService.getApplications({
+      page: Number(req.query.page),
+      pageSize: Number(req.query.pageSize),
+      sort: req.query.sort,
+      keyword: req.query.keyword,
+    });
+    res.json({ totalCount, applications: data });
   } catch (e) {
     next(e);
   }

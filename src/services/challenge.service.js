@@ -35,7 +35,6 @@ const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
 };
 
-
 const findChallengeById = async (challengeId) => {
   return await challengeRepository.findChallengeById(challengeId);
 };
@@ -47,7 +46,7 @@ const updateChallenge = async (challengeId, userId, data) => {
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
   const userRole = userRoleObj.role;
-  if (userRole !== 'ADMIN') {
+  if (userRole !== "ADMIN") {
     const err = new Error("관리자만 수정할 수 있습니다.");
     err.statusCode = 403;
     throw err;
@@ -73,7 +72,7 @@ const deleteChallenge = async (challengeId, userId) => {
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
   const userRole = userRoleObj.role;
-  if (userRole !== 'ADMIN') {
+  if (userRole !== "ADMIN") {
     const err = new Error("관리자만 삭제할 수 있습니다.");
     err.statusCode = 403;
     throw err;
@@ -133,14 +132,64 @@ async function updateApplicationById(challengeId, data) {
     return updatedApplication;
   } catch (e) {
     if (e.code === "P2025") {
-      throw new NotFoundError(ExceptionMessage.CHALLENGE_NOT_FOUND);
+      throw new NotFoundError(ExceptionMessage.CHALLNEGE_NOT_FOUND);
     }
   }
+}
+
+async function getApplications({
+  page = 1,
+  pageSize = 10,
+  sort = "appliedAt_desc",
+  keyword,
+}) {
+  const offset = (page - 1) * pageSize;
+
+  const options = {
+    skip: offset,
+    take: pageSize,
+    orderBy: {},
+    where: {},
+  };
+
+  // 필터 조건
+  if (["pending", "accepted", "rejected"].includes(sort)) {
+    options.where.adminStatus = sort.toUpperCase();
+  }
+
+  // 정렬 조건
+  if (sort === "appliedAt_asc") {
+    options.orderBy = { appliedAt: "asc" };
+  } else if (sort === "appliedAt_desc") {
+    options.orderBy = { appliedAt: "desc" };
+  } else if (sort === "deadline_asc") {
+    options.orderBy = { challenge: { deadline: "asc" } };
+  } else if (sort === "deadline_desc") {
+    options.orderBy = { challenge: { deadline: "desc" } };
+  }
+
+  // 검색 조건
+  if (keyword) {
+    const keywordFilter = {
+      OR: [
+        { challenge: { title: { contains: keyword, mode: "insensitive" } } },
+        {
+          challenge: {
+            description: { contains: keyword, mode: "insensitive" },
+          },
+        },
+      ],
+    };
+    options.where = { ...options.where, ...keywordFilter };
+  }
+
+  return challengeRepository.findAllApplications(options);
 }
 
 export default {
   create,
   getChallenges,
+  getApplications,
   findChallengeById,
   // findAllChallenges, 추후 사용 예정
   updateChallenge,
