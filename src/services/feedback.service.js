@@ -1,3 +1,4 @@
+import { error } from "console";
 import feedbackRepository from "../repositories/feedback.repository.js";
 import workRepository from "../repositories/work.repository.js";
 import notificationService from "./notification.service.js";
@@ -53,6 +54,15 @@ async function deleteFeedback(feedbackId, userId) {
     const err = new Error("피드백을 찾을 수 없습니다.");
     err.status = 404;
     throw err;
+  }
+  const user = await findUserById(userId);
+  if (!user) {
+    const err = new Error("사용자 정보를 찾을 수 없습니다.");
+    error.status = 401;
+    throw err;
+  }
+  if (user.role === "ADMIN") {
+    return feedbackRepository.remove(feedbackId);
   }
   if (feedback.authorId !== userId) {
     const err = new Error("본인이 작성한 피드백만 삭제할 수 있습니다.");
