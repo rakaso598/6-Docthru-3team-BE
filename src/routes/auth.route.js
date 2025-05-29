@@ -4,9 +4,11 @@ import {
   signIn,
   refreshToken,
   socialLogin,
+  signOut,
 } from "../controllers/auth.controller.js";
 import { signInValidator, signUpValidator } from "../middlewares/validator.js";
 import passport from "passport";
+import { verifyAccessToken } from "../middlewares/verifyToken.js";
 
 const authRouter = express.Router();
 
@@ -18,6 +20,9 @@ authRouter.post("/sign-in", signInValidator, signIn);
 
 // 토큰 갱신
 authRouter.post("/refresh-token", refreshToken);
+
+// 로그아웃
+authRouter.post("/sign-out", verifyAccessToken, signOut);
 
 /**
  * 클라이언트가 구글 로그인 시 호출하는 엔드포인트 (구글 로그인 페이지로 리디렉션)

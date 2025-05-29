@@ -11,6 +11,7 @@ import {
 } from "../utils/auth.utils.js";
 import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
+import { TIME } from "../constants/time.constants.js";
 
 async function createUser(user) {
   const existingEmail = await authRepository.findUserByEmail(user.email);
@@ -29,6 +30,9 @@ async function createUser(user) {
 
   const accessToken = generateAccessToken(createdUser);
   const refreshToken = generateRefreshToken(createdUser);
+
+  // 리프레시 토큰을 데이터베이스에 저장
+  await authRepository.updateRefreshToken(createdUser.id, refreshToken);
 
   return {
     accessToken,
@@ -68,24 +72,37 @@ async function getByEmail(user) {
   const accessToken = generateAccessToken(existedUser);
   const refreshToken = generateRefreshToken(existedUser);
 
+  // 리프레시 토큰을 데이터베이스에 저장
+  await authRepository.updateRefreshToken(existedUser.id, refreshToken);
+
   return {
     accessToken,
     refreshToken,
-    user: {
-      id: existedUser.id,
-      email: existedUser.email,
-      nickname: existedUser.nickname,
-    },
+    user: filterSensitiveUserData(existedUser),
   };
 }
 
 async function refreshedToken(refreshToken) {
   try {
+<<<<<<< Updated upstream
+=======
+    // 데이터베이스에서 리프레시 토큰으로 사용자 찾기
+    const userWithToken = await authRepository.findUserByRefreshToken(
+      refreshToken
+    );
+
+    if (!userWithToken) {
+      throw new Error("Invalid refresh token");
+    }
+
+    // 토큰 검증
+>>>>>>> Stashed changes
     const payload = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET_KEY
     );
 
+<<<<<<< Updated upstream
 
     const userId = payload.userId;
 
@@ -102,8 +119,58 @@ async function refreshedToken(refreshToken) {
     }
 
     return newAccessToken;
+=======
+    if (payload.userId !== userWithToken.id) {
+      throw new Error("Token mismatch");
+    }
+
+    // 새로운 액세스 토큰 생성
+    const newAccessToken = jwt.sign(
+      { userId: userWithToken.id },
+      process.env.JWT_SECRET_KEY
+    );
+
+    // 리프레시 토큰 만료 시간이 1주일 이하로 남았다면 새로운 리프레시 토큰 발급
+    // TODO : 현재는 테스트로 발급도 1주일로 설정해 무조건 재발급 되게함
+    const tokenExp = new Date(payload.exp * 1000);
+    const now = new Date();
+    const remainingTime = tokenExp.getTime() - now.getTime();
+    const oneWeekInMs = TIME.WEEK * 1000;
+
+    if (remainingTime <= oneWeekInMs) {
+      const newRefreshToken = generateRefreshToken(userWithToken);
+
+      // DB 업데이트 로그
+      console.log("리프레시 토큰 DB 업데이트 시작", {
+        userId: userWithToken.id,
+        tokenExp: new Date(jwt.decode(newRefreshToken).exp * 1000),
+      });
+
+      await authRepository.updateRefreshToken(
+        userWithToken.id,
+        newRefreshToken
+      );
+
+      console.log("리프레시 토큰 DB 업데이트 완료");
+
+      return {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+      };
+    }
+
+    return {
+      accessToken: newAccessToken,
+    };
+>>>>>>> Stashed changes
   } catch (error) {
-    throw new Error("Faild to refresh access-token");
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
+      throw new Error("Invalid or expired refresh token");
+    }
+    throw error;
   }
 }
 

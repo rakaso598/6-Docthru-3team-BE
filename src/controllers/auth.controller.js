@@ -3,6 +3,8 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/accessToken.utils.js";
+import authRepository from "../repositories/auth.repository.js";
+import { TOKEN_EXPIRES } from "../constants/time.constants.js";
 
 /**
  * 시간 단위를 초(seconds) 기준으로 정의한 상수
@@ -18,13 +20,6 @@ import {
  * - 1시간 설정: getCookieOptions(TIME.HOUR)
  * - 2주 설정: getCookieOptions(2 * TIME.WEEK)
  */
-const TIME = {
-  SECOND: 1,
-  MINUTE: 60, // 60 * SECOND
-  HOUR: 60 * 60, // 60 * MINUTE
-  DAY: 24 * 60 * 60, // 24 * HOUR
-  WEEK: 7 * 24 * 60 * 60, // 7 * DAY
-};
 
 const getCookieOptions = (maxAgeSeconds) => ({
   httpOnly: true,
@@ -40,11 +35,21 @@ export const signUp = async (req, res, next) => {
       req.body
     );
 
-    // Access Token: 15분
-    res.cookie("accessToken", accessToken, getCookieOptions(15 * TIME.MINUTE));
+    console.log("씨 이발 토큰 받아오는거 맞아?", accessToken, refreshToken);
 
-    // Refresh Token: 2주
-    res.cookie("refreshToken", refreshToken, getCookieOptions(2 * TIME.WEEK));
+    // Access Token: 15분
+    res.cookie(
+      "accessToken",
+      accessToken,
+      getCookieOptions(TOKEN_EXPIRES.ACCESS_TOKEN_COOKIE)
+    );
+
+    // Refresh Token: 1주
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(TOKEN_EXPIRES.REFRESH_TOKEN_COOKIE)
+    );
 
     return res.json(user);
   } catch (error) {
@@ -59,10 +64,18 @@ export const signIn = async (req, res, next) => {
     );
 
     // Access Token: 15분
-    res.cookie("accessToken", accessToken, getCookieOptions(15 * TIME.MINUTE));
+    res.cookie(
+      "accessToken",
+      accessToken,
+      getCookieOptions(TOKEN_EXPIRES.ACCESS_TOKEN_COOKIE)
+    );
 
-    // Refresh Token: 2주
-    res.cookie("refreshToken", refreshToken, getCookieOptions(2 * TIME.WEEK));
+    // Refresh Token: 1주
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(TOKEN_EXPIRES.REFRESH_TOKEN_COOKIE)
+    );
 
     return res.json(user);
   } catch (error) {
@@ -77,28 +90,43 @@ export const refreshToken = async (req, res, next) => {
       return res.status(401).json({ message: "No refresh token provided" });
     }
 
-    const newAccessToken = await authService.refreshedToken(refreshToken);
+    const tokens = await authService.refreshedToken(refreshToken);
 
     res.set("etag", false);
     res.setHeader("Cache-Control", "no-store");
 
-    // Access Token: 1시간
+    // Access Token: 15분
     res.cookie(
       "accessToken",
-      newAccessToken,
-      getCookieOptions(15 * TIME.MINUTE)
+      tokens.accessToken,
+      getCookieOptions(TOKEN_EXPIRES.ACCESS_TOKEN_COOKIE)
     );
 
+    // 새로운 리프레시 토큰이 발급된 경우에만 쿠키 업데이트
+    if (tokens.refreshToken) {
+      res.cookie(
+        "refreshToken",
+        tokens.refreshToken,
+        getCookieOptions(TOKEN_EXPIRES.REFRESH_TOKEN_COOKIE)
+      );
+    }
+
     return res.status(200).json({
-      message: "Access token refreshed",
-      accessToken: newAccessToken,
+      message: "Token refreshed successfully",
     });
   } catch (error) {
+    console.log(error);
+    if (
+      error.message.includes("Invalid") ||
+      error.message.includes("expired")
+    ) {
+      return res.status(401).json({ message: error.message });
+    }
     next(error);
   }
 };
 
-export function socialLogin(req, res, next) {
+export async function socialLogin(req, res, next) {
   try {
     if (!req.user) {
       return res.redirect("/sign-in?error=auth_failed");
@@ -107,11 +135,22 @@ export function socialLogin(req, res, next) {
     const accessToken = generateAccessToken(req.user);
     const refreshToken = generateRefreshToken(req.user);
 
-    // Access Token: 15분
-    res.cookie("accessToken", accessToken, getCookieOptions(15 * TIME.MINUTE));
+    // 리프레시 토큰을 데이터베이스에 저장
+    await authRepository.updateRefreshToken(req.user.id, refreshToken);
 
-    // Refresh Token: 2주
-    res.cookie("refreshToken", refreshToken, getCookieOptions(2 * TIME.WEEK));
+    // Access Token: 15분
+    res.cookie(
+      "accessToken",
+      accessToken,
+      getCookieOptions(TOKEN_EXPIRES.ACCESS_TOKEN_COOKIE)
+    );
+
+    // Refresh Token: 1주
+    res.cookie(
+      "refreshToken",
+      refreshToken,
+      getCookieOptions(TOKEN_EXPIRES.REFRESH_TOKEN_COOKIE)
+    );
 
     const redirectUrl = process.env.FRONTEND_URL;
     res.redirect(`${redirectUrl}/challenges`);
@@ -119,3 +158,30 @@ export function socialLogin(req, res, next) {
     next(error);
   }
 }
+
+export const signOut = async (req, res, next) => {
+  try {
+    // verifyAccessToken 미들웨어를 통과했다면 req.user는 { userId, email, nickname }
+    const userId = req.user.userId;
+
+    // 데이터베이스에서 리프레시 토큰 삭제
+    await authRepository.updateRefreshToken(userId, null);
+
+    // 쿠키 삭제 - 설정 시와 동일한 옵션 사용
+    const cookieOptions = {
+      ...getCookieOptions(0),
+      maxAge: 0, // 즉시 만료
+    };
+
+    res.clearCookie("accessToken", cookieOptions);
+    res.clearCookie("refreshToken", cookieOptions);
+
+    return res.status(200).json({
+      success: true,
+      message: "Successfully signed out",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    next(error);
+  }
+};

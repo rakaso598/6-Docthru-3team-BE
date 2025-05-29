@@ -34,11 +34,28 @@ async function findUserByNickname(nickname) {
     },
   });
 }
+
 async function findUserById(userId) {
   return await prisma.user.findUnique({
     where: {
       id: userId,
     },
+  });
+}
+
+async function updateRefreshToken(userId, refreshToken) {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: {
+      refreshToken,
+      updatedAt: new Date(),
+    },
+  });
+}
+
+async function findUserByRefreshToken(refreshToken) {
+  return await prisma.user.findFirst({
+    where: { refreshToken },
   });
 }
 
@@ -48,4 +65,6 @@ export default {
   findUserByEmail,
   findUserByNickname,
   findUserById,
+  updateRefreshToken,
+  findUserByRefreshToken,
 };
