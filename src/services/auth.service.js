@@ -81,23 +81,15 @@ async function getByEmail(user) {
 
 async function refreshedToken(refreshToken) {
   try {
-    //디버깅
-    console.log("refreshToken", refreshToken);
-
     const payload = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET_KEY
     );
 
-    //디버깅
-    console.log("payload", payload);
 
     const userId = payload.userId;
 
     const user = await authRepository.findUserById(userId);
-
-    //디버깅
-    console.log("유저 유무 확인");
 
     const newAccessToken = jwt.sign(
       { userId: user.id },
@@ -108,9 +100,6 @@ async function refreshedToken(refreshToken) {
     if (!newAccessToken) {
       throw new Error("Failed to generate access token");
     }
-
-    //디버깅
-    console.log("액세스토큰 리프레쉬 완료");
 
     return newAccessToken;
   } catch (error) {

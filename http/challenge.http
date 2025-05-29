@@ -1,7 +1,7 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDc5NzYzMjEsImV4cCI6MTc0Nzk3OTkyMX0.Ohs4OY8plzuUQdtdig4Hqcip8szpJ8216FkGl5bmOIY
+@accessToken=
 
 ### 챌린지 쿼리 조회
-GET http://localhost:8080/challenges?page=1&pageSize=4&category=&docType=&keyword=Next
+GET http://localhost:8080/challenges?page=1&pageSize=4&category=&docType=&keyword=
 
 ### 챌린지 등록(신청)
 POST http://localhost:8080/challenges
@@ -20,7 +20,7 @@ Cookie:  accessToken={{accessToken}}
 
 ### (수정 필요) > 인증되지 않은 사용자입니다 에러, 쿠키로 되는지 확인
 ### 챌린지 수정
-PUT http://localhost:8080/challenges/25
+PUT http://localhost:8080/challenges/3
 Content-Type: application/json
 Cookie:  accessToken={{accessToken}}
 
