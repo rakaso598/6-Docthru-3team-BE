@@ -170,11 +170,14 @@ export async function updateApplicationStatus(req, res, next) {
 
 export async function getApplications(req, res, next) {
   try {
+    const { userId } = req.user || {}; // 나의 챌린지일 경우
+
     const { totalCount, data } = await challengeService.getApplications({
       page: Number(req.query.page),
       pageSize: Number(req.query.pageSize),
       sort: req.query.sort,
       keyword: req.query.keyword,
+      userId,
     });
     res.json({ totalCount, applications: data });
   } catch (e) {

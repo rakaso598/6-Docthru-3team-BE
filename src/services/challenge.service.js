@@ -142,6 +142,7 @@ async function getApplications({
   pageSize = 10,
   sort = "appliedAt_desc",
   keyword,
+  userId,
 }) {
   const offset = (page - 1) * pageSize;
 
@@ -151,6 +152,11 @@ async function getApplications({
     orderBy: {},
     where: {},
   };
+
+  // userId가 있는 경우 authorId 조건 추가
+  if (userId) {
+    options.where.authorId = userId;
+  }
 
   // 필터 조건
   if (["pending", "accepted", "rejected"].includes(sort)) {
