@@ -102,7 +102,6 @@ export const updateChallenge = async (req, res) => {
 
     res.status(200).json({ data: updateChallenge });
   } catch (error) {
-    
     if (error.statusCode === 403) {
       return res.status(403).json({ message: "관리자 권한이 필요합니다." });
     }
@@ -118,7 +117,6 @@ export const updateChallenge = async (req, res) => {
 // 챌린지 삭제
 export const deleteChallenge = async (req, res) => {
   try {
-
     const userId = req.user?.userId;
     const { challengeId } = req.params;
     await challengeService.deleteChallenge(Number(challengeId), userId);
@@ -156,7 +154,7 @@ export const getChallenges = async (req, res, next) => {
 export async function updateApplicationStatus(req, res, next) {
   try {
     const userRole = req.auth?.role;
-    if (!userRole === 'admin') {
+    if (!userRole === "admin") {
       return res.status(401).json({ message: "관리자만 접근할 수 있습니다. " });
     }
     const challengeId = Number(req.params.challengeId);

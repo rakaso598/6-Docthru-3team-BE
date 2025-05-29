@@ -164,17 +164,13 @@ async function getChallenges(options) {
     },
   });
 
-  const now = new Date(); //deadline과 비교를 위해
-
   // status(챌린지의 진행 중, 마감 상태)를 포함하여 필터링
   const challengesWithStatus = allChallenges.map((challenge) => {
-    let status = "open";
-
-    if (new Date(challenge.deadline) < now) {
-      status = "expired";
-    } else if (challenge.participants.length > challenge.maxParticipant) {
-      status = "closed";
-    }
+    const status =
+      challenge.participants.length >= challenge.maxParticipant ||
+      new Date(challenge.deadline) <= new Date()
+        ? "closed"
+        : "open";
 
     return {
       ...challenge,
