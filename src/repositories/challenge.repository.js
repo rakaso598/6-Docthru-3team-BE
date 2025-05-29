@@ -49,7 +49,7 @@ const findChallengeDetailById = async (challengeId) => {
   return await prisma.challenge.findUnique({
     where: { id: challengeId },
     include: {
-      author: {
+      user: {
         select: {
           id: true,
           nickname: true,
