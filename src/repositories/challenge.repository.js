@@ -1,4 +1,3 @@
-import { adminStatus } from "@prisma/client";
 import prisma from "../prisma/client.prisma.js";
 
 /**
@@ -158,10 +157,35 @@ async function getChallenges(options) {
   };
 }
 
+async function findAllApplications(options) {
+  const { skip, take, where, orderBy } = options;
+
+  const [totalCount, applications] = await Promise.all([
+    prisma.application.count({ where }),
+    prisma.application.findMany({
+      where,
+      orderBy,
+      skip,
+      take,
+      include: {
+        challenge: {
+          include: { participants: true },
+        },
+      },
+    }),
+  ]);
+
+  return {
+    totalCount,
+    data: applications,
+  };
+}
+
 export default {
   save,
   getChallenges,
   findAllChallenges,
+  findAllApplications,
   findUserRoleById,
   findChallengeById,
   updateChallenge,
