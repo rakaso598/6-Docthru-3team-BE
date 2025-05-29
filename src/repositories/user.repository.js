@@ -146,18 +146,3 @@ export const findMyChallengesByStatus = async (
   error.status = 400;
   throw error;
 };
-
-export const findMyApplication = async (applicationId) => {
-  return await prisma.application.findUnique({
-    where: {
-      id: applicationId,
-    },
-    include: {
-      challenge: {
-        include: {
-          participants: true,
-        },
-      },
-    },
-  });
-};

@@ -93,9 +93,7 @@ async function getChallenges(options) {
   return challengeRepository.getChallenges(options);
 }
 
-/**
- * 챌린지 신청 관리
- */
+// 챌린지 신청 관리 - 어드민
 async function updateApplicationById(challengeId, data) {
   try {
     const updatedApplication = await challengeRepository.updateApplication(
@@ -137,6 +135,7 @@ async function updateApplicationById(challengeId, data) {
   }
 }
 
+// 챌린지 신청 목록 조회
 async function getApplications({
   page = 1,
   pageSize = 10,
@@ -192,6 +191,15 @@ async function getApplications({
   return challengeRepository.findAllApplications(options);
 }
 
+// 챌린지 신청 상세 조회
+export const getApplicationById = async (applicationId) => {
+  const data = await challengeRepository.findApplicationById(applicationId);
+  if (!data) {
+    throw new BadRequestError(ExceptionMessage.APPLICATION_NOT_FOUND);
+  }
+  return data;
+};
+
 export default {
   create,
   getChallenges,
@@ -202,4 +210,5 @@ export default {
   deleteChallenge,
   getChallengeDetailById,
   updateApplicationById,
+  getApplicationById,
 };
