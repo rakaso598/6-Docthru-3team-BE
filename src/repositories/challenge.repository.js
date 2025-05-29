@@ -120,39 +120,58 @@ async function getChallenges(options) {
   const skip = (Number(page) - 1) * Number(pageSize);
   const take = Number(pageSize);
 
-  const where = {};
+  const keywordWithoutSpaces = keyword ? keyword.replace(/\s+/g, "") : ""; //띄어쓰기도 인식하도록
 
-  if (category) {
-    where.category = category;
-  }
+  let categoryCondition = "";
+  if (category) categoryCondition = `AND category = '${category}'`;
+  let docTypeCondition = "";
+  if (docType) docTypeCondition = `AND docType = '${docType}'`;
 
-  if (docType) {
-    where.docType = docType;
-  }
+  //데이터 갯수 세는 쿼리
+  const countResult = await prisma.$queryRawUnsafe(`
+  SELECT COUNT(DISTINCT c.id) as count
+  FROM "Challenge" c
+  LEFT JOIN "Participant" p ON p."challengeId" = c.id
+  LEFT JOIN "Application" a ON a."challengeId" = c.id
+  WHERE 
+    (
+      REPLACE(c.title, ' ', '') ILIKE '%${keywordWithoutSpaces}%'
+      OR REPLACE(c.description, ' ', '') ILIKE '%${keywordWithoutSpaces}%'
+    )
+    ${categoryCondition}
+    ${docTypeCondition}
+`);
+  const totalCount = Number(countResult[0]?.count || 0);
 
-  if (keyword) {
-    where.OR = [
-      { title: { contains: keyword, mode: "insensitive" } },
-      { description: { contains: keyword, mode: "insensitive" } },
-    ];
-  }
+  // 데이터 조회 쿼리
+  const challenges = await prisma.$queryRawUnsafe(`
+  SELECT 
+    c.*, 
+    json_agg(DISTINCT jsonb_build_object(
+      'id', p."id",
+      'userId', p."userId",
+      'challengeId', p."challengeId"
+    )) AS participants,
+    json_agg(DISTINCT jsonb_build_object(
+      'adminStatus', a."adminStatus",
+      'appliedAt', a."appliedAt"
+    )) FILTER (WHERE a."adminStatus" IS NOT NULL) AS application
+  FROM "Challenge" c
+  LEFT JOIN "Participant" p ON p."challengeId" = c."id"
+  LEFT JOIN "Application" a ON a."challengeId" = c."id"
+  WHERE 
+    (
+      REPLACE(c."title", ' ', '') ILIKE '%${keywordWithoutSpaces}%'
+      OR REPLACE(c."description", ' ', '') ILIKE '%${keywordWithoutSpaces}%'
+    )
+    ${categoryCondition}
+    ${docTypeCondition}
+  GROUP BY c."id"
+  ORDER BY c."createdAt" DESC
+  LIMIT ${take} OFFSET ${skip};
+`);
 
-  //데이터의 총 갯수 (프론트의 페이지네이션 위해)
-  const [totalCount, challenges] = await Promise.all([
-    prisma.challenge.count({ where }),
-    prisma.challenge.findMany({
-      where,
-      skip,
-      take,
-      include: {
-        participants: true, // 관계 포함
-        application: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    }),
-  ]);
+
 
   return {
     totalCount,

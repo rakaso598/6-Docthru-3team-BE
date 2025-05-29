@@ -6,7 +6,6 @@ import {
   updateChallenge,
   deleteChallenge,
 } from "../controllers/challenge.controller.js";
-import { createWork, getWorkById } from "../controllers/work.controller.js";
 import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import workRouter from "./work.route.js";
 
