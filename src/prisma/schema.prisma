@@ -39,7 +39,7 @@ model Application {
   appliedAt     DateTime
 
   user      User      @relation(fields: [authorId], references: [id])
-  challenge Challenge @relation(fields: [challengeId], references: [id])
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
 }
 
 model Challenge {
