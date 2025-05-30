@@ -109,6 +109,45 @@ const deleteChallengeById = async (challengeId) => {
   });
 };
 
+// 한글 초성 리스트
+const initial = [
+  "ㄱ",
+  "ㄲ",
+  "ㄴ",
+  "ㄷ",
+  "ㄸ",
+  "ㄹ",
+  "ㅁ",
+  "ㅂ",
+  "ㅃ",
+  "ㅅ",
+  "ㅆ",
+  "ㅇ",
+  "ㅈ",
+  "ㅉ",
+  "ㅊ",
+  "ㅋ",
+  "ㅌ",
+  "ㅍ",
+  "ㅎ",
+];
+
+// 한글 문자열에서 초성만 추출
+function getInitial(str) {
+  return str
+    .split("")
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      // 한글 유니코드 범위: 가 ~ 힣
+      if (code >= 44032 && code <= 55203) {
+        const initialIndex = Math.floor((code - 44032) / 588);
+        return initial[initialIndex];
+      }
+      return char; // 한글 아닌 문자는 그대로
+    })
+    .join("");
+}
+
 //챌린지 목록 가져오기
 async function getChallenges(options) {
   const {
@@ -150,7 +189,7 @@ async function getChallenges(options) {
   }
 
   //데이터의 총 갯수(챌린지 상태는 제외되어있음)
-  const allChallenges = await prisma.challenge.findMany({
+  let allChallenges = await prisma.challenge.findMany({
     where,
     include: {
       participants: true,
@@ -173,6 +212,29 @@ async function getChallenges(options) {
       createdAt: "desc",
     },
   });
+
+  if (keyword) {
+    const keywordNoSpace = keyword.replace(/\s/g, "").toLowerCase();
+    const keywordInitial = getInitial(keywordNoSpace);
+
+    allChallenges = allChallenges.filter((challenge) => {
+      const title = challenge.title || "";
+      const desc = challenge.description || "";
+
+      const normalizedTitle = title.replace(/\s/g, "").toLowerCase();
+      const normalizedDesc = desc.replace(/\s/g, "").toLowerCase();
+
+      const titleChosung = getInitial(normalizedTitle);
+      const descChosung = getInitial(normalizedDesc);
+
+      return (
+        normalizedTitle.includes(keywordNoSpace) ||
+        normalizedDesc.includes(keywordNoSpace) ||
+        titleChosung.includes(keywordInitial) ||
+        descChosung.includes(keywordInitial)
+      );
+    });
+  }
 
   // status(챌린지의 진행 중, 마감 상태)를 포함하여 필터링
   const challengesWithStatus = allChallenges.map((challenge) => {
