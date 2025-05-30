@@ -8,17 +8,18 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(cuid())
-  email          String   @unique
-  nickname       String   @unique
-  hashedPassword String?
-  refreshToken   String?
-  providerId     String?  @unique
-  provider       String   @default("local")
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  role           Role     @default(USER)
-  grade          Grade    @default(NORMAL)
+  id                   String   @id @default(cuid())
+  email                String   @unique
+  nickname             String   @unique
+  hashedPassword       String?
+  refreshToken         String?
+  providerId           String?  @unique
+  provider             String   @default("local")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  role                 Role     @default(USER)
+  grade                Grade    @default(NORMAL)
+  mostRecommendedCount Int      @default(0)
 
   works         Work[]
   challenges    Challenge[]
@@ -52,6 +53,7 @@ model Challenge {
   originalUrl    String
   deadline       DateTime
   maxParticipant Int
+  isClosed       Boolean  @default(false) // 2025-05-30 마감 관련 데이터
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
