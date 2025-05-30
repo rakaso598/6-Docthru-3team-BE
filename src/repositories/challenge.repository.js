@@ -195,6 +195,7 @@ async function getChallenges(options) {
   };
 }
 
+// 챌린지 신청 목록 조회
 async function findAllApplications(options) {
   const { skip, take, where, orderBy } = options;
 
@@ -219,6 +220,44 @@ async function findAllApplications(options) {
   };
 }
 
+// 챌린지 신청 상세 조회
+export const findApplicationById = async (applicationId) => {
+  const current = await prisma.application.findUnique({
+    where: {
+      id: applicationId,
+    },
+    include: {
+      challenge: {
+        include: {
+          participants: true,
+        },
+      },
+    },
+  });
+
+  if (!current) return null;
+
+  // 이전 신청 챌린지 id 찾기
+  const prev = await prisma.application.findFirst({
+    where: { id: { lt: applicationId } },
+    orderBy: { id: "desc" },
+    select: { id: true },
+  });
+
+  // 다음 신청 챌린지 id 찾기
+  const next = await prisma.application.findFirst({
+    where: { id: { gt: applicationId } },
+    orderBy: { id: "asc" },
+    select: { id: true },
+  });
+
+  return {
+    application: current,
+    prevApplicationId: prev?.id || null,
+    nextApplicationId: next?.id || null,
+  };
+};
+
 export default {
   save,
   getChallenges,
@@ -230,4 +269,5 @@ export default {
   updateApplication,
   deleteChallengeById,
   findChallengeDetailById,
+  findApplicationById,
 };

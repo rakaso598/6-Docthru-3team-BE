@@ -1,4 +1,4 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDgzNDc5NDIsImV4cCI6MTc0ODM1MTU0Mn0.gLpbXOfGsg9gJn4BkxnOygVyN_GmSMmXMRPeGrY_KAI
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDg1Mjg2NjYsImV4cCI6MTc0ODUzMjI2Nn0.Id8XdZedOh13AkXgyhx2PG4UdG_Bxvy1xsu2iVMO7MM
 
 ### 유저 정보 조회
 GET http://localhost:8080/users/me
@@ -13,7 +13,7 @@ GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed
 Cookie: accessToken={{accessToken}}
 
 ### 나의 챌린지 목록 조회 - 신청한
-GET http://localhost:8080/users/me/challenges?myChallengeStatus=applied&page=2&pageSize=5
+GET http://localhost:8080/users/me/applications?page=1&pageSize=10
 Cookie: accessToken={{accessToken}}
 
 ### 키워드 검색 예시 - next 키워드 포함 챌린지

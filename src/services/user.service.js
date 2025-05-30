@@ -1,5 +1,3 @@
-import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
-import { BadRequestError } from "../exceptions/exceptions.js";
 import * as userRepository from "../repositories/user.repository.js";
 
 export const getMyInfo = async (userId) => {
@@ -27,10 +25,10 @@ export const getMyChallenges = async (
         ],
       }
     : {};
-  
+
   const validStatuses = ["applied", "participated", "completed"];
   const { page = 1, pageSize = 10 } = options;
-    if (!validStatuses.includes(myChallengeStatus)) {
+  if (!validStatuses.includes(myChallengeStatus)) {
     const error = new Error("잘못된 챌린지 상태입니다.");
     error.status = 400;
     throw error;
@@ -56,7 +54,7 @@ export const getMyChallenges = async (
       userId,
       myChallengeStatus,
       keywordFilter,
-      { page, pageSize },
+      { page, pageSize }
     );
 
     return {
@@ -66,12 +64,4 @@ export const getMyChallenges = async (
       pageSize,
     };
   }
-};
-
-export const getApplication = async (applicationId) => {
-  const data = await userRepository.findMyApplication(applicationId);
-  if (!data) {
-    throw new BadRequestError(ExceptionMessage.APPLICATION_NOT_FOUND);
-  }
-  return data;
 };

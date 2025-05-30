@@ -136,7 +136,6 @@ export const deleteChallenge = async (req, res) => {
 };
 
 //챌린지 목록 조회
-
 export const getChallenges = async (req, res, next) => {
   try {
     const challenges = await challengeService.getChallenges(req.query);
@@ -147,9 +146,7 @@ export const getChallenges = async (req, res, next) => {
   }
 };
 
-/**
- * 챌린지 신청 관리(승인/거절/삭제)
- */
+// 챌린지 신청 관리 (승인/거절/삭제)
 export async function updateApplicationStatus(req, res, next) {
   try {
     const userRole = req.auth?.role;
@@ -168,16 +165,37 @@ export async function updateApplicationStatus(req, res, next) {
   }
 }
 
+// 챌린지 신청 목록 조회 (어드민/유저)
 export async function getApplications(req, res, next) {
   try {
+    const { userId } = req.user || {}; // 나의 챌린지일 경우
+
     const { totalCount, data } = await challengeService.getApplications({
       page: Number(req.query.page),
       pageSize: Number(req.query.pageSize),
       sort: req.query.sort,
       keyword: req.query.keyword,
+      userId,
     });
     res.json({ totalCount, applications: data });
   } catch (e) {
     next(e);
   }
 }
+
+// 챌린지 신청 상세 조회 (어드민/유저))
+export const getApplication = async (req, res, next) => {
+  try {
+    const applicationId = Number(req.params.applicationId);
+    const data = await challengeService.getApplicationById(applicationId);
+    const { challenge, ...rest } = data.application;
+    res.json({
+      application: rest,
+      challenge: { ...challenge, participants: challenge.participants.length },
+      prevApplicationId: data.prevApplicationId,
+      nextApplicationId: data.nextApplicationId,
+    });
+  } catch (e) {
+    next(e);
+  }
+};

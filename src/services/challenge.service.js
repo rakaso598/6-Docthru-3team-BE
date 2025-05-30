@@ -93,9 +93,7 @@ async function getChallenges(options) {
   return challengeRepository.getChallenges(options);
 }
 
-/**
- * 챌린지 신청 관리
- */
+// 챌린지 신청 관리 - 어드민
 async function updateApplicationById(challengeId, data) {
   try {
     const updatedApplication = await challengeRepository.updateApplication(
@@ -137,11 +135,13 @@ async function updateApplicationById(challengeId, data) {
   }
 }
 
+// 챌린지 신청 목록 조회
 async function getApplications({
   page = 1,
   pageSize = 10,
   sort = "appliedAt_desc",
   keyword,
+  userId,
 }) {
   const offset = (page - 1) * pageSize;
 
@@ -151,6 +151,11 @@ async function getApplications({
     orderBy: {},
     where: {},
   };
+
+  // userId가 있는 경우 authorId 조건 추가
+  if (userId) {
+    options.where.authorId = userId;
+  }
 
   // 필터 조건
   if (["pending", "accepted", "rejected"].includes(sort)) {
@@ -186,6 +191,15 @@ async function getApplications({
   return challengeRepository.findAllApplications(options);
 }
 
+// 챌린지 신청 상세 조회
+export const getApplicationById = async (applicationId) => {
+  const data = await challengeRepository.findApplicationById(applicationId);
+  if (!data) {
+    throw new BadRequestError(ExceptionMessage.APPLICATION_NOT_FOUND);
+  }
+  return data;
+};
+
 export default {
   create,
   getChallenges,
@@ -196,4 +210,5 @@ export default {
   deleteChallenge,
   getChallengeDetailById,
   updateApplicationById,
+  getApplicationById,
 };
