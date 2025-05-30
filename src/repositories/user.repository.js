@@ -1,4 +1,5 @@
 import prisma from "../prisma/client.prisma.js";
+import { getInitial } from "../utils/initial.utils.js";
 
 export const findUserById = async (id) => {
   return await prisma.user.findUnique({
@@ -14,135 +15,102 @@ export const findUserById = async (id) => {
   });
 };
 
-/**
- * 특정 상태에 따라 사용자의 챌린지 목록을 조회하는 함수
- *
- * @param userId - 사용자 ID
- * @param status - "participated" | "completed" | "applied" 중 하나
- * @param keywordFilter - 카테고리, 문서 타입 등의 필터 조건
- * @param options - 페이지네이션 및 검색어 등 (page, pageSize, category, docType, keyword)
- * @returns { data: Challenge[], totalCount: number, currentPage: number, pageSize: number }
- */
-export const findMyChallengesByStatus = async (
-  userId,
-  status,
-  keywordFilter = {},
-  options = {}
-) => {
-  const now = new Date();
+export async function findMyChallenges(options, userId) {
+  const { pageSize = 4, cursor, category, docType, keyword, status } = options;
 
-  // 옵션 기본값 처리
-  const { page = 1, pageSize = 10, category, docType, keyword } = options;
+  const take = Number(pageSize);
+  const where = {
+    application: {
+      adminStatus: "ACCEPTED",
+    },
+    participants: {
+      some: {
+        userId: userId,
+      },
+    },
+  };
 
-  const skip = (Number(page) - 1) * Number(pageSize); // 건너뛸 수
-  const take = Number(pageSize); // 가져올 수
+  if (category) where.category = category;
+  if (docType) where.docType = docType;
 
-  // 키워드 검색 조건 (제목 또는 설명에 포함되는 경우)
-  const baseKeywordFilter = keyword
-    ? {
-        OR: [
-          { title: { contains: keyword, mode: "insensitive" } },
-          { description: { contains: keyword, mode: "insensitive" } },
-        ],
-      }
-    : {};
-
-  /**
-   * 상태별 분기: 진행중 챌린지 참여, 완료된 챌린지 참여
-   */
-  if (status === "participated" || status === "completed") {
-    const challengeWhere = {
-      ...(status === "participated"
-        ? { deadline: { gt: now } } // 마감일이 현재보다 이후 → 진행중
-        : { deadline: { lte: now } }), // 마감일이 현재 이전 → 완료
-      ...keywordFilter,
-      ...baseKeywordFilter,
-    };
-
-    // 총 개수 + 목록 병렬 조회
-    const [totalCount, participants] = await Promise.all([
-      prisma.participant.count({
-        where: {
-          userId,
-          challenge: challengeWhere,
+  let myChallenges = await prisma.challenge.findMany({
+    take: take + 1, // 다음 페이지 여부 확인용
+    ...(cursor && {
+      cursor: {
+        id: Number(cursor),
+      },
+      skip: 1,
+    }),
+    where,
+    include: {
+      participants: true,
+      application: {
+        select: {
+          adminStatus: true,
+          appliedAt: true,
         },
-      }),
-      prisma.participant.findMany({
-        where: {
-          userId,
-          challenge: challengeWhere,
-        },
-        skip,
-        take,
-        orderBy: {
-          challenge: { createdAt: "desc" }, // 최신순 정렬
-        },
-        include: {
-          challenge: {
-            include: {
-              participants: true,
-              application: {
-                select: {
-                  adminStatus: true,
-                  appliedAt: true,
-                },
-              },
-            },
-          },
-        },
-      }),
-    ]);
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-    // 참가자 레코드 → 챌린지만 추출
-    const challenges = participants.map((p) => p.challenge);
+  // 키워드 필터링
+  if (keyword) {
+    const keywordNoSpace = keyword.replace(/\s/g, "").toLowerCase();
+    const keywordInitial = getInitial(keywordNoSpace);
 
-    return {
-      data: challenges,
-      totalCount,
-      currentPage: Number(page),
-      pageSize: Number(pageSize),
-    };
+    myChallenges = myChallenges.filter((challenge) => {
+      const title = challenge.title || "";
+      const desc = challenge.description || "";
+      const normalizedTitle = title.replace(/\s/g, "").toLowerCase();
+      const normalizedDesc = desc.replace(/\s/g, "").toLowerCase();
+      const titleChosung = getInitial(normalizedTitle);
+      const descChosung = getInitial(normalizedDesc);
+
+      return (
+        normalizedTitle.includes(keywordNoSpace) ||
+        normalizedDesc.includes(keywordNoSpace) ||
+        titleChosung.includes(keywordInitial) ||
+        descChosung.includes(keywordInitial)
+      );
+    });
   }
 
-  /**
-   * 내가 만든 챌린지 조회 (created or applied)
-   */
-  if (status === "applied") {
-    const where = {
-      authorId: userId, // 내가 만든 챌린지
-      ...keywordFilter,
-      ...baseKeywordFilter,
-    };
+  // status 필터링
+  const challengesWithStatus = myChallenges.map((challenge) => {
+    const now = new Date();
+    const isDeadlinePassed = new Date(challenge.deadline) <= now;
+    const participantCount = Array.isArray(challenge.participants)
+      ? challenge.participants.length
+      : 0;
+    const isFull = participantCount >= challenge.maxParticipant;
 
-    if (category) where.category = category;
-    if (docType) where.docType = docType;
-
-    const [totalCount, challenges] = await Promise.all([
-      prisma.challenge.count({ where }),
-      prisma.challenge.findMany({
-        where,
-        skip,
-        take,
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          participants: true,
-          application: true,
-        },
-      }),
-    ]);
+    let status;
+    if (isDeadlinePassed) {
+      status = "closed";
+    } else if (isFull) {
+      status = "full";
+    } else {
+      status = "open";
+    }
 
     return {
-      data: challenges,
-      totalCount,
-      currentPage: Number(page),
-      pageSize: Number(pageSize),
+      ...challenge,
+      status,
     };
-  }
+  });
 
-  // 유효하지 않은 status 처리
-  const error = new Error("올바르지 않은 상태입니다.");
-  error.status = 400;
-  throw error;
-};
+  const statusFiltered = status
+    ? challengesWithStatus.filter((c) => c.status === status)
+    : challengesWithStatus;
+
+  const hasNextPage = statusFiltered.length > take;
+  const slicedData = statusFiltered.slice(0, take);
+
+  return {
+    challenges: slicedData,
+    nextCursor: hasNextPage ? slicedData[slicedData.length - 1].id : null,
+  };
+}

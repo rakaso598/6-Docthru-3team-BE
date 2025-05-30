@@ -1,15 +1,15 @@
-@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJpYXQiOjE3NDg1Mjg2NjYsImV4cCI6MTc0ODUzMjI2Nn0.Id8XdZedOh13AkXgyhx2PG4UdG_Bxvy1xsu2iVMO7MM
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0ODYwMDY1OCwiZXhwIjoxNzQ4NjAxNTU4fQ.ZYd4hZSc9vGnKV3EeaksuiUWYZtOOJnyfvWC0RkqAfc
 
 ### 유저 정보 조회
 GET http://localhost:8080/users/me
 Cookie: accessToken={{accessToken}}
 
 ### 나의 챌린지 목록 조회 - 참여중
-GET http://localhost:8080/users/me/challenges?myChallengeStatus=participated
+GET http://localhost:8080/users/me/challenges?status=open
 Cookie: accessToken={{accessToken}}
 
 ### 나의 챌린지 목록 조회 - 완료된
-GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed
+GET http://localhost:8080/users/me/challenges?status=closed
 Cookie: accessToken={{accessToken}}
 
 ### 나의 챌린지 목록 조회 - 신청한
