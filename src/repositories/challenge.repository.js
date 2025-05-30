@@ -329,6 +329,7 @@ export const findApplicationById = async (applicationId) => {
   };
 };
 
+// 데드라인 넘은 첼린지 찾기
 async function findExpiredChallenges(currentTime) {
   return prisma.challenge.findMany({
     where: {
