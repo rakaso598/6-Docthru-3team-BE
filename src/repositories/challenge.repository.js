@@ -149,7 +149,7 @@ function getInitial(str) {
 }
 
 //챌린지 목록 가져오기
-async function getChallenges(options) {
+async function getChallenges(options, userId) {
   const {
     page = 1,
     pageSize = 10,
