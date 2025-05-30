@@ -16,7 +16,14 @@ export const findUserById = async (id) => {
 };
 
 export async function findMyChallenges(options, userId) {
-  const { pageSize = 4, cursor, category, docType, keyword, status } = options;
+  const {
+    pageSize = 4,
+    cursor,
+    category,
+    docType,
+    keyword,
+    statusList,
+  } = options;
 
   const take = Number(pageSize);
   const where = {
@@ -102,8 +109,8 @@ export async function findMyChallenges(options, userId) {
     };
   });
 
-  const statusFiltered = status
-    ? challengesWithStatus.filter((c) => c.status === status)
+  const statusFiltered = statusList
+    ? challengesWithStatus.filter((c) => statusList.includes(c.status))
     : challengesWithStatus;
 
   const hasNextPage = statusFiltered.length > take;

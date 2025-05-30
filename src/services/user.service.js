@@ -12,6 +12,23 @@ export const getMyInfo = async (userId) => {
 };
 
 // 유저 챌린지 조회 - 참여중/완료한
-export const getMyChallenges = async (options, userId) => {
-  return await userRepository.findMyChallenges(options, userId);
+export const getMyChallenges = async (query, userId) => {
+  const { pageSize, cursor, category, docType, keyword, status } = query;
+  const statusList = status
+    ? Array.isArray(status)
+      ? status
+      : status.split(",")
+    : null;
+
+  return await userRepository.findMyChallenges(
+    {
+      pageSize,
+      cursor,
+      category,
+      docType,
+      keyword,
+      statusList,
+    },
+    userId
+  );
 };
