@@ -14,6 +14,7 @@ const findAllWorks = async (challengeId, page, pageSize) => {
         select: {
           id: true,
           nickname: true,
+          grade: true,
         },
       },
       challenge: {
@@ -36,6 +37,7 @@ const findAllWorks = async (challengeId, page, pageSize) => {
     author: {
       authorId: work.user.id,
       authorNickname: work.user.nickname,
+      grade: work.user.grade,
     },
     challengeId: work.challengeId,
     challengeTitle: work.challenge.title,
