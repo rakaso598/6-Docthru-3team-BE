@@ -190,7 +190,12 @@ async function getChallenges(options, userId) {
 
   //데이터의 총 갯수(챌린지 상태는 제외되어있음)
   let allChallenges = await prisma.challenge.findMany({
-    where,
+    where: {
+      ...where,
+      application: {
+        adminStatus: "ACCEPTED", // ✅ 여기가 핵심!
+      },
+    },
     include: {
       participants: true,
       application: {
