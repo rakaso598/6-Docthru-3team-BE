@@ -1,3 +1,4 @@
+import prisma from "../prisma/client.prisma.js";
 import notificationRepository from "../repositories/notification.repository.js";
 
 // 알림 메시지 템플릿
@@ -43,7 +44,7 @@ async function updateIsRead(notificationId, userId) {
   if (!notification) throw new Error("알림을 찾을 수 없습니다");
   if (notification.userId !== userId) throw new Error("권한이 없습니다");
 
-  return notificationRepository.updateIsRead(notificationId);
+  return notificationRepository.updateIsRead(notificationId, true);
 }
 
 export default {
