@@ -95,14 +95,17 @@ const createWork = async (challengeId, authorId) => {
 };
 
 // 작업물 내용을 수정하고 수정된 작업물을 반환 (작성자 권한 확인 포함)
-const updateWork = async (workId, userId, content) => {
+const updateWork = async (workId, userId, role, content) => {
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
-  if (!isAuthor) {
+  // 어드민이 아니면 작성자만 수정할 수 있음
+  if (role !== "ADMIN" && !isAuthor) {
     const error = new Error("작성자만 수정할 수 있습니다.");
     error.statusCode = 403;
     throw error;
   }
+
+  // TODO? 어드민이 작업물을 수정하면 작성자에게 알림을 보내야하나?
 
   const updatedWork = await workRepository.updateWork(workId, content);
 
@@ -110,14 +113,17 @@ const updateWork = async (workId, userId, content) => {
 };
 
 // 작업물을 영구적으로 삭제
-const hardDeleteWork = async (workId, userId) => {
+const hardDeleteWork = async (workId, userId, role) => {
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
-  if (!isAuthor) {
+  // 어드민이 아니면 작성자만 수정할 수 있음
+  if (role !== "ADMIN" && !isAuthor) {
     const error = new Error("작성자만 삭제할 수 있습니다.");
     error.statusCode = 403;
     throw error;
   }
+
+  // TODO? 어드민이 작업물을 수정하면 작성자에게 알림을 보내야하나?
 
   const result = await workRepository.hardDeleteWork(workId);
 
