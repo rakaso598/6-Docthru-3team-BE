@@ -11,7 +11,7 @@ import {
 } from "../utils/auth.utils.js";
 import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
-import { TIME } from "../constants/time.constants.js";
+import { TIME, TOKEN_EXPIRES } from "../constants/time.constants.js";
 
 async function createUser(user) {
   const existingEmail = await authRepository.findUserByEmail(user.email);
@@ -106,8 +106,14 @@ async function refreshedToken(refreshToken) {
 
     // 새로운 액세스 토큰 생성
     const newAccessToken = jwt.sign(
-      { userId: userWithToken.id },
-      process.env.JWT_SECRET_KEY
+      {
+        userId: userWithToken.id,
+        email: userWithToken.email,
+        nickname: userWithToken.nickname,
+        role: userWithToken.role,
+      },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: TOKEN_EXPIRES.ACCESS_TOKEN }
     );
 
     // 리프레시 토큰 만료 시간이 1주일 이하로 남았다면 새로운 리프레시 토큰 발급
