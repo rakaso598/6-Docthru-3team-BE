@@ -53,6 +53,7 @@ model Challenge {
   originalUrl    String
   deadline       DateTime
   maxParticipant Int
+  isClosed       Boolean  @default(false) // 2025-05-30 마감 관련 데이터
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
