@@ -72,18 +72,21 @@ const deleteChallenge = async (challengeId, userId) => {
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
   const userRole = userRoleObj.role;
-  if (userRole !== "ADMIN") {
-    const err = new Error("관리자만 삭제할 수 있습니다.");
+
+  // 관리자가 아니고, 작성자도 아닌 경우 삭제 권한 없음
+  if (userRole !== "ADMIN" && challenge.authorId !== userId) {
+    const err = new Error("삭제 권한이 없습니다.");
     err.statusCode = 403;
     throw err;
   }
+
   await challengeRepository.deleteChallengeById(challengeId);
 
+  // 관리자가 삭제했을 경우 작성자에게 알림
   if (challenge.authorId !== userId) {
     const message = notificationService.notificationMessages.challengeDelete(
       challenge.title
     );
-
     await notificationService.createNotification(challenge.authorId, message);
   }
 };
