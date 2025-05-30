@@ -39,7 +39,7 @@ async function getNotifications(userId) {
 async function updateIsRead(notificationId, userId) {
   // 알림 소유자 확인
   const notification = await prisma.notification.findUnique({
-    where: { id: notificationId },
+    where: { id: Number(notificationId) },
   });
   if (!notification) throw new Error("알림을 찾을 수 없습니다");
   if (notification.userId !== userId) throw new Error("권한이 없습니다");
