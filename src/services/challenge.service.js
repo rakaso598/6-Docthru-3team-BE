@@ -94,7 +94,7 @@ async function getChallenges(options) {
 }
 
 // 챌린지 신청 관리 - 어드민
-async function updateApplicationById(challengeId, data) {
+async function updateApplicationById(challengeId, data, userId) {
   try {
     const updatedApplication = await challengeRepository.updateApplication(
       challengeId,

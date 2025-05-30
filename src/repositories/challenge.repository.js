@@ -329,6 +329,26 @@ export const findApplicationById = async (applicationId) => {
   };
 };
 
+// 데드라인 넘은 첼린지 찾기
+async function findExpiredChallenges(currentTime) {
+  return prisma.challenge.findMany({
+    where: {
+      isClosed: false,
+      deadline: { lte: currentTime },
+    },
+    include: {
+      participants: true, // 참여자 정보 포함
+    },
+  });
+}
+
+async function closeChallenge(challengeId) {
+  return prisma.challenge.update({
+    where: { id: challengeId },
+    data: { isClosed: true },
+  });
+}
+
 export default {
   save,
   getChallenges,
@@ -341,4 +361,6 @@ export default {
   deleteChallengeById,
   findChallengeDetailById,
   findApplicationById,
+  findExpiredChallenges,
+  closeChallenge,
 };
