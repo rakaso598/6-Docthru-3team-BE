@@ -6,6 +6,7 @@ async function saveUser(user, hashedPassword) {
       email: user.email,
       nickname: user.nickname,
       hashedPassword: hashedPassword,
+      role: "USER",
     },
   });
 }
