@@ -155,9 +155,11 @@ export async function updateApplicationStatus(req, res, next) {
     }
     const challengeId = Number(req.params.challengeId);
     const data = req.body;
+    const userId = req.user.userId;
     const result = await challengeService.updateApplicationById(
       challengeId,
-      data
+      data,
+      userId
     );
     res.json({ result });
   } catch (e) {
