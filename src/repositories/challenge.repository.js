@@ -178,6 +178,16 @@ async function getChallenges(options) {
     where.docType = docType;
   }
 
+  if (keyword) {
+    const keywordWithoutSpaces = keyword.replace(/\s/g, "");
+    where.OR = [
+      { title: { contains: keyword, mode: "insensitive" } },
+      { description: { contains: keyword, mode: "insensitive" } },
+      { title: { contains: keywordWithoutSpaces, mode: "insensitive" } },
+      { description: { contains: keywordWithoutSpaces, mode: "insensitive" } },
+    ];
+  }
+
   //데이터의 총 갯수(챌린지 상태는 제외되어있음)
   let allChallenges = await prisma.challenge.findMany({
     where,
@@ -187,6 +197,14 @@ async function getChallenges(options) {
         select: {
           adminStatus: true,
           appliedAt: true,
+        },
+      },
+      works: {
+        where: {
+          authorId: userId, // ✅ 현재 로그인한 유저가 작성한 작업물만 가져오기
+        },
+        select: {
+          id: true,
         },
       },
     },
