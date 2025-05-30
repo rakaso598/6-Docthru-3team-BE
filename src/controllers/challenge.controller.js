@@ -149,7 +149,7 @@ export const getChallenges = async (req, res, next) => {
 // 챌린지 신청 관리 (승인/거절/삭제)
 export async function updateApplicationStatus(req, res, next) {
   try {
-    const userRole = req.auth?.role;
+    const userRole = req.user?.role;
     if (!userRole === "admin") {
       return res.status(401).json({ message: "관리자만 접근할 수 있습니다. " });
     }
@@ -168,14 +168,15 @@ export async function updateApplicationStatus(req, res, next) {
 // 챌린지 신청 목록 조회 (어드민/유저)
 export async function getApplications(req, res, next) {
   try {
-    const { userId } = req.user || {}; // 나의 챌린지일 경우
+    const userRole = req.user?.role;
+    const userId = userRole === "USER" ? req.user?.userId : undefined;
 
     const { totalCount, data } = await challengeService.getApplications({
       page: Number(req.query.page),
       pageSize: Number(req.query.pageSize),
       sort: req.query.sort,
       keyword: req.query.keyword,
-      userId,
+      userId, // 사용자일 때만
     });
     res.json({ totalCount, applications: data });
   } catch (e) {

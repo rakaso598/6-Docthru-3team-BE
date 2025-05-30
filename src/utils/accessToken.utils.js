@@ -6,6 +6,7 @@ export function generateAccessToken(user) {
     userId: user.id,
     email: user.email,
     nickname: user.nickname,
+    role: user.role,
   };
 
   const accessSecret = `${process.env.JWT_SECRET_KEY}`;
@@ -27,6 +28,7 @@ export function generateRefreshToken(user) {
     userId: user.id,
     email: user.email,
     nickname: user.nickname,
+    role: user.role,
   };
 
   const refreshSecret = `${process.env.JWT_REFRESH_SECRET_KEY}`;

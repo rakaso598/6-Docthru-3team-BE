@@ -41,6 +41,7 @@ async function createUser(user) {
       id: createdUser.id,
       email: createdUser.email,
       nickname: createdUser.nickname,
+      role: createdUser.role,
     },
   };
 }
