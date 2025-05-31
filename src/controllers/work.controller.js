@@ -62,11 +62,14 @@ export const updateWork = async (req, res) => {
   try {
     const { workId } = req.params;
     const { content } = req.body;
-    const userId = req.user?.userId;
+    const { userId, role } = req.user;
+
+    console.log(userId, role);
 
     const updatedWork = await workService.updateWork(
       Number(workId),
       userId,
+      role,
       content
     );
     res.status(200).json({ data: updatedWork });
@@ -81,10 +84,11 @@ export const updateWork = async (req, res) => {
 export const hardDeleteWork = async (req, res) => {
   try {
     const { workId } = req.params;
+    const { userId, role } = req.user;
 
-    const userId = req.user?.userId;
+    console.log(userId, role);
 
-    await workService.hardDeleteWork(Number(workId), userId);
+    await workService.hardDeleteWork(Number(workId), userId, role);
     res.status(204).send();
   } catch (error) {
     console.error("Work 하드 삭제 에러:", error);
