@@ -8,6 +8,7 @@ import {
 } from "../controllers/challenge.controller.js";
 import { verifyAccessToken } from "../middlewares/verifyToken.js";
 import workRouter from "./work.route.js";
+import { adminValidator } from "../middlewares/validator.js";
 
 const challengeRouter = express.Router();
 
@@ -21,8 +22,12 @@ challengeRouter.post("/", verifyAccessToken, createChallenge);
 challengeRouter.get("/:challengeId", getChallengeById);
 
 // 챌린지 수정
-
-challengeRouter.put("/:challengeId", verifyAccessToken, updateChallenge);
+challengeRouter.put(
+  "/:challengeId",
+  verifyAccessToken,
+  adminValidator,
+  updateChallenge
+);
 
 // 챌린지 삭제
 challengeRouter.delete("/:challengeId", verifyAccessToken, deleteChallenge);
