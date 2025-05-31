@@ -8,12 +8,8 @@ import {
 
 const adminRouter = express.Router({ mergeParams: true });
 
-adminRouter.get("/applications", verifyAccessToken, getApplications);
-adminRouter.patch(
-  "/challenges/:challengeId",
-  verifyAccessToken,
-  updateApplicationStatus
-);
-adminRouter.patch("/works/:workId", verifyAccessToken, softDeleteWork);
+adminRouter.get("/applications", getApplications);
+adminRouter.patch("/challenges/:challengeId", updateApplicationStatus);
+adminRouter.patch("/works/:workId", softDeleteWork);
 
 export default adminRouter;

@@ -13,6 +13,7 @@ import "./middlewares/passport/passport.js";
 import adminRouter from "./routes/admin.route.js";
 import { startDeadlineScheduler } from "./utils/scheduler.js";
 import { adminValidator } from "./middlewares/validator.js";
+import { verifyAccessToken } from "./middlewares/verifyToken.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -53,7 +54,7 @@ app.use("/users", userRouter);
 app.use("/challenges", challengeRouter);
 app.use("/works", workRouter);
 app.use("/notifications", notificationRouter);
-app.use("/admin", adminValidator, adminRouter);
+app.use("/admin", verifyAccessToken, adminValidator, adminRouter);
 app.use(errorHandler);
 
 startDeadlineScheduler();

@@ -1,5 +1,4 @@
-@accessToken=
-
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0ODY4NjcyMSwiZXhwIjoxNzQ4Njg3NjIxfQ.6m1o2jSwmKCQX93JtSBxVg_Dz8SoGLs9DOj3WFAX4Ic
 ### 챌린지 쿼리 조회
 GET http://localhost:8080/challenges?page=3&pageSize=4&category=&docType=&keyword=ㅊㄹㅈ&status=
 
