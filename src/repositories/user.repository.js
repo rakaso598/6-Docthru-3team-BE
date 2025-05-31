@@ -50,7 +50,14 @@ export async function findMyChallenges(options, userId) {
     }),
     where,
     include: {
-      works: { select: { id: true } },
+      works: {
+        where: { authorId: userId },
+        select: {
+          id: true,
+          challengeId: true,
+          authorId: true,
+        },
+      },
       participants: true,
       application: {
         select: {
