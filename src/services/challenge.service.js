@@ -2,6 +2,7 @@ import challengeRepository from "../repositories/challenge.repository.js";
 import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 import notificationService from "./notification.service.js";
+import { tryUpgradeUserGrade } from "./user.service.js";
 
 //챌린지 생성
 async function create(challenge, userId) {
@@ -203,6 +204,49 @@ export const getApplicationById = async (applicationId) => {
   return data;
 };
 
+async function closeAndSelectTopWork(challengeId) {
+  const challenge = await challengeRepository.findChallengeDetailById(
+    challengeId
+  );
+  if (!challenge || challenge.isClosed) return;
+
+  // 마감 처리
+  await challengeRepository.closeChallenge(challengeId);
+
+  // 좋아요 수 기준으로 작업물 중 top 1~N 추출 (복수 가능성)
+  const works = await prisma.work.findMany({
+    where: {
+      challengeId: challengeId,
+      isDeleted: false,
+    },
+    include: {
+      likes: true,
+    },
+  });
+
+  if (works.length === 0) return;
+
+  // 좋아요 수 기준 정렬
+  const sorted = works
+    .map((w) => ({ ...w, likeCount: w.likes.length }))
+    .sort((a, b) => b.likeCount - a.likeCount);
+
+  const topLikeCount = sorted[0].likeCount;
+  const topWorks = sorted.filter((w) => w.likeCount === topLikeCount);
+
+  for (const topWork of topWorks) {
+    // user의 추천 count 증가
+    await prisma.user.update({
+      where: { id: topWork.authorId },
+      data: {
+        mostRecommendedCount: { increment: 1 },
+      },
+    });
+
+    await tryUpgradeUserGrade(topWork.authorId);
+  }
+}
+
 export default {
   create,
   getChallenges,
@@ -214,4 +258,5 @@ export default {
   getChallengeDetailById,
   updateApplicationById,
   getApplicationById,
+  closeAndSelectTopWork,
 };
