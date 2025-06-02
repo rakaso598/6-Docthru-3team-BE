@@ -29,9 +29,31 @@ export const getAllWorks = async (req, res) => {
 export const getWorkById = async (req, res) => {
   try {
     const { workId } = req.params;
-    const userId = req.user?.userId;
 
-    const work = await workService.findWorkById(Number(workId), userId);
+    const work = await workService.getWorkById(Number(workId));
+    res.status(200).json({ data: work });
+  } catch (error) {
+    if (error.statusCode === 403) {
+      res.status(403).json({ message: error.message });
+    } else {
+      res
+        .status(error.statusCode || 500)
+        .json({ message: error.message || "작업을 불러오는데 실패했습니다." });
+    }
+  }
+};
+
+// 작업물 form에서 특정 work 조회
+export const getWorkByIdAtForm = async (req, res) => {
+  try {
+    const { workId } = req.params;
+    const { userId, role } = req.user;
+
+    const work = await workService.getWorkByIdAtForm(
+      Number(workId),
+      userId,
+      role
+    );
     res.status(200).json({ data: work });
   } catch (error) {
     if (error.statusCode === 403) {

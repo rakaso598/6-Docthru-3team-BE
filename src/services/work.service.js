@@ -41,13 +41,29 @@ const findAllWorks = async (userId, challengeId, page, pageSize) => {
 };
 
 // 특정 작업물을 조회하고 해당 사용자의 좋아요 상태를 포함하여 반환
-const findWorkById = async (workId, userId) => {
-  console.log(userId);
+const getWorkById = async (workId, userId) => {
+  // 유효성 검증 통과시 조회
+  const work = await workRepository.findWorkById(workId);
 
+  if (!work) {
+    const error = new Error("해당 작업을 찾을 수 없습니다.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const isLiked = await likeRepository.isWorkLikedByUser(workId, userId);
+
+  return { ...work, isLiked };
+};
+
+// 특정 작업물을 조회하고 해당 사용자의 좋아요 상태를 포함하여 반환
+// 토큰 포함하여 조회
+const getWorkByIdAtForm = async (workId, userId, role) => {
   // 작업물 작성자 확인 및 에러처리
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
-  if (!isAuthor) {
+  // 어드민이 아니면 작성자만 조회할 수 있음
+  if (role !== "ADMIN" && !isAuthor) {
     const error = new Error("작성자만 작업물을 조회할 수 있습니다.");
     error.statusCode = 403;
     throw error;
@@ -183,7 +199,8 @@ const unlikeWork = async (workId, userId) => {
 
 export default {
   findAllWorks,
-  findWorkById,
+  getWorkById,
+  getWorkByIdAtForm,
   isWorkDuplicate,
   createWork,
   updateWork,

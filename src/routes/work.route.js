@@ -7,6 +7,7 @@ import {
   hardDeleteWork,
   likeWork,
   unlikeWork,
+  getWorkByIdAtForm,
 } from "../controllers/work.controller.js";
 import {
   getFeedbacks,
@@ -21,6 +22,7 @@ const workRouter = express.Router({ mergeParams: true });
 // --- Work 관련 라우트 ---
 workRouter.get("/", verifyAccessToken, getAllWorks);
 workRouter.get("/:workId", verifyAccessToken, getWorkById);
+workRouter.get("/:workId/form", verifyAccessToken, getWorkByIdAtForm);
 workRouter.post("/", verifyAccessToken, createWork);
 workRouter.patch("/:workId", verifyAccessToken, updateWork);
 workRouter.delete("/:workId", verifyAccessToken, hardDeleteWork);
