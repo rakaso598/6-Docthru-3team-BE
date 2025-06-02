@@ -1,7 +1,7 @@
-import { error } from "console";
 import feedbackRepository from "../repositories/feedback.repository.js";
 import workRepository from "../repositories/work.repository.js";
 import notificationService from "./notification.service.js";
+import { findUserById } from "../repositories/user.repository.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
@@ -58,7 +58,7 @@ async function deleteFeedback(feedbackId, userId) {
   const user = await findUserById(userId);
   if (!user) {
     const err = new Error("사용자 정보를 찾을 수 없습니다.");
-    error.status = 401;
+    err.status = 401;
     throw err;
   }
   if (user.role === "ADMIN") {
