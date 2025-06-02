@@ -1,5 +1,6 @@
 import * as userRepository from "../repositories/user.repository.js";
 import prisma from "../prisma/client.prisma.js";
+import { getInitial } from "../utils/initial.utils.js";
 
 // 유저 정보 조회
 export const getMyInfo = async (userId) => {
@@ -14,24 +15,92 @@ export const getMyInfo = async (userId) => {
 
 // 유저 챌린지 조회 - 참여중/완료한
 export const getMyChallenges = async (query, userId) => {
-  const { pageSize, cursor, category, docType, keyword, status } = query;
+  const { pageSize = 4, cursor, category, docType, keyword, status } = query;
+
   const statusList = status
     ? Array.isArray(status)
       ? status
       : status.split(",")
     : null;
 
-  return await userRepository.findMyChallenges(
-    {
-      pageSize,
-      cursor,
-      category,
-      docType,
-      keyword,
-      statusList,
+  const where = {
+    application: {
+      adminStatus: "ACCEPTED",
     },
+    participants: {
+      some: {
+        userId: userId,
+      },
+    },
+    ...(category && { category }),
+    ...(docType && { docType }),
+  };
+
+  const take = Number(pageSize);
+  let challenges = await userRepository.findMyChallenges(
+    where,
+    take,
+    cursor,
     userId
   );
+
+  // 키워드 필터링
+  if (keyword) {
+    const keywordNoSpace = keyword.replace(/\s/g, "").toLowerCase();
+    const keywordInitial = getInitial(keywordNoSpace);
+
+    challenges = challenges.filter((challenge) => {
+      const title = challenge.title || "";
+      const desc = challenge.description || "";
+      const normalizedTitle = title.replace(/\s/g, "").toLowerCase();
+      const normalizedDesc = desc.replace(/\s/g, "").toLowerCase();
+      const titleChosung = getInitial(normalizedTitle);
+      const descChosung = getInitial(normalizedDesc);
+
+      return (
+        normalizedTitle.includes(keywordNoSpace) ||
+        normalizedDesc.includes(keywordNoSpace) ||
+        titleChosung.includes(keywordInitial) ||
+        descChosung.includes(keywordInitial)
+      );
+    });
+  }
+
+  // status 계산 후 필터링
+  const now = new Date();
+  const challengesWithStatus = challenges.map((challenge) => {
+    const isDeadlinePassed = new Date(challenge.deadline) <= now;
+    const participantCount = Array.isArray(challenge.participants)
+      ? challenge.participants.length
+      : 0;
+    const isFull = participantCount >= challenge.maxParticipant;
+
+    let status;
+    if (isDeadlinePassed) {
+      status = "closed";
+    } else if (isFull) {
+      status = "full";
+    } else {
+      status = "open";
+    }
+
+    return {
+      ...challenge,
+      status,
+    };
+  });
+
+  const filtered = statusList
+    ? challengesWithStatus.filter((c) => statusList.includes(c.status))
+    : challengesWithStatus;
+
+  const hasNextPage = filtered.length > take;
+  const slicedData = filtered.slice(0, take);
+
+  return {
+    challenges: slicedData,
+    nextCursor: hasNextPage ? slicedData[slicedData.length - 1].id : null,
+  };
 };
 
 // 유저 등급 업데이트 함수
