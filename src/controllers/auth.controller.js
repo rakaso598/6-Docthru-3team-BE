@@ -20,11 +20,12 @@ import { TOKEN_EXPIRES } from "../constants/time.constants.js";
  * - 1시간 설정: getCookieOptions(TIME.HOUR)
  * - 2주 설정: getCookieOptions(2 * TIME.WEEK)
  */
+const isProduction = process.env.NODE_ENV === "production";
 
 const getCookieOptions = (maxAgeSeconds) => ({
   httpOnly: true,
-  sameSite: "none",
-  secure: false, // 테스트 하기 설정하면 http, https 상관없이 쿠키를 통과시킴
+  sameSite: isProduction ? "none" : "lax",
+  secure: isProduction, // 테스트 하기 설정하면 http, https 상관없이 쿠키를 통과시킴
   path: "/",
   maxAge: maxAgeSeconds * 1000,
 });
@@ -126,10 +127,6 @@ export const refreshToken = async (req, res, next) => {
 
 export async function socialLogin(req, res, next) {
   try {
-    if (!req.user) {
-      return res.redirect("/sign-in?error=auth_failed");
-    }
-
     const accessToken = generateAccessToken(req.user);
     const refreshToken = generateRefreshToken(req.user);
 
