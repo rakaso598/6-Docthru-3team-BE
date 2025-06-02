@@ -34,9 +34,13 @@ export const getWorkById = async (req, res) => {
     const work = await workService.findWorkById(Number(workId), userId);
     res.status(200).json({ data: work });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "작업을 불러오는데 실패했습니다." });
+    if (error.statusCode === 403) {
+      res.status(403).json({ message: error.message });
+    } else {
+      res
+        .status(error.statusCode || 500)
+        .json({ message: error.message || "작업을 불러오는데 실패했습니다." });
+    }
   }
 };
 
@@ -64,8 +68,6 @@ export const updateWork = async (req, res) => {
     const { content } = req.body;
     const { userId, role } = req.user;
 
-    console.log(userId, role);
-
     const updatedWork = await workService.updateWork(
       Number(workId),
       userId,
@@ -74,9 +76,13 @@ export const updateWork = async (req, res) => {
     );
     res.status(200).json({ data: updatedWork });
   } catch (error) {
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "작업 수정에 실패했습니다." });
+    if (error.statusCode === 403) {
+      res.status(403).json({ message: error.message });
+    } else {
+      res
+        .status(error.statusCode || 500)
+        .json({ message: error.message || "작업 수정에 실패했습니다." });
+    }
   }
 };
 
@@ -86,15 +92,16 @@ export const hardDeleteWork = async (req, res) => {
     const { workId } = req.params;
     const { userId, role } = req.user;
 
-    console.log(userId, role);
-
     await workService.hardDeleteWork(Number(workId), userId, role);
     res.status(204).send();
   } catch (error) {
-    console.error("Work 하드 삭제 에러:", error);
-    res
-      .status(error.statusCode || 500)
-      .json({ message: error.message || "작업 하드 삭제에 실패했습니다." });
+    if (error.statusCode === 403) {
+      res.status(403).json({ message: error.message });
+    } else {
+      res
+        .status(error.statusCode || 500)
+        .json({ message: error.message || "작업 하드 삭제에 실패했습니다." });
+    }
   }
 };
 

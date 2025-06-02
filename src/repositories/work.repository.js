@@ -58,6 +58,7 @@ const findWorkById = async (workId) => {
         select: {
           title: true,
           originalUrl: true,
+          isClosed: true,
         },
       },
       user: {
@@ -82,6 +83,7 @@ const findWorkById = async (workId) => {
     workId: work.id,
     challengeTitle: work.challenge.title,
     content: work.content,
+    isClosed: work.challenge.isClosed,
     author: {
       authorId: work.user.id,
       authorNickname: work.user.nickname,
