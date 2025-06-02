@@ -140,22 +140,12 @@ async function getChallenges(options, userId) {
     where.docType = docType;
   }
 
-  if (keyword) {
-    const keywordWithoutSpaces = keyword.replace(/\s/g, "");
-    where.OR = [
-      { title: { contains: keyword, mode: "insensitive" } },
-      { description: { contains: keyword, mode: "insensitive" } },
-      { title: { contains: keywordWithoutSpaces, mode: "insensitive" } },
-      { description: { contains: keywordWithoutSpaces, mode: "insensitive" } },
-    ];
-  }
-
   //데이터의 총 갯수(챌린지 상태는 제외되어있음)
   let allChallenges = await prisma.challenge.findMany({
     where: {
       ...where,
       application: {
-        adminStatus: "ACCEPTED", // ✅ 여기가 핵심!
+        adminStatus: "ACCEPTED",
       },
     },
     include: {
@@ -168,7 +158,7 @@ async function getChallenges(options, userId) {
       },
       works: {
         where: {
-          authorId: userId, // ✅ 현재 로그인한 유저가 작성한 작업물만 가져오기
+          authorId: userId,
         },
         select: {
           id: true,
@@ -181,9 +171,6 @@ async function getChallenges(options, userId) {
   });
 
   if (keyword) {
-    const keywordNoSpace = keyword.replace(/\s/g, "").toLowerCase();
-    const keywordInitial = getInitial(keywordNoSpace);
-
     allChallenges = allChallenges.filter((challenge) => {
       const title = challenge.title || "";
       const desc = challenge.description || "";
@@ -194,9 +181,20 @@ async function getChallenges(options, userId) {
       const titleChosung = getInitial(normalizedTitle);
       const descChosung = getInitial(normalizedDesc);
 
+      const keywordNoSpace = keyword.replace(/\s/g, "").toLowerCase(); //키워드 띄어쓰기 제거거+소문자로
+      const isChosungSearch = /^[ㄱ-ㅎ]+$/.test(keywordNoSpace); // 초성만 입력된건지 확인 T/F
+
+      if (isChosungSearch) {
+        // 사용자가 초성만 입력했을 경우
+        return (
+          titleChosung.includes(keywordNoSpace) ||
+          descChosung.includes(keywordNoSpace)
+        );
+      }
+
+      const keywordInitial = getInitial(keywordNoSpace);
+
       return (
-        normalizedTitle.includes(keywordNoSpace) ||
-        normalizedDesc.includes(keywordNoSpace) ||
         titleChosung.includes(keywordInitial) ||
         descChosung.includes(keywordInitial)
       );
