@@ -30,31 +30,16 @@ export const createChallenge = async (req, res, next) => {
 export const getChallengeById = async (req, res) => {
   try {
     const { challengeId } = req.params;
+    const challenge = await challengeService.getChallengeDetailById(
+      Number(challengeId)
+    );
 
-    const challenge = await prisma.challenge.findUnique({
-      where: { id: Number(challengeId) },
-      include: {
-        application: true, // 어드민 승인 여부 포함
-        author: {
-          select: { id: true, nickname: true, grade: true },
-        },
-        _count: {
-          select: {
-            participants: true,
-            works: true,
-          },
-        },
-      },
-    });
-
-    // 챌린지가 존재하지 않거나 승인되지 않은 경우
-    if (!challenge || challenge.application?.adminStatus !== "ACCEPTED") {
-      return res.status(403).json({ message: "승인되지 않은 챌린지입니다." });
+    if (!challenge) {
+      return res.status(404).json({ message: "챌린지를 찾을 수 없습니다." });
     }
 
     res.status(200).json({ data: challenge });
   } catch (error) {
-    console.error("챌린지 조회 실패:", error);
     res.status(500).json({ message: "챌린지를 불러오는데 실패했습니다." });
   }
 };
