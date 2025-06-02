@@ -1,4 +1,5 @@
 import * as userRepository from "../repositories/user.repository.js";
+import prisma from "../prisma/client.prisma.js";
 
 // 유저 정보 조회
 export const getMyInfo = async (userId) => {
@@ -31,4 +32,29 @@ export const getMyChallenges = async (query, userId) => {
     },
     userId
   );
+};
+
+// 유저 등급 업데이트 함수
+export const tryUpgradeUserGrade = async (userId) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { works: true },
+  });
+
+  if (!user || user.grade === "EXPERT") return;
+
+  const workCount = user.works.length;
+  const mostRecommendedCount = user.mostRecommendedCount;
+
+  const isExpert =
+    (mostRecommendedCount >= 5 && workCount >= 5) ||
+    mostRecommendedCount >= 10 ||
+    workCount >= 10;
+
+  if (isExpert) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: { grade: "EXPERT" },
+    });
+  }
 };
