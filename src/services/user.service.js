@@ -36,7 +36,7 @@ export const getMyChallenges = async (query, userId) => {
     ...(docType && { docType }),
   };
 
-  const take = Number(pageSize);
+  const take = Number(pageSize) + 3;
   let challenges = await userRepository.findMyChallenges(
     where,
     take,
@@ -94,8 +94,8 @@ export const getMyChallenges = async (query, userId) => {
     ? challengesWithStatus.filter((c) => statusList.includes(c.status))
     : challengesWithStatus;
 
-  const hasNextPage = filtered.length > take;
-  const slicedData = filtered.slice(0, take);
+  const hasNextPage = filtered.length > pageSize;
+  const slicedData = filtered.slice(0, pageSize);
 
   return {
     challenges: slicedData,
