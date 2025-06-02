@@ -42,6 +42,18 @@ const findAllWorks = async (userId, challengeId, page, pageSize) => {
 
 // 특정 작업물을 조회하고 해당 사용자의 좋아요 상태를 포함하여 반환
 const findWorkById = async (workId, userId) => {
+  console.log(userId);
+
+  // 작업물 작성자 확인 및 에러처리
+  const isAuthor = await workRepository.isAuthor(workId, userId);
+
+  if (!isAuthor) {
+    const error = new Error("작성자만 작업물을 조회할 수 있습니다.");
+    error.statusCode = 403;
+    throw error;
+  }
+
+  // 유효성 검증 통과시 조회
   const work = await workRepository.findWorkById(workId);
 
   if (!work) {
@@ -109,8 +121,6 @@ const updateWork = async (workId, userId, role, content) => {
     throw error;
   }
 
-  // TODO? 어드민이 작업물을 수정하면 작성자에게 알림을 보내야하나?
-
   const updatedWork = await workRepository.updateWork(workId, content);
 
   return updatedWork;
@@ -126,8 +136,6 @@ const hardDeleteWork = async (workId, userId, role) => {
     error.statusCode = 403;
     throw error;
   }
-
-  // TODO? 어드민이 작업물을 수정하면 작성자에게 알림을 보내야하나?
 
   const result = await workRepository.hardDeleteWork(workId);
 
