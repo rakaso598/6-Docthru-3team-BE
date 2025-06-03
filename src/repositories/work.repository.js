@@ -114,13 +114,6 @@ const createWork = async (challengeId, authorId) => {
         challengeId,
         authorId,
       },
-      include: {
-        challenge: {
-          select: {
-            isClosed: true,
-          },
-        },
-      },
     });
 
     // 참여자 추가

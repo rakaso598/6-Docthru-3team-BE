@@ -3,6 +3,7 @@ import workRepository from "../repositories/work.repository.js";
 import prisma from "../prisma/client.prisma.js";
 import notificationService from "./notification.service.js";
 import { tryUpgradeUserGrade } from "./user.service.js";
+import challengeRepository from "../repositories/challenge.repository.js";
 
 // 챌린지에 속한 모든 작업물을 페이지네이션하여 조회하고 각 작업물의 좋아요 상태를 포함하여 반환
 const findAllWorks = async (userId, challengeId, page, pageSize) => {
@@ -110,12 +111,14 @@ const createWork = async (challengeId, authorId) => {
     throw error;
   }
 
-  const result = await workRepository.createWork(challengeId, authorId);
-  if (result.challenge.isClosed) {
+  const closeChallenge = await challengeRepository.closeChallenge(challengeId);
+  if (closeChallenge.isClosed) {
     const error = new Error("완료된 첼린지에 대한 작업물생성은 불가능합니다.");
     error.statusCode = 403;
     throw error;
   }
+
+  const result = await workRepository.createWork(challengeId, authorId);
 
   // 등급 자동 체크 (EXPERT 승격 조건 충족 시 바로 반영)
   await tryUpgradeUserGrade(authorId);
