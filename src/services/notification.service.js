@@ -23,7 +23,9 @@ const notificationMessages = {
   challengeDelete: (challengeTitle) =>
     `'${challengeTitle}' 챌린지가 삭제되었어요`,
   challengeStatusChange: (challengeTitle, status) =>
-    `관리자에 의해 '${challengeTitle}'(이)가 ${status} 처리되었어요`,
+    `관리자에 의해 '${challengeTitle}'(이)가 ${statusToKorean(
+      status
+    )} 처리되었어요`,
   newWork: (challengeTitle) =>
     `'${challengeTitle}' 챌린지에 작업물이 추가되었어요`,
   newFeedback: (challengeTitle) =>
