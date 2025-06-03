@@ -58,7 +58,9 @@ export const getWorkByIdAtForm = async (req, res) => {
     res.status(200).json({ data: work });
   } catch (error) {
     if (error.statusCode === 403) {
-      res.status(403).json({ message: error.message });
+      res
+        .status(403)
+        .json({ message: error.message, statusCode: error.statusCode });
     } else {
       res
         .status(error.statusCode || 500)
