@@ -38,7 +38,7 @@ async function editFeedback(feedbackId, content, userId, role) {
     err.status = 404;
     throw err;
   }
-  if (feedback.authorId !== userId || role !== "ADMIN") {
+  if (feedback.authorId !== userId && role !== "ADMIN") {
     const err = new Error("본인이 작성한 피드백만 수정할 수 있습니다.");
     err.status = 403;
     throw err;
