@@ -30,7 +30,7 @@ async function getFeedbacks(workId, userId) {
 }
 
 // 수정
-async function editFeedback(feedbackId, content, userId) {
+async function editFeedback(feedbackId, content, userId, role) {
   // 피드백 조회해서 작성자 확인
   const feedback = await feedbackRepository.findById(feedbackId);
   if (!feedback) {
@@ -38,7 +38,7 @@ async function editFeedback(feedbackId, content, userId) {
     err.status = 404;
     throw err;
   }
-  if (feedback.authorId !== userId) {
+  if (feedback.authorId !== userId || role !== "ADMIN") {
     const err = new Error("본인이 작성한 피드백만 수정할 수 있습니다.");
     err.status = 403;
     throw err;
