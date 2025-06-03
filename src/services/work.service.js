@@ -156,6 +156,13 @@ const updateWork = async (workId, challengeId, userId, role, content) => {
     );
     await notificationService.createNotification(challenge.authorId, message);
   }
+  // work 작성자에게 알림
+  if (challenge && !isAuthor) {
+    const message = notificationService.notificationMessages.updateWork(
+      challenge.title
+    );
+    await notificationService.createNotification(updatedWork.authorId, message);
+  }
 
   return updatedWork;
 };
@@ -189,6 +196,13 @@ const hardDeleteWork = async (workId, challengeId, userId, role) => {
       challenge.title
     );
     await notificationService.createNotification(challenge.authorId, message);
+  }
+  // work 작성자에게 알림
+  if (challenge && !isAuthor) {
+    const message = notificationService.notificationMessages.deleteWork(
+      challenge.title
+    );
+    await notificationService.createNotification(result.authorId, message);
   }
 
   return result;
