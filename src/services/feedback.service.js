@@ -56,6 +56,13 @@ async function editFeedback(feedbackId, workId, content, userId, role) {
     );
     await notificationService.createNotification(work.authorId, message);
   }
+  // feedback 작성자에게 알림 전송
+  if (feedback.authorId !== userId) {
+    const message = notificationService.notificationMessages.updateFeedback(
+      work.challenge.title
+    );
+    await notificationService.createNotification(feedback.authorId, message);
+  }
   // 작성자가 맞으면 수정 진행
   return feedbackRepository.update(feedbackId, content);
 }
@@ -94,6 +101,13 @@ async function deleteFeedback(feedbackId, workId, userId) {
       work.challenge.title
     );
     await notificationService.createNotification(work.authorId, message);
+  }
+  // feedback 작성자에게 알림 전송
+  if (feedback.authorId !== userId) {
+    const message = notificationService.notificationMessages.deleteFeedback(
+      work.challenge.title
+    );
+    await notificationService.createNotification(feedback.authorId, message);
   }
   return feedbackRepository.remove(feedbackId);
 }
