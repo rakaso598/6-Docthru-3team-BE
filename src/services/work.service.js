@@ -227,6 +227,11 @@ const likeWork = async (workId, userId) => {
   }
 
   const likedWork = await likeRepository.createLike(workId, userId);
+  if (likedWork.work.challenge.isClosed) {
+    const error = new Error("완료된 첼린지에 좋아요는 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
 
   return likedWork;
 };
@@ -244,6 +249,11 @@ const unlikeWork = async (workId, userId) => {
   if (!unlikedWork) {
     const error = new Error("해당 작업을 찾을 수 없습니다.");
     error.statusCode = 404;
+    throw error;
+  }
+  if (unlikedWork.work.challenge.isClosed) {
+    const error = new Error("완료된 첼린지에 좋아요 취소는 불가능합니다.");
+    error.statusCode = 403;
     throw error;
   }
 
