@@ -1,6 +1,21 @@
 import prisma from "../prisma/client.prisma.js";
 import notificationRepository from "../repositories/notification.repository.js";
 
+const statusToKorean = (status) => {
+  switch (status) {
+    case "PENDING":
+      return "대기";
+    case "ACCEPTED":
+      return "승인";
+    case "REJECTED":
+      return "거절";
+    case "DELETED":
+      return "삭제";
+    default:
+      return status;
+  }
+};
+
 // 알림 메시지 템플릿
 const notificationMessages = {
   challengeUpdate: (challengeTitle) =>
@@ -15,9 +30,9 @@ const notificationMessages = {
     `'${challengeTitle}'에 도전한 작업물에 피드백이 추가되었어요`,
   challengeEnd: (challengeTitle) => `'${challengeTitle}'(이)가 마감되었어요`,
   adminAction: (challengeTitle, status, reason) =>
-    `관리자에 의해 '${challengeTitle}'(이)가 ${status} 처리되었어요. 사유: ${
-      reason || "없음"
-    }`,
+    `관리자에 의해 '${challengeTitle}'(이)가 ${statusToKorean(
+      status
+    )} 처리되었어요. 사유: ${reason || "없음"}`,
 };
 
 // 알림 생성
