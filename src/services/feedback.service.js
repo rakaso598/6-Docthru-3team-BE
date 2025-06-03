@@ -30,7 +30,7 @@ async function getFeedbacks(workId, userId) {
 }
 
 // 수정
-async function editFeedback(feedbackId, content, userId, role) {
+async function editFeedback(feedbackId, workId, content, userId, role) {
   // 피드백 조회해서 작성자 확인
   const feedback = await feedbackRepository.findById(feedbackId);
   if (!feedback) {
@@ -38,21 +38,39 @@ async function editFeedback(feedbackId, content, userId, role) {
     err.status = 404;
     throw err;
   }
-  if (feedback.authorId !== userId || role !== "ADMIN") {
+  if (feedback.authorId !== userId && role !== "ADMIN") {
     const err = new Error("본인이 작성한 피드백만 수정할 수 있습니다.");
     err.status = 403;
     throw err;
+  }
+  if (feedback.work.challenge.isClosed) {
+    const err = new Error("완료된 첼린지에 대한 피드백은 수정이 불가능합니다.");
+    err.status = 403;
+    throw err;
+  }
+  // work 작성자에게 알림 전송 (본인이 아니면)
+  const work = await workRepository.findIdAndTitle(workId);
+  if (work.authorId !== userId) {
+    const message = notificationService.notificationMessages.updateFeedback(
+      work.challenge.title
+    );
+    await notificationService.createNotification(work.authorId, message);
   }
   // 작성자가 맞으면 수정 진행
   return feedbackRepository.update(feedbackId, content);
 }
 
 // 삭제
-async function deleteFeedback(feedbackId, userId) {
+async function deleteFeedback(feedbackId, workId, userId) {
   const feedback = await feedbackRepository.findById(feedbackId);
   if (!feedback) {
     const err = new Error("피드백을 찾을 수 없습니다.");
     err.status = 404;
+    throw err;
+  }
+  if (feedback.work.challenge.isClosed) {
+    const err = new Error("완료된 첼린지에 대한 피드백은 삭제가 불가능합니다.");
+    err.status = 403;
     throw err;
   }
   const user = await findUserById(userId);
@@ -68,6 +86,14 @@ async function deleteFeedback(feedbackId, userId) {
     const err = new Error("본인이 작성한 피드백만 삭제할 수 있습니다.");
     err.status = 403;
     throw err;
+  }
+  // work 작성자에게 알림 전송 (본인이 아니면)
+  const work = await workRepository.findIdAndTitle(workId);
+  if (work.authorId !== userId) {
+    const message = notificationService.notificationMessages.deleteFeedback(
+      work.challenge.title
+    );
+    await notificationService.createNotification(work.authorId, message);
   }
   return feedbackRepository.remove(feedbackId);
 }

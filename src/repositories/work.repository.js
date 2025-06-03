@@ -135,6 +135,13 @@ const updateWork = async (workId, content) => {
   const updatedWork = await prisma.work.update({
     where: { id: workId },
     data: { content },
+    include: {
+      challenge: {
+        select: {
+          isClosed: true,
+        },
+      },
+    },
   });
   return updatedWork;
 };
@@ -144,6 +151,13 @@ const hardDeleteWork = async (workId) => {
   const result = await prisma.$transaction(async (tx) => {
     const work = await tx.work.findUnique({
       where: { id: workId },
+      include: {
+        challenge: {
+          select: {
+            isClosed: true,
+          },
+        },
+      },
     });
 
     if (!work) {

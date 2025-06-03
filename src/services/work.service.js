@@ -127,7 +127,7 @@ const createWork = async (challengeId, authorId) => {
 };
 
 // 작업물 내용을 수정하고 수정된 작업물을 반환 (작성자 권한 확인 포함)
-const updateWork = async (workId, userId, role, content) => {
+const updateWork = async (workId, challengeId, userId, role, content) => {
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
   // 어드민이 아니면 작성자만 수정할 수 있음
@@ -138,12 +138,30 @@ const updateWork = async (workId, userId, role, content) => {
   }
 
   const updatedWork = await workRepository.updateWork(workId, content);
+  if (updatedWork.challenge.isClosed) {
+    const error = new Error(
+      "완료된 첼린지에 대한 작업물은 수정이 불가능합니다."
+    );
+    error.statusCode = 403;
+    throw error;
+  }
+
+  // 알림 생성
+  const challenge = await prisma.challenge.findUnique({
+    where: { id: challengeId },
+  });
+  if (challenge && challenge.authorId !== userId) {
+    const message = notificationService.notificationMessages.updateWork(
+      challenge.title
+    );
+    await notificationService.createNotification(challenge.authorId, message);
+  }
 
   return updatedWork;
 };
 
 // 작업물을 영구적으로 삭제
-const hardDeleteWork = async (workId, userId, role) => {
+const hardDeleteWork = async (workId, challengeId, userId, role) => {
   const isAuthor = await workRepository.isAuthor(workId, userId);
 
   // 어드민이 아니면 작성자만 수정할 수 있음
@@ -154,6 +172,24 @@ const hardDeleteWork = async (workId, userId, role) => {
   }
 
   const result = await workRepository.hardDeleteWork(workId);
+  if (result.challenge.isClosed) {
+    const error = new Error(
+      "완료된 첼린지에 대한 작업물은 삭제가 불가능합니다."
+    );
+    error.statusCode = 403;
+    throw error;
+  }
+
+  // 알림 생성
+  const challenge = await prisma.challenge.findUnique({
+    where: { id: challengeId },
+  });
+  if (challenge && challenge.authorId !== userId) {
+    const message = notificationService.notificationMessages.deleteWork(
+      challenge.title
+    );
+    await notificationService.createNotification(challenge.authorId, message);
+  }
 
   return result;
 };

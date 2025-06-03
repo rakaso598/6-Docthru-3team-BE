@@ -37,10 +37,11 @@ export async function addFeedback(req, res, next) {
 export async function editFeedback(req, res, next) {
   try {
     const { content } = req.body;
-    const feedbackId = req.params.feedbackId;
+    const { feedbackId, workId } = req.params;
     const { userId, role } = req.user;
     const feedback = await feedbackService.editFeedback(
       feedbackId,
+      workId,
       content,
       userId,
       role
@@ -53,10 +54,10 @@ export async function editFeedback(req, res, next) {
 
 // 삭제
 export async function deleteFeedback(req, res, next) {
-  const { feedbackId } = req.params;
+  const { feedbackId, workId } = req.params;
   const userId = req.user.userId;
   try {
-    await feedbackService.deleteFeedback(feedbackId, userId);
+    await feedbackService.deleteFeedback(feedbackId, workId, userId);
     res.status(200).json({ message: "피드백이 성공적으로 삭제되었습니다." });
   } catch (error) {
     next(error);
