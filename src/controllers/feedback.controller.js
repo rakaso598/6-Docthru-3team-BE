@@ -38,11 +38,12 @@ export async function editFeedback(req, res, next) {
   try {
     const { content } = req.body;
     const feedbackId = req.params.feedbackId;
-    const userId = req.user.userId;
+    const { userId, role } = req.user;
     const feedback = await feedbackService.editFeedback(
       feedbackId,
       content,
-      userId
+      userId,
+      role
     );
     res.json(feedback);
   } catch (err) {
