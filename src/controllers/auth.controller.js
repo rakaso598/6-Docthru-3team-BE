@@ -133,22 +133,11 @@ export async function socialLogin(req, res, next) {
     // 리프레시 토큰을 데이터베이스에 저장
     await authRepository.updateRefreshToken(req.user.id, refreshToken);
 
-    // Access Token: 15분
-    res.cookie(
-      "accessToken",
+    return res.status(200).json({
       accessToken,
-      getCookieOptions(TOKEN_EXPIRES.ACCESS_TOKEN_COOKIE)
-    );
-
-    // Refresh Token: 1주
-    res.cookie(
-      "refreshToken",
       refreshToken,
-      getCookieOptions(TOKEN_EXPIRES.REFRESH_TOKEN_COOKIE)
-    );
-
-    const redirectUrl = process.env.FRONTEND_URL;
-    res.redirect(`${redirectUrl}/challenges`);
+      user: req.user,
+    });
   } catch (error) {
     next(error);
   }
