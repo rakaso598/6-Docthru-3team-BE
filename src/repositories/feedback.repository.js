@@ -37,6 +37,17 @@ async function findById(feedbackId) {
 async function create(workId, authorId, content) {
   return prisma.feedback.create({
     data: { workId: Number(workId), authorId, content },
+    include: {
+      work: {
+        include: {
+          challenge: {
+            select: {
+              isClosed: true,
+            },
+          },
+        },
+      },
+    },
   });
 }
 

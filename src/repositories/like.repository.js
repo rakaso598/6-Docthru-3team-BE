@@ -17,6 +17,17 @@ const createLike = async (workId, userId) => {
       workId,
       userId,
     },
+    include: {
+      work: {
+        include: {
+          challenge: {
+            select: {
+              isClosed: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   return like;
@@ -26,6 +37,17 @@ const deleteLike = async (workId, userId) => {
   const deletedLike = await prisma.like.delete({
     where: {
       userId_workId: { userId, workId },
+    },
+    include: {
+      work: {
+        include: {
+          challenge: {
+            select: {
+              isClosed: true,
+            },
+          },
+        },
+      },
     },
   });
 

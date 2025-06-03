@@ -111,6 +111,11 @@ const createWork = async (challengeId, authorId) => {
   }
 
   const result = await workRepository.createWork(challengeId, authorId);
+  if (result.challenge.isClosed) {
+    const error = new Error("완료된 첼린지에 대한 작업물생성은 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
 
   // 등급 자동 체크 (EXPERT 승격 조건 충족 시 바로 반영)
   await tryUpgradeUserGrade(authorId);
@@ -227,6 +232,11 @@ const likeWork = async (workId, userId) => {
   }
 
   const likedWork = await likeRepository.createLike(workId, userId);
+  if (likedWork.work.challenge.isClosed) {
+    const error = new Error("완료된 첼린지에 좋아요는 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
 
   return likedWork;
 };
@@ -244,6 +254,11 @@ const unlikeWork = async (workId, userId) => {
   if (!unlikedWork) {
     const error = new Error("해당 작업을 찾을 수 없습니다.");
     error.statusCode = 404;
+    throw error;
+  }
+  if (unlikedWork.work.challenge.isClosed) {
+    const error = new Error("완료된 첼린지에 좋아요 취소는 불가능합니다.");
+    error.statusCode = 403;
     throw error;
   }
 
