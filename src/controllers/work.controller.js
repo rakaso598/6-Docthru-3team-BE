@@ -29,8 +29,9 @@ export const getAllWorks = async (req, res) => {
 export const getWorkById = async (req, res) => {
   try {
     const { workId } = req.params;
+    const { userId } = req.user;
 
-    const work = await workService.getWorkById(Number(workId));
+    const work = await workService.getWorkById(Number(workId), userId);
     res.status(200).json({ data: work });
   } catch (error) {
     if (error.statusCode === 403) {
