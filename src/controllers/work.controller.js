@@ -86,12 +86,13 @@ export const createWork = async (req, res) => {
 // work 제출 및 수정
 export const updateWork = async (req, res) => {
   try {
-    const { workId } = req.params;
+    const { workId, challengeId } = req.params;
     const { content } = req.body;
     const { userId, role } = req.user;
 
     const updatedWork = await workService.updateWork(
       Number(workId),
+      Number(challengeId),
       userId,
       role,
       content
@@ -111,10 +112,15 @@ export const updateWork = async (req, res) => {
 // work 하드삭제
 export const hardDeleteWork = async (req, res) => {
   try {
-    const { workId } = req.params;
+    const { workId, challengeId } = req.params;
     const { userId, role } = req.user;
 
-    await workService.hardDeleteWork(Number(workId), userId, role);
+    await workService.hardDeleteWork(
+      Number(workId),
+      Number(challengeId),
+      userId,
+      role
+    );
     res.status(204).send();
   } catch (error) {
     if (error.statusCode === 403) {

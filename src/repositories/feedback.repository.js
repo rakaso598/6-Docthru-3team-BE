@@ -19,6 +19,17 @@ async function findByWorkId(workId) {
 async function findById(feedbackId) {
   return prisma.feedback.findUnique({
     where: { id: Number(feedbackId) },
+    include: {
+      work: {
+        include: {
+          challenge: {
+            select: {
+              isClosed: true,
+            },
+          },
+        },
+      },
+    },
   });
 }
 

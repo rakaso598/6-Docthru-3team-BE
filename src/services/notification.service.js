@@ -28,8 +28,16 @@ const notificationMessages = {
     )} 처리되었어요`,
   newWork: (challengeTitle) =>
     `'${challengeTitle}' 챌린지에 작업물이 추가되었어요`,
+  updateWork: (challengeTitle) =>
+    `'${challengeTitle}' 챌린지에 작업물이 수정되었어요`,
+  deleteWork: (challengeTitle) =>
+    `'${challengeTitle}' 챌린지에 작업물이 삭제되었어요`,
   newFeedback: (challengeTitle) =>
     `'${challengeTitle}'에 도전한 작업물에 피드백이 추가되었어요`,
+  updateFeedback: (challengeTitle) =>
+    `'${challengeTitle}'에 도전한 작업물에 피드백이 수정되었어요`,
+  deleteFeedback: (challengeTitle) =>
+    `'${challengeTitle}'에 도전한 작업물에 피드백이 삭제되었어요`,
   challengeEnd: (challengeTitle) => `'${challengeTitle}'(이)가 마감되었어요`,
   adminAction: (challengeTitle, status, reason) =>
     `관리자에 의해 '${challengeTitle}'(이)가 ${statusToKorean(
