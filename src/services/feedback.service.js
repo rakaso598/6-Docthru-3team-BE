@@ -5,13 +5,15 @@ import { findUserById } from "../repositories/user.repository.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
-  // 피드백 생성
-  const feedback = await feedbackRepository.create(workId, authorId, content);
-  if (feedback.work.challenge.isClosed) {
+  const closeWork = await workRepository.findWorkById(workId);
+  if (closeWork.isClosed) {
     const error = new Error("완료된 첼린지에 대한 피드백생성은 불가능합니다.");
     error.statusCode = 403;
     throw error;
   }
+
+  // 피드백 생성
+  const feedback = await feedbackRepository.create(workId, authorId, content);
 
   // work 작성자에게 알림 전송 (본인이 아니면)
   const work = await workRepository.findIdAndTitle(workId);
