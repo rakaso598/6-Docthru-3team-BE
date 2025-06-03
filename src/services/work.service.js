@@ -1,4 +1,3 @@
-import challengeRepository from "../repositories/challenge.repository.js";
 import likeRepository from "../repositories/like.repository.js";
 import workRepository from "../repositories/work.repository.js";
 import prisma from "../prisma/client.prisma.js";
@@ -29,7 +28,11 @@ const findAllWorks = async (userId, challengeId, page, pageSize) => {
   // 각 work에 대해 좋아요 여부를 확인하고 새로운 배열 생성
   const worksWithLikeStatus = await Promise.all(
     works.map(async (work) => {
-      const isLiked = await likeRepository.isWorkLikedByUser(work.id, userId);
+      console.log(work.workId);
+      const isLiked = await likeRepository.isWorkLikedByUser(
+        work.workId,
+        userId
+      );
       return {
         ...work,
         isLiked,
