@@ -111,7 +111,9 @@ const createWork = async (challengeId, authorId) => {
     throw error;
   }
 
-  const closeChallenge = await challengeRepository.closeChallenge(challengeId);
+  const closeChallenge = await challengeRepository.findChallengeDetailById(
+    challengeId
+  );
   if (closeChallenge.isClosed) {
     const error = new Error("완료된 첼린지에 대한 작업물생성은 불가능합니다.");
     error.statusCode = 403;
