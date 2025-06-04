@@ -1,11 +1,25 @@
-## 유저 정보 조회
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWIwYWlzeXAwMDAwY2NveWFhem1tbzllIiwiZW1haWwiOiJna3NrdGwxMjNAbmF2ZXIuY29tIiwibmlja25hbWUiOiLrgpjripTslbzrqYvsp4TquIjrtpXslrQiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0ODY2NjEyMSwiZXhwIjoxNzQ4NjY3MDIxfQ.upAMWjsjNyhDz7rMQvMWc9pRY23i9NzAd81bvsViY1w
 
+### 유저 정보 조회
 GET http://localhost:8080/users/me
+Cookie: accessToken={{accessToken}}
 
-## 나의 챌린지 목록 조회 (1)
+### 나의 챌린지 목록 조회 - 참여중
+GET http://localhost:8080/users/me/challenges?status=open,full
+Cookie: accessToken={{accessToken}}
 
-GET http://localhost:8080/users/me/challenges?myChallengeStatus=completed&keyword=keyword
+### 나의 챌린지 목록 조회 - 완료된
+GET http://localhost:8080/users/me/challenges?status=closed
+Cookie: accessToken={{accessToken}}
 
-## 나의 챌린지 목록 조회 (2)
+### 나의 챌린지 목록 조회 - 신청한
+GET http://localhost:8080/users/me/applications?page=1&pageSize=10
+Cookie: accessToken={{accessToken}}
 
-GET http://localhost:8080/users/me/challenges?status=applied&keyword=keyword
+### 키워드 검색 예시 - next 키워드 포함 챌린지
+GET http://localhost:8080/users/me/challenges?myChallengeStatus=participated&keyword=next
+Cookie: accessToken={{accessToken}}
+
+### 신청한 챌린지 상세 조회
+GET http://localhost:8080/users/me/applications/2
+Cookie: accessToken={{accessToken}}

@@ -1,0 +1,71 @@
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZG1pbjEiLCJlbWFpbCI6ImFkbWluQGVtYWlsLmNvbSIsIm5pY2tuYW1lIjoi6rSA66as7J6QIiwiaWF0IjoxNzQ4NDg1MTcxLCJleHAiOjE3NDg0ODg3NzF9.d4W7wlpZj7g1uO_FGRgHYQX8rHWI0D_9LrKMrxRGwI8
+
+### 챌린지 신청 목록 조회 - 신청시간 빠른순(기본)
+GET http://localhost:8080/admin/applications?page=1&pageSize=10
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청시간 느린순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=appliedAt_asc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 마감기한 빠른순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=deadline_desc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 마감기한 느린순
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=deadline_asc
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 승인대기
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=pending
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청승인
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=accepted
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 신청거절
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&sort=rejected
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 신청 목록 조회 - 검색
+GET http://localhost:8080/admin/applications?page=1&pageSize=10&keyword=next
+Cookie: accessToken={{accessToken}}
+
+### 챌린지 승인
+PATCH http://localhost:8080/admin/challenges/20
+Content-Type: application/json 
+Cookie: accessToken={{accessToken}}
+
+{
+	"adminStatus": "ACCEPTED"
+}
+
+### 챌린지 거절
+PATCH http://localhost:8080/admin/challenges/20
+Content-Type: application/json 
+Cookie: accessToken={{accessToken}}
+
+{
+	"adminStatus": "REJECTED",
+	"adminMessage": "독스루는 개발 문서 번역 플랫폼으로, 다른 종류의 번역 챌린지를 개최할 수 없음을 알려드립니다. 감사합니다."
+}
+
+### 챌린지 삭제
+PATCH http://localhost:8080/admin/challenges/20
+Content-Type: application/json 
+Cookie: accessToken={{accessToken}}
+
+{
+	"adminStatus": "DELETED",
+	"adminMessage": "독스루는 개발 문서 번역 플랫폼으로, 폭력성과 관련된 내용을 포함할 수 없음을 안내드립니다. 감사합니다."
+}
+
+### 작업물 소프트삭제 (작업물 비활성화 필드 true)
+PATCH http://localhost:8080/admin/works/4
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
+
+{
+  "deletionReason": "사용자 요청에 의한 삭제 사유"
+}

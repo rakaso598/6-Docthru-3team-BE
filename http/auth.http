@@ -1,10 +1,36 @@
+@refreshToken=
+
 ### 회원가입
-POST http://localhost:8080/auth
+POST http://localhost:8080/auth/sign-up
 Content-Type: application/json
 
 {
-    "email" : "user3@test.com",
-    "nickname" : "user3",
-    "password" : "3333",
-    "passwordConfirmation" : "3333"
+    "email" : "gksktl1234@naver.com",
+    "nickname" : "나는야멋진금붕어",
+    "password" : "1234",
+    "passwordConfirmation" : "1234"
 }
+
+### 로그인
+POST http://localhost:8080/auth/sign-in
+Content-Type: application/json
+
+{
+    "email" : "gksktl111@naver.com",
+    "password" : "1rhdiddl!"
+}
+
+### 관리자 로그인
+POST http://localhost:8080/auth/sign-in
+Content-Type: application/json
+
+{
+    "email" : "admin1@example.com",
+    "password" : "adminpassword1"
+}
+
+### (수정 필요)
+### 토큰 갱신
+POST http://localhost:8080/auth/refresh-token
+Cookie: refreshToken={{refreshToken}}
+

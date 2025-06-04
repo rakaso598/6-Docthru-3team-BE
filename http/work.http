@@ -1,23 +1,53 @@
-## 작업물 상세 조회
+@accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWJlcjRkdnYwMDAwZ3Yyb3FqYjB4MnVqIiwiZW1haWwiOiJna3NrdGwxMTFAbmF2ZXIuY29tIiwibmlja25hbWUiOiLsg4jsgrzrqYvsp4TtloTsiqTthLAiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTc0ODg2NDE5MSwiZXhwIjoxNzQ4ODY1MDkxfQ.AbghQSzbBm96o7tywtY3hYuEn0nQUzmz-wPvZI6Qcpw
+### 현재 챌린지의 작업물 조회
+GET http://localhost:8080/challenges/15/works?page=1&pageSize5
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-GET http://localhost:8080/challenges/:challengeId/works/:workId
+### 작업물 상세 조회
+GET http://localhost:8080/challenges/31/works/66
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-## 작업물 제출
+### 작업물 상세 조회 (form)
+GET http://localhost:8080/challenges/31/works/66/form
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-POST http://localhost:8080/challenges/:challengeId/works
 
-## 작업물 수정
+### 작업물 생성
+POST http://localhost:8080/challenges/15/works
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-PATCH http://localhost:8080/works/:workId
+### 작업물 제출 및 수정
+PATCH http://localhost:8080/works/43
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-## 작업물 삭제
+{
+    "content": "수정된 작업물 내용입니다. 111"
+}
 
-DELETE http://localhost:8080/works/:workId
+### 작업물 삭제 .
+DELETE http://localhost:8080/works/66
+Cookie: accessToken={{accessToken}}
 
-## 작업물 좋아요
+### 작업물 소프트삭제 (작업물 비활성화 필드 true)
+PATCH http://localhost:8080/admin/works/4
+Cookie: accessToken={{accessToken}}
+Content-Type: application/json
 
-POST http://localhost:8080/works/:workId/like
+{
+  "deletionReason": "사용자 요청에 의한 삭제 사유456"
+}
 
-## 작업물 좋아요 취소
+### 작업물 좋아요
+POST http://localhost:8080/works/29/like
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
 
-DELETE http://localhost:8080/works/:workId/like
+### 작업물 좋아요 취소
+DELETE http://localhost:8080/works/58/like
+Content-Type: application/json
+Cookie: accessToken={{accessToken}}
