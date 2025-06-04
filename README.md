@@ -6,6 +6,29 @@
 
 Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫폼입니다. 영어로 작성된 개발 문서를 한국어로 번역하고, 피드백을 주고받으며 함께 성장하는 공간을 제공합니다.
 
+## 🛠️ 기술 스택 (Backend)
+
+### 핵심 기술
+
+[![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/express.js-%23404D59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://expressjs.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-blue?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+
+### 인증 및 보안
+
+[![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge)](https://jwt.io/)
+[![bcrypt](https://img.shields.io/badge/bcrypt-232F3E?style=for-the-badge)](https://www.npmjs.com/package/bcrypt)
+[![Passport.js](https://img.shields.io/badge/Passport.js-34B3E5?style=for-the-badge&logo=passport&logoColor=white)](http://www.passportjs.org/)
+[![cookie-parser](https://img.shields.io/badge/cookie--parser-333333?style=for-the-badge)](https://www.npmjs.com/package/cookie-parser)
+
+### 유틸리티 및 개발 도구
+
+[![dotenv](https://img.shields.io/badge/dotenv-000?style=for-the-badge&logo=dotenv&logoColor=yellow)](https://www.npmjs.com/package/dotenv)
+[![cors](https://img.shields.io/badge/cors-white?style=for-the-badge)](https://www.npmjs.com/package/cors)
+[![nodemon](https://img.shields.io/badge/Nodemon-76D398?style=for-the-badge&logo=nodemon&logoColor=white)](https://nodemon.io/)
+
 ## 👥 팀 소개
 
 | 이름   | 역할    | GitHub                                   | 개인 개발 보고서                                                 |
@@ -83,38 +106,6 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 ![image](https://github.com/user-attachments/assets/d0c5adf1-f20a-4b5d-9fdd-180a50d37302)
 
 ![image](https://github.com/user-attachments/assets/b27c38c1-6af7-4a33-a5e2-897fe8444d19)
-
-</details>
-
-## 🛠️ 기술 스택 (Backend)
-
-<details>
-<summary>✅ 핵심 기술</summary>
-
-[![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
-[![Express.js](https://img.shields.io/badge/express.js-%23404D59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://expressjs.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-blue?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-
-</details>
-
-<details>
-<summary>✅ 인증 및 보안</summary>
-
-* **JWT (JSON Web Tokens)**: 안전한 토큰 기반 인증에 사용됩니다.
-* **bcrypt**: 사용자 비밀번호를 안전하게 해싱합니다.
-* **Passport.js**: Node.js를 위한 유연한 인증 미들웨어입니다.
-* **cookie-parser**: 클라이언트 요청 쿠키를 파싱합니다.
-
-</details>
-
-<details>
-<summary>✅ 유틸리티 및 개발 도구</summary>
-
-* **dotenv**: 환경 변수를 관리합니다.
-* **cors**: 교차 출처 리소스 공유(CORS)를 활성화합니다.
-* **nodemon**: 개발 중 파일 변경 시 애플리케이션을 자동 재시작합니다.
 
 </details>
 
