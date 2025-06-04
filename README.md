@@ -6,8 +6,6 @@
 
 Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫폼입니다. 영어로 작성된 개발 문서를 한국어로 번역하고, 피드백을 주고받으며 함께 성장하는 공간을 제공합니다.
 
-<br/>
-
 ## 🛠️ 기술 스택 (Backend)
 
 ### 핵심 기술
@@ -31,8 +29,6 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 [![cors](https://img.shields.io/badge/cors-white?style=for-the-badge)](https://www.npmjs.com/package/cors)
 [![nodemon](https://img.shields.io/badge/Nodemon-76D398?style=for-the-badge&logo=nodemon&logoColor=white)](https://nodemon.io/)
 
-<br/>
-
 ## 👥 팀 소개
 
 | 이름   | 역할    | GitHub                                   | 개인 개발 보고서                                                 |
@@ -53,68 +49,47 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 
 🚀 [DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
 
-<br/>
-
 ## 🗺️ 시스템 아키텍처
 
 ```mermaid
 
-graph TD
-    A[src] --> B(app.js)
-    A --> C[constants]
-    C --> C1(time.constants.js)
-    A --> D[controllers]
-    D --> D1(admin.controller.js)
-    D --> D2(auth.controller.js)
-    D --> D3(challenge.controller.js)
-    D --> D4(feedback.controller.js)
-    D --> D5(notification.controller.js)
-    D --> D6(user.controller.js)
-    D --> D7(work.controller.js)
-    A --> E[exceptions]
-    E --> E1(ExceptionMessage.js)
-    E --> E2(exceptions.js)
-    A --> F[middlewares]
-    F --> F1[passport]
-    F1 --> F1a(googleStrategy.js)
-    F1 --> F1b(passport.js)
-    F --> F2(errorHandler.js)
-    F --> F3(validator.js)
-    F --> F4(verifyToken.js)
-    A --> G[prisma]
-    G --> G1[migrations]
-    G --> G2[seed]
-    G2 --> G2a[mocks]
-    G2 --> G2b(seed.js)
-    G --> G3(client.prisma.js)
-    G --> G4(schema.prisma)
-    A --> H[repositories]
-    H --> H1(auth.repository.js)
-    H --> H2(challenge.repository.js)
-    H --> H3(feedback.repository.js)
-    H --> H4(like.repository.js)
-    H --> H5(notification.repository.js)
-    H --> H6(user.repository.js)
-    H --> H7(work.repository.js)
-    A --> I[routes]
-    I --> I1(admin.route.js)
-    I --> I2(auth.route.js)
-    I --> I3(challenge.route.js)
-    I --> I4(notification.route.js)
-    I --> I5(user.route.js)
-    I --> I6(work.route.js)
-    A --> J[services]
-    J --> J1(auth.service.js)
-    J --> J2(challenge.service.js)
-    J --> J3(feedback.service.js)
-    J --> J4(notification.service.js)
-    J --> J5(user.service.js)
-    J --> J6(work.service.js)
-    A --> K[utils]
-    K --> K1(accessToken.utils.js)
-    K --> K2(auth.utils.js)
-    K --> K3(initial.utils.js)
-    K --> K4(scheduler.js)
+graph LR
+    classDef client fill:#FFD700,stroke:#B8860B,stroke-width:2px,color:#333;
+    classDef router fill:#87CEEB,stroke:#4682B4,stroke-width:2px,color:#333;
+    classDef middleware fill:#90EE90,stroke:#3CB371,stroke-width:2px,color:#333;
+    classDef auth_middleware fill:#ADD8E6,stroke:#6495ED,stroke-width:2px,color:#333;
+    classDef logic fill:#D8BFD8,stroke:#9370DB,stroke-width:2px,color:#333;
+    classDef db_access fill:#FFA07A,stroke:#CD5C5C,stroke-width:2px,color:#333;
+    classDef database fill:#6A5ACD,stroke:#483D8B,stroke-width:2px,color:#FFF;
+    classDef error_handle fill:#F08080,stroke:#B22222,stroke-width:2px,color:#FFF;
+    classDef generic_node fill:#F5DEB3,stroke:#DAA520,stroke-width:2px,color:#333;
+
+    subgraph 클라이언트 요청
+        A[사용자/프론트엔드 요청]:::client --> B{API Endpoint 호출}:::client
+    end
+
+    subgraph 백엔드 애플리케이션 처리
+        B --> C[Router / Routes]:::router
+        C --> D{Middleware 검증}:::middleware
+        D -- 인증/권한 확인 --> D1([verifyToken, Passport.js]):::auth_middleware
+        D -- 유효성 검사 --> D2([Validator]):::middleware
+        D1 & D2 --> E{인증/검증 성공?}:::generic_node
+
+        E -- 실패 시 --> F([errorHandler]):::error_handle
+        E -- 성공 시 --> G([Controller]):::logic
+        G --> H([Service]):::logic
+        H --> I([Repository]):::db_access
+        I --> J([Prisma ORM]):::db_access
+        J --> K([PostgreSQL Database]):::database
+
+        K -- 데이터 응답 --> J
+        J --> I
+        I --> H
+        H --> G
+        G --> L(응답 전송)
+    end
+
+    L --> A
 
 ```
 
@@ -173,8 +148,6 @@ graph TD
 ![image](https://github.com/user-attachments/assets/b27c38c1-6af7-4a33-a5e2-897fe8444d19)
 
 </details>
-
-<br/>
 
 ## 🧩 프로젝트 구조
 
