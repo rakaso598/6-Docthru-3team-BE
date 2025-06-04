@@ -6,6 +6,8 @@
 
 Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫폼입니다. 영어로 작성된 개발 문서를 한국어로 번역하고, 피드백을 주고받으며 함께 성장하는 공간을 제공합니다.
 
+<br/>
+
 ## 🛠️ 기술 스택 (Backend)
 
 ### 핵심 기술
@@ -29,6 +31,8 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 [![cors](https://img.shields.io/badge/cors-white?style=for-the-badge)](https://www.npmjs.com/package/cors)
 [![nodemon](https://img.shields.io/badge/Nodemon-76D398?style=for-the-badge&logo=nodemon&logoColor=white)](https://nodemon.io/)
 
+<br/>
+
 ## 👥 팀 소개
 
 | 이름   | 역할    | GitHub                                   | 개인 개발 보고서                                                 |
@@ -43,17 +47,78 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 
 ## 팀 문서
 
-📝 [팀 노션](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
+📝 [독스루 팀프로젝트 노션 바로가기](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
 
 ## 배포 주소
 
-🚀 [DocThru](https://6-docthru-3team-fe-dev.vercel.app/)
+🚀 [DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
+
+<br/>
 
 ## 🗺️ 시스템 아키텍처
 
-프로젝트의 전체 시스템 아키텍처를 시각적으로 보여주거나, 주요 구성 요소 및 흐름을 설명해주세요. (예: 다이어그램, 텍스트 설명)
+```mermaid
 
-## ✨ 주요 기능
+graph TD
+    A[src] --> B(app.js)
+    A --> C[constants]
+    C --> C1(time.constants.js)
+    A --> D[controllers]
+    D --> D1(admin.controller.js)
+    D --> D2(auth.controller.js)
+    D --> D3(challenge.controller.js)
+    D --> D4(feedback.controller.js)
+    D --> D5(notification.controller.js)
+    D --> D6(user.controller.js)
+    D --> D7(work.controller.js)
+    A --> E[exceptions]
+    E --> E1(ExceptionMessage.js)
+    E --> E2(exceptions.js)
+    A --> F[middlewares]
+    F --> F1[passport]
+    F1 --> F1a(googleStrategy.js)
+    F1 --> F1b(passport.js)
+    F --> F2(errorHandler.js)
+    F --> F3(validator.js)
+    F --> F4(verifyToken.js)
+    A --> G[prisma]
+    G --> G1[migrations]
+    G --> G2[seed]
+    G2 --> G2a[mocks]
+    G2 --> G2b(seed.js)
+    G --> G3(client.prisma.js)
+    G --> G4(schema.prisma)
+    A --> H[repositories]
+    H --> H1(auth.repository.js)
+    H --> H2(challenge.repository.js)
+    H --> H3(feedback.repository.js)
+    H --> H4(like.repository.js)
+    H --> H5(notification.repository.js)
+    H --> H6(user.repository.js)
+    H --> H7(work.repository.js)
+    A --> I[routes]
+    I --> I1(admin.route.js)
+    I --> I2(auth.route.js)
+    I --> I3(challenge.route.js)
+    I --> I4(notification.route.js)
+    I --> I5(user.route.js)
+    I --> I6(work.route.js)
+    A --> J[services]
+    J --> J1(auth.service.js)
+    J --> J2(challenge.service.js)
+    J --> J3(feedback.service.js)
+    J --> J4(notification.service.js)
+    J --> J5(user.service.js)
+    J --> J6(work.service.js)
+    A --> K[utils]
+    K --> K1(accessToken.utils.js)
+    K --> K2(auth.utils.js)
+    K --> K3(initial.utils.js)
+    K --> K4(scheduler.js)
+
+```
+
+## ✨ 백엔드 주요 기능
 
 * **인증 및 인가 관리**
 * **사용자 및 관리자 관리**
@@ -64,7 +129,7 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 
 ## 🎬 기능 구현 영상
 
-[![프로젝트 소개 영상 썸네일](https://github.com/user-attachments/assets/976791d3-41c2-48a1-99f3-b1469cf5b3ff)](https://youtu.be/EClrOPXoyFY)
+[![프로젝트 소개 영상 유튜브 썸네일](https://github.com/user-attachments/assets/976791d3-41c2-48a1-99f3-b1469cf5b3ff)](https://youtu.be/EClrOPXoyFY)
 
 ## 📊 주요 ERD (개체-관계 다이어그램)
 
@@ -108,6 +173,8 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 ![image](https://github.com/user-attachments/assets/b27c38c1-6af7-4a33-a5e2-897fe8444d19)
 
 </details>
+
+<br/>
 
 ## 🧩 프로젝트 구조
 
