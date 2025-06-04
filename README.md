@@ -2,11 +2,9 @@
 
 ![image](https://github.com/user-attachments/assets/111a1379-7089-4d1d-9cf7-f02f8bb41d44)
 
-## 🚀 프로젝트 소개
+## 🚀 프로젝트 소개 - [👀 프론트엔드 레포지토리 바로가기](https://github.com/JJOBO/6-Docthru-3team-FE)
 
 Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫폼입니다. 영어로 작성된 개발 문서를 한국어로 번역하고, 피드백을 주고받으며 함께 성장하는 공간을 제공합니다
-
-👀 [프론트엔드 레포지토리 바로가기](https://github.com/JJOBO/6-Docthru-3team-FE)
 
 ## 🛠️ 기술 스택 (Backend)
 
@@ -43,15 +41,9 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 | 김수경 | 🍊 팀원 | [github](https://github.com/suKyoung25/) | [보고서](https://www.notion.so/1f32facab63c806bb835c90523b6869b) |
 | 박민규 | 🍈 팀원 | [github](https://github.com/gksktl111/)  | [보고서](https://www.notion.so/1f32facab63c80b4b1c0f468d3656e78) |
 
-## 팀 문서
+## 📝 팀 문서: [독스루 팀프로젝트 노션 바로가기](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
 
-📝 [독스루 팀프로젝트 노션 바로가기](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
-
-## 배포 주소
-
-🚀 [DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
-
-<br/>
+## 🚀 배포 주소: [DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
 
 ## 🗺️ 시스템 아키텍처
 
