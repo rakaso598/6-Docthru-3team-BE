@@ -32,11 +32,16 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 
 ## ✨ 주요 기능
 
-백엔드에서 제공하는 핵심 기능들을 간략하게 나열해주세요. (자세한 설명은 필요 없습니다.)
+* **인증 및 인가 관리**
+* **사용자 및 관리자 관리**
+* **챌린지 및 작업물 관리**
+* **피드백 및 추천 시스템**
+* **알림 시스템**
+* **데이터베이스 관리**
 
-  * 기능 1: 간략한 설명
-  * 기능 2: 간략한 설명
-  * ...
+## 🎬 기능 구현 영상
+
+[![프로젝트 소개 영상 썸네일](https://github.com/user-attachments/assets/976791d3-41c2-48a1-99f3-b1469cf5b3ff)](https://youtu.be/EClrOPXoyFY)
 
 ## 📊 주요 ERD (개체-관계 다이어그램)
 
@@ -61,20 +66,36 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 
 </details>
 
-## 🎬 기능 구현 영상
+## 🤯 트러블 슈팅
 
-[![프로젝트 소개 영상 썸네일](https://github.com/user-attachments/assets/0938a97a-4a0b-4206-a678-4fc871b9edbb)](https://youtu.be/EClrOPXoyFY)
+<details>
+<summary>필터 검색 시, 카테고리 쿼리 전달</summary>
+
+![image](https://github.com/user-attachments/assets/26854d51-c80d-4cff-8395-3bbbc978cd09)
+
+![image](https://github.com/user-attachments/assets/6ca24c62-21d0-4821-9012-f7eab6c52077)
+
+</details>
+
+<details>
+<summary>유저 정보 조회 에러</summary>
+
+![image](https://github.com/user-attachments/assets/d0c5adf1-f20a-4b5d-9fdd-180a50d37302)
+
+![image](https://github.com/user-attachments/assets/b27c38c1-6af7-4a33-a5e2-897fe8444d19)
+
+</details>
 
 ## 🛠️ 기술 스택 (Backend)
 
 <details>
 <summary>✅ 핵심 기술</summary>
 
-* **Node.js**: 백엔드 애플리케이션의 런타임 환경입니다.
-* **Express.js**: Node.js 기반의 빠르고 간결한 웹 프레임워크입니다.
-* **Prisma**: 차세대 ORM(객체-관계 매퍼)으로 데이터베이스 접근을 간소화합니다.
-* **TypeScript**: JavaScript의 상위 집합으로 코드 품질을 향상시킵니다.
-* **PostgreSQL**: 안정적이고 확장성이 뛰어난 오픈 소스 객체-관계형 데이터베이스입니다.
+[![Node.js](https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/express.js-%23404D59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](https://expressjs.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-blue?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 </details>
 
@@ -121,26 +142,4 @@ Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫�
 ```
 
 \</details\>
-
------
-
-## 🤯 트러블 슈팅
-
-<details>
-<summary>필터 검색 시, 카테고리 쿼리 전달</summary>
-
-![image](https://github.com/user-attachments/assets/26854d51-c80d-4cff-8395-3bbbc978cd09)
-
-![image](https://github.com/user-attachments/assets/6ca24c62-21d0-4821-9012-f7eab6c52077)
-
-</details>
-
-<details>
-<summary>유저 정보 조회 에러</summary>
-
-![image](https://github.com/user-attachments/assets/d0c5adf1-f20a-4b5d-9fdd-180a50d37302)
-
-![image](https://github.com/user-attachments/assets/b27c38c1-6af7-4a33-a5e2-897fe8444d19)
-
-</details>
 
