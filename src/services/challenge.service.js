@@ -107,21 +107,24 @@ async function getChallenges(options) {
 // 챌린지 신청 관리 - 어드민
 async function updateApplicationById(challengeId, data, userId) {
   try {
-    // 챌린지 정보 조회
+    // 1. 챌린지 조회
     const challenge = await challengeRepository.findChallengeById(challengeId);
 
+    // 2. 닫힌 챌린지인지 확인
     if (challenge.isClosed) {
       const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
       error.statusCode = 403;
       throw error;
     }
 
+    // 3. 업데이트 실행
     const updatedApplication = await challengeRepository.updateApplication(
       challengeId,
       data
     );
-    // 챌린지가 존재하고, 작성자와 현재 사용자가 다를 경우 알림 전송
-    if (challenge && challenge.authorId !== userId) {
+
+    // 4. 알림 전송
+    if (challenge.authorId !== userId) {
       if (["REJECTED", "DELETED"].includes(updatedApplication.adminStatus)) {
         const message = notificationService.notificationMessages.adminAction(
           challenge.title,
@@ -144,10 +147,15 @@ async function updateApplicationById(challengeId, data, userId) {
         );
       }
     }
+
     return updatedApplication;
   } catch (e) {
     if (e.code === "P2025") {
       throw new NotFoundError(ExceptionMessage.CHALLNEGE_NOT_FOUND);
+    } else if (e.statusCode === 403) {
+      throw new ForbiddenError(e.message); // 403 에러 처리
+    } else {
+      throw new InternalServerError("서버 오류가 발생했습니다.");
     }
   }
 }
