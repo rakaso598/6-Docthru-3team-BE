@@ -23,6 +23,23 @@ export const softDeleteWork = async (req, res) => {
       },
     });
 
+    const closeWork = await prisma.work.findUnique({
+      where: { id: workId },
+      include: {
+        challenge: {
+          select: { isClosed: true },
+        },
+      },
+    });
+
+    if (closeWork.challenge.isClosed) {
+      const error = new Error(
+        "완료된 첼린지에 대한 작업물은 삭제가 불가능합니다."
+      );
+      error.statusCode = 403;
+      throw error;
+    }
+
     if (!result) {
       return res
         .status(404)
