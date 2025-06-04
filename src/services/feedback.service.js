@@ -50,7 +50,7 @@ async function editFeedback(feedbackId, workId, content, userId, role) {
     err.status = 403;
     throw err;
   }
-  if (feedback.work.challenge.isClosed && role !== "ADMIN") {
+  if (feedback.work.challenge.isClosed) {
     const err = new Error("완료된 첼린지에 대한 피드백은 수정이 불가능합니다.");
     err.status = 403;
     throw err;
@@ -82,7 +82,7 @@ async function deleteFeedback(feedbackId, workId, userId) {
     err.status = 404;
     throw err;
   }
-  if (feedback.work.challenge.isClosed && role !== "ADMIN") {
+  if (feedback.work.challenge.isClosed) {
     const err = new Error("완료된 첼린지에 대한 피드백은 삭제가 불가능합니다.");
     err.status = 403;
     throw err;

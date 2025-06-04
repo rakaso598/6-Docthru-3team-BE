@@ -151,7 +151,7 @@ const updateWork = async (workId, challengeId, userId, role, content) => {
   }
 
   const updatedWork = await workRepository.updateWork(workId, content);
-  if (updatedWork.challenge.isClosed && role !== "ADMIN") {
+  if (updatedWork.challenge.isClosed) {
     const error = new Error(
       "완료된 첼린지에 대한 작업물은 수정이 불가능합니다."
     );
@@ -192,7 +192,7 @@ const hardDeleteWork = async (workId, challengeId, userId, role) => {
   }
 
   const result = await workRepository.hardDeleteWork(workId);
-  if (result.challenge.isClosed && role !== "ADMIN") {
+  if (result.challenge.isClosed) {
     const error = new Error(
       "완료된 첼린지에 대한 작업물은 삭제가 불가능합니다."
     );
