@@ -102,7 +102,7 @@ graph LR
 
 ## 🎬 기능 구현 영상
 
-[![프로젝트 소개 영상 유튜브 썸네일](https://github.com/user-attachments/assets/2b519985-a518-4945-85e2-2f15c5026058)](https://youtu.be/EClrOPXoyFY)
+[![프로젝트 소개 영상 유튜브 썸네일](https://github.com/user-attachments/assets/b0c73e27-5cb2-451a-862d-d72a71178742)](https://youtu.be/EClrOPXoyFY)
 
 ## 📊 주요 ERD (개체-관계 다이어그램)
 
