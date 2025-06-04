@@ -107,12 +107,19 @@ async function getChallenges(options) {
 // 챌린지 신청 관리 - 어드민
 async function updateApplicationById(challengeId, data, userId) {
   try {
+    // 챌린지 정보 조회
+    const challenge = await challengeRepository.findChallengeById(challengeId);
+
+    if (challenge.isClosed) {
+      const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
+      error.statusCode = 403;
+      throw error;
+    }
+
     const updatedApplication = await challengeRepository.updateApplication(
       challengeId,
       data
     );
-    // 챌린지 정보 조회
-    const challenge = await challengeRepository.findChallengeById(challengeId);
     // 챌린지가 존재하고, 작성자와 현재 사용자가 다를 경우 알림 전송
     if (challenge && challenge.authorId !== userId) {
       if (["REJECTED", "DELETED"].includes(updatedApplication.adminStatus)) {
@@ -137,12 +144,6 @@ async function updateApplicationById(challengeId, data, userId) {
         );
       }
     }
-    if (challenge.isClosed) {
-      const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
-      error.statusCode = 403;
-      throw error;
-    }
-
     return updatedApplication;
   } catch (e) {
     if (e.code === "P2025") {
