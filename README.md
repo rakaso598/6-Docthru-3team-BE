@@ -6,11 +6,11 @@
 
 - Docthru는 개발 관련 영어 문서를 함께 번역하는 챌린지 플랫폼입니다. 영어로 작성된 개발 문서를 한국어로 번역하고, 피드백을 주고받으며 함께 성장하는 공간을 제공합니다
 
-### [🌐 프론트엔드 레포지토리 바로가기](https://github.com/JJOBO/6-Docthru-3team-FE)
+- [🌐 프론트엔드 레포지토리 바로가기](https://github.com/JJOBO/6-Docthru-3team-FE)
 
-### [📝 독스루 팀프로젝트 노션 바로가기](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
+- [📝 독스루 팀프로젝트 노션 바로가기](https://www.notion.so/1ec2facab63c808d9b80ca0759018768?v=1ec2facab63c8156b3aa000c4b136520)
 
-### [🚀 DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
+- [🚀 DocThru 배포 페이지 바로가기](https://6-docthru-3team-fe-dev.vercel.app/)
 
 ## 🛠️ 기술 스택 (Backend)
 
