@@ -1,5 +1,9 @@
 import challengeRepository from "../repositories/challenge.repository.js";
-import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 import notificationService from "./notification.service.js";
 import { tryUpgradeUserGrade } from "./user.service.js";
@@ -154,8 +158,6 @@ async function updateApplicationById(challengeId, data, userId) {
       throw new NotFoundError(ExceptionMessage.CHALLNEGE_NOT_FOUND);
     } else if (e.statusCode === 403) {
       throw new ForbiddenError(e.message); // 403 에러 처리
-    } else {
-      throw new InternalServerError("서버 오류가 발생했습니다.");
     }
   }
 }
