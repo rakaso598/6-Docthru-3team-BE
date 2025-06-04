@@ -26,11 +26,6 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
-//추후 사용 예정
-// const findAllChallenges = async () => {
-//   return await challengeRepository.findAllChallenges();
-// };
-
 // 챌린지 상세 조회
 const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
@@ -269,7 +264,6 @@ export default {
   getChallenges,
   getApplications,
   findChallengeById,
-  // findAllChallenges, 추후 사용 예정
   updateChallenge,
   deleteChallenge,
   getChallengeDetailById,
