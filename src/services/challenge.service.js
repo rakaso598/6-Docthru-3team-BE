@@ -142,6 +142,11 @@ async function updateApplicationById(challengeId, data, userId) {
         );
       }
     }
+    if (challenge.isClosed) {
+      const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
+      error.statusCode = 403;
+      throw error;
+    }
 
     return updatedApplication;
   } catch (e) {
