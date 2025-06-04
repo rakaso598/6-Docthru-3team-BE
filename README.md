@@ -149,8 +149,8 @@ graph LR
 
 ## 🧩 프로젝트 구조
 
-\<details\>
-\<summary\>클릭하여 프로젝트 구조 보기\</summary\>
+<details>
+<summary>클릭하여 프로젝트 구조 보기</summary>
 
 ```
 📦src
@@ -170,5 +170,5 @@ graph LR
  ┗ 📜app.js                 # 애플리케이션의 메인 진입점
 ```
 
-\</details\>
+</details>
 
