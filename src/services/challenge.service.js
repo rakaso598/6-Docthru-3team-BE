@@ -26,11 +26,6 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
-//추후 사용 예정
-// const findAllChallenges = async () => {
-//   return await challengeRepository.findAllChallenges();
-// };
-
 // 챌린지 상세 조회
 const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
@@ -141,6 +136,11 @@ async function updateApplicationById(challengeId, data, userId) {
           message
         );
       }
+    }
+    if (challenge.isClosed) {
+      const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
+      error.statusCode = 403;
+      throw error;
     }
 
     return updatedApplication;
@@ -264,7 +264,6 @@ export default {
   getChallenges,
   getApplications,
   findChallengeById,
-  // findAllChallenges, 추후 사용 예정
   updateChallenge,
   deleteChallenge,
   getChallengeDetailById,
