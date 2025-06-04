@@ -5,7 +5,7 @@ import { findUserById } from "../repositories/user.repository.js";
 
 // 피드백 알림 생성
 async function addFeedback(workId, authorId, content) {
-  const closeWork = await workRepository.findWorkById(workId);
+  const closeWork = await workRepository.findWorkById(Number(workId));
   if (closeWork.isClosed) {
     const error = new Error("완료된 첼린지에 대한 피드백생성은 불가능합니다.");
     error.statusCode = 403;
