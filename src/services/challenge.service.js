@@ -45,6 +45,12 @@ const updateChallenge = async (challengeId, userId, data) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) throw new Error("챌린지가 존재하지 않습니다.");
 
+  if (challenge.isClosed) {
+    const error = new Error("완료된 첼린지는 수정이 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
+
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
   const userRole = userRoleObj.role;
   if (userRole !== "ADMIN") {
@@ -69,6 +75,12 @@ const deleteChallenge = async (challengeId, userId) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) {
     throw new Error("챌린지가 존재하지 않습니다.");
+  }
+
+  if (challenge.isClosed) {
+    const error = new Error("완료된 첼린지는 삭제가 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
   }
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
