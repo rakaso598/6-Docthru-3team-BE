@@ -1,5 +1,9 @@
 import challengeRepository from "../repositories/challenge.repository.js";
-import { BadRequestError, NotFoundError } from "../exceptions/exceptions.js";
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} from "../exceptions/exceptions.js";
 import { ExceptionMessage } from "../exceptions/ExceptionMessage.js";
 import notificationService from "./notification.service.js";
 import { tryUpgradeUserGrade } from "./user.service.js";
@@ -26,11 +30,6 @@ async function create(challenge, userId) {
   return newChallenge;
 }
 
-//추후 사용 예정
-// const findAllChallenges = async () => {
-//   return await challengeRepository.findAllChallenges();
-// };
-
 // 챌린지 상세 조회
 const getChallengeDetailById = async (challengeId) => {
   return await challengeRepository.findChallengeDetailById(challengeId);
@@ -44,6 +43,12 @@ const findChallengeById = async (challengeId) => {
 const updateChallenge = async (challengeId, userId, data) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) throw new Error("챌린지가 존재하지 않습니다.");
+
+  if (challenge.isClosed) {
+    const error = new Error("완료된 첼린지는 수정이 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
   const userRole = userRoleObj.role;
@@ -69,6 +74,12 @@ const deleteChallenge = async (challengeId, userId) => {
   const challenge = await challengeRepository.findChallengeById(challengeId);
   if (!challenge) {
     throw new Error("챌린지가 존재하지 않습니다.");
+  }
+
+  if (challenge.isClosed) {
+    const error = new Error("완료된 첼린지는 삭제가 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
   }
 
   const userRoleObj = await challengeRepository.findUserRoleById(userId);
@@ -100,14 +111,24 @@ async function getChallenges(options) {
 // 챌린지 신청 관리 - 어드민
 async function updateApplicationById(challengeId, data, userId) {
   try {
+    // 1. 챌린지 조회
+    const challenge = await challengeRepository.findChallengeById(challengeId);
+
+    // 2. 닫힌 챌린지인지 확인
+    if (challenge.isClosed) {
+      const error = new Error("완료된 첼린지는 수정 및 삭제가 불가능합니다.");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    // 3. 업데이트 실행
     const updatedApplication = await challengeRepository.updateApplication(
       challengeId,
       data
     );
-    // 챌린지 정보 조회
-    const challenge = await challengeRepository.findChallengeById(challengeId);
-    // 챌린지가 존재하고, 작성자와 현재 사용자가 다를 경우 알림 전송
-    if (challenge && challenge.authorId !== userId) {
+
+    // 4. 알림 전송
+    if (challenge.authorId !== userId) {
       if (["REJECTED", "DELETED"].includes(updatedApplication.adminStatus)) {
         const message = notificationService.notificationMessages.adminAction(
           challenge.title,
@@ -135,6 +156,8 @@ async function updateApplicationById(challengeId, data, userId) {
   } catch (e) {
     if (e.code === "P2025") {
       throw new NotFoundError(ExceptionMessage.CHALLNEGE_NOT_FOUND);
+    } else if (e.statusCode === 403) {
+      throw new ForbiddenError(e.message); // 403 에러 처리
     }
   }
 }
@@ -252,7 +275,6 @@ export default {
   getChallenges,
   getApplications,
   findChallengeById,
-  // findAllChallenges, 추후 사용 예정
   updateChallenge,
   deleteChallenge,
   getChallengeDetailById,

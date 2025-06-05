@@ -150,14 +150,16 @@ const updateWork = async (workId, challengeId, userId, role, content) => {
     throw error;
   }
 
-  const updatedWork = await workRepository.updateWork(workId, content);
-  if (updatedWork.challenge.isClosed) {
+  const closeWork = await workRepository.findWorkById(workId);
+  if (closeWork.isClosed) {
     const error = new Error(
       "완료된 첼린지에 대한 작업물은 수정이 불가능합니다."
     );
     error.statusCode = 403;
     throw error;
   }
+
+  const updatedWork = await workRepository.updateWork(workId, content);
 
   // 알림 생성
   const challenge = await prisma.challenge.findUnique({
@@ -190,15 +192,16 @@ const hardDeleteWork = async (workId, challengeId, userId, role) => {
     error.statusCode = 403;
     throw error;
   }
-
-  const result = await workRepository.hardDeleteWork(workId);
-  if (result.challenge.isClosed) {
+  const closeWork = await workRepository.findWorkById(workId);
+  if (closeWork.isClosed) {
     const error = new Error(
       "완료된 첼린지에 대한 작업물은 삭제가 불가능합니다."
     );
     error.statusCode = 403;
     throw error;
   }
+
+  const result = await workRepository.hardDeleteWork(workId);
 
   // 알림 생성
   const challenge = await prisma.challenge.findUnique({
@@ -235,13 +238,14 @@ const likeWork = async (workId, userId) => {
     error.statusCode = 404;
     throw error;
   }
-
-  const likedWork = await likeRepository.createLike(workId, userId);
-  if (likedWork.work.challenge.isClosed) {
+  const closeWork = await workRepository.findWorkById(workId);
+  if (closeWork.isClosed) {
     const error = new Error("완료된 첼린지에 좋아요는 불가능합니다.");
     error.statusCode = 403;
     throw error;
   }
+
+  const likedWork = await likeRepository.createLike(workId, userId);
 
   return likedWork;
 };
@@ -255,15 +259,17 @@ const unlikeWork = async (workId, userId) => {
     throw error;
   }
 
+  const closeWork = await workRepository.findWorkById(workId);
+  if (closeWork.isClosed) {
+    const error = new Error("완료된 첼린지에 좋아요 취소는 불가능합니다.");
+    error.statusCode = 403;
+    throw error;
+  }
+
   const unlikedWork = await likeRepository.deleteLike(workId, userId);
   if (!unlikedWork) {
     const error = new Error("해당 작업을 찾을 수 없습니다.");
     error.statusCode = 404;
-    throw error;
-  }
-  if (unlikedWork.work.challenge.isClosed) {
-    const error = new Error("완료된 첼린지에 좋아요 취소는 불가능합니다.");
-    error.statusCode = 403;
     throw error;
   }
 
